@@ -150,18 +150,43 @@ namespace RDSUX.Controllers
                         {
                             var result = response.Content.ReadAsStringAsync().Result;
                             var projectId = JsonConvert.DeserializeObject<string>(result);
-                            var path = "\\SourceFiles\\" + projectId ;
-                            
-                            if(System.IO.Directory.Exists(Server.MapPath("~") + path) ==false)
-                                System.IO.Directory.CreateDirectory(Server.MapPath("~") + path);
-                            if(projectDetailsModel.JobSheet!=null)
-                            projectDetailsModel.JobSheet.SaveAs(Server.MapPath("~") + path+"\\"+ projectDetailsModel.JobSheet.FileName);
+                           
+                            if (projectDetailsModel.JobSheet != null)
+                            {
+                                var jobSheetPath = "\\SourceFiles\\JobSheet\\" + projectId;
+
+                                if (System.IO.Directory.Exists(Server.MapPath("~") + jobSheetPath) == false)
+                                    System.IO.Directory.CreateDirectory(Server.MapPath("~") + jobSheetPath);
+                                projectDetailsModel.JobSheet.SaveAs(Server.MapPath("~") + jobSheetPath + "\\" + string.Format("{0:yyyy-MM-dd_HH-mm-ss-fff}", DateTime.Now) + "_"+ projectDetailsModel.JobSheet.FileName);
+                            }
+                           
                             if (projectDetailsModel.EngineerReviewDrawings != null)
-                                projectDetailsModel.EngineerReviewDrawings.SaveAs(Server.MapPath("~") + path + "\\" + projectDetailsModel.EngineerReviewDrawings.FileName);
+                            {
+                                var EngineerReviewDrawingsPath = "\\SourceFiles\\EngineeringDWGS\\" + projectId;
+
+                                if (System.IO.Directory.Exists(Server.MapPath("~") + EngineerReviewDrawingsPath) == false)
+                                    System.IO.Directory.CreateDirectory(Server.MapPath("~") + EngineerReviewDrawingsPath);
+                                projectDetailsModel.EngineerReviewDrawings.SaveAs(Server.MapPath("~") + EngineerReviewDrawingsPath + "\\" + string.Format("{0:yyyy-MM-dd_HH-mm-ss-fff}", DateTime.Now) + "_" + projectDetailsModel.EngineerReviewDrawings.FileName);
+                            }
+                                
                             if (projectDetailsModel.ContractDWGS != null)
-                                projectDetailsModel.ContractDWGS.SaveAs(Server.MapPath("~") + path + "\\" + projectDetailsModel.ContractDWGS.FileName);
+                            {
+                                var contractDWGSPath = "\\SourceFiles\\ContractDWGS\\" + projectId;
+
+                                if (System.IO.Directory.Exists(Server.MapPath("~") + contractDWGSPath) == false)
+                                    System.IO.Directory.CreateDirectory(Server.MapPath("~") + contractDWGSPath);
+                                projectDetailsModel.ContractDWGS.SaveAs(Server.MapPath("~") + contractDWGSPath + "\\" + string.Format("{0:yyyy-MM-dd_HH-mm-ss-fff}", DateTime.Now) + "_" + projectDetailsModel.ContractDWGS.FileName);
+                            }
+                                
                             if (projectDetailsModel.RFIResponses != null)
-                                projectDetailsModel.RFIResponses.SaveAs(Server.MapPath("~") + path + "\\" + projectDetailsModel.RFIResponses.FileName);
+                            {
+                                var RFIResponsesPath = "\\SourceFiles\\RFIResponses\\" + projectId;
+
+                                if (System.IO.Directory.Exists(Server.MapPath("~") + RFIResponsesPath) == false)
+                                    System.IO.Directory.CreateDirectory(Server.MapPath("~") + RFIResponsesPath);
+                                projectDetailsModel.RFIResponses.SaveAs(Server.MapPath("~") + RFIResponsesPath + "\\" + string.Format("{0:yyyy-MM-dd_HH-mm-ss-fff}", DateTime.Now) + "_" + projectDetailsModel.RFIResponses.FileName);
+                            }
+                                
                             ModelState.Clear();
                             ViewBag.result = "Record Inserted Successfully!";
                             return RedirectToAction("Index",new { redirectResult=ViewBag.result }) ;
