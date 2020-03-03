@@ -1,0 +1,136 @@
+﻿@model  RDSUX.Models.ProjectDetailsModel
+<div class="jumbotron">
+    <p>@ViewBag.result</p>
+    <h3>Edit Project</h3>
+    @using (Html.BeginForm("UpdateProject", "Home", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+
+        <table width="80%">
+            <tr width="100%">
+                <td>
+                    <table width="100%">
+                        <tr width="100%">
+                            <td align="right">Project Name:</td>
+                            <td>
+                                @Html.TextBox("ProjectName", Model.ProjectName, new { @class = "form-control" })
+                                @Html.TextBox("ProejctId", Model.ProejctId, new { @class = "form-control", style = "display: none;" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>.
+                        </tr>
+                        <tr width="100%">
+                            <td align="right">Project Type:</td>
+                            <td>
+                                
+                                @Html.DropDownList("ProjectTypeModel",Model.ProjectTypeList)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr width="100%">
+                            <td align="right">Scope of Work:</td>
+                            <td>
+                                @Html.DropDownList("SOWModel", Model.ScopeOfWork)
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <td>
+                    <table width="100%">
+                        <tr width="100%">
+                            <td align="right">Notes:</td>
+                            <td>
+                                @Html.TextArea("Notes", Model.Notes, 10, 30, new { @class = "form-control" })
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+            </tr>
+        </table>
+        <table width="100%">
+
+            <tr>
+
+                <td width="30%" align="center">Job Number:   @Html.TextBox("JobNumber", Model.JobNumber, new { @class = "form-control" })</td>
+                <td>&nbsp;</td>
+                <td width="30%">Job Sheet: <input type="file" id="fileUploadJobsheet" /></td>
+                <td width="30%">Purchase Order:  @Html.TextBox("PurchaseOrder", Model.PurchaseOrder, new { @class = "form-control" })</td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+            </tr>
+        </table>
+
+        <table style="border:dashed" width="80%">
+            <tr width="100%">
+                <td colspan="2">
+                    <h4> Barcode Information</h4>
+                </td>
+
+            </tr>
+            <tr width="100%">
+                <td align="center">Stock Length :</td>
+                <td>
+                    @Html.TextBox("StockLength", Model.BarCode[0].StockLength, new { @class = "form-control" })
+                </td>
+            </tr>
+            <tr width="100%">
+                <td align="center">BarcodeGrade: </td>
+                <td>
+                    @Html.TextBox("BarCodeGrade", Model.BarCode[0].BarCodeGrade, new { @class = "form-control" })
+                </td>
+            </tr>
+
+            <tr width="100%">
+                <td align="center">Standard Splice: </td>
+                <td>
+                    @Html.TextBox("StandardSplice", Model.BarCode[0].StandardSplice, new { @class = "form-control" })
+                </td>
+            </tr>
+            <tr width="100%">
+                <td align="center">Mechanical Splice: </td>
+                <td>
+                    @Html.TextBox("MachanicSplice", Model.BarCode[0].MachanicSplice, new { @class = "form-control" })
+                </td>
+            </tr>
+            <tr width="100%">
+                <td colspan="2">&nbsp;</td>
+            </tr>
+        </table>
+
+        <table width="100%">
+            <tr>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td width="30%">Contract DWGS: <input type="file" id="fileUploadContractDWGS" /></td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td width="30%">RFI Responses: <input type="file" id="FileUploadRFIResponses" /></td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td width="30%">Engineer Reviewed dawings: <input type="file" id="FileUploadEngineerReviewed" /></td>
+            </tr>
+        </table>
+        <div align="right">
+            <input type="submit" class="btn btn-default" value="UpdateProject"
+                   onclick="location.href='@Url.Action("Home", "Home11")'" />
+        </div>
+
+    }
+</div>
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

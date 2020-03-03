@@ -1,0 +1,127 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+<link href="~/Pages/Content/StyleSheet.css" rel="stylesheet" />
+<div class="jumbotron">
+        <h3>
+            <asp:Label ID="lblSuccess" runat="server" Visible="false"></asp:Label></h3>
+        <h3>Create Project</h3>
+
+        <table width="80%">
+            <tr width="100%">
+                <td>
+                    <table width="100%">
+                        <tr width="100%">
+                            <td align="right">Project Name:</td>
+                            <td>
+                                <input type="text" id="txtProjectName"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr width="100%">
+                            <td align="right">Project Type:</td>
+                            <td>
+                                <select id="ddlProjectType">
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr width="100%">
+                            <td align="right">Scope of Work:</td>
+                            <td>
+                                <select id="ddlSOW"></select>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <td>
+                    <table width="100%">
+                        <tr width="100%">
+                            <td align="right">Notes:</td>
+                            <td>
+                                <textarea  id="txtNotes" cols="70" rows="6"></textarea>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+            </tr>
+        </table>
+        <table width="100%">
+
+            <tr>        
+                
+                <td width="30%" align="center">Job Number:  <input type="text" id="txtJobNumber" /></td>
+              <td>&nbsp;</td>
+                <td width="30%">Job Sheet: <input type="file" id="fileUploadJobsheet" /></td>
+             <td width="30%" style="display:none">Purchase Order: <input type="text" id="txtPurchaseOrder" /> </td>
+           </tr>
+            <tr>
+                <td>&nbsp;</td>
+            </tr>
+        </table>
+
+        <table style="border:dashed" width="80%">
+            <tr width="100%">
+                <td colspan="2">
+                    <h4> Barcode Information</h4>
+                </td>
+
+            </tr>
+            <tr width="100%">
+                <td align="center">Stock Length :</td>
+                            <td><input type="text" id="txtStockLength" />
+                </td>
+            </tr>
+            <tr width="100%">
+                <td align="center">BarcodeGrade: </td>
+                            <td><input type="text" id="txtBarcodeGrade" />
+                </td>
+            </tr>
+
+            <tr width="100%">
+                <td align="center">Standard Splice: </td>
+                            <td><input type="text" id="txtStandardSplice" />
+                </td>
+            </tr>
+            <tr width="100%">
+                <td align="center">Mechanical Splice: </td>
+                            <td><input type="text" id="txtMechanicalSplice" />
+                </td>
+            </tr>
+            <tr width="100%">
+                <td colspan="2">&nbsp;</td>
+            </tr>
+        </table>
+
+        <table width="100%">
+             <tr>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>        
+                <td  width="30%">Contract DWGS: <input type="file" id="fileUploadContractDWGS" /></td>
+              </tr>
+            <tr>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td width="30%">RFI Responses: <input type="file" id="FileUploadRFIResponses" /></td>
+                </tr>
+            <tr>
+                <td>&nbsp;</td>
+            </tr>
+             <tr>
+                <td width="30%">Engineer Reviewed dawings: <input type="file" id="FileUploadEngineerReviewed" /></td>
+                </tr>
+        </table>
+        <div align="right">
+            <button id="btnCreateProject">Create Project</button></div>
+    </div>
