@@ -6,9 +6,9 @@
 }
 
 <h2>List</h2>
-
+<p style="color:green;">@ViewBag.result</p>
 <p>
-    @Html.ActionLink("Create Project", "Index", "Home", new { area = "" }, null)
+    @Html.ActionLink("Create New Project", "Index", "Home", new { area = "" }, null)
 </p>
 @using (Html.BeginForm("ProjectList", "Home", FormMethod.Post))
 {

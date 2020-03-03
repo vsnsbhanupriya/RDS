@@ -1,6 +1,6 @@
 ﻿@model  RDSUX.Models.ProjectDetailsModel
 <div class="jumbotron">
-    <p>@ViewBag.result</p>
+    <p style="color:green;">@ViewBag.result</p>
     <h3>Edit Project</h3>
     @using (Html.BeginForm("UpdateProject", "Home", FormMethod.Post))
     {
@@ -23,8 +23,8 @@
                         <tr width="100%">
                             <td align="right">Project Type:</td>
                             <td>
-                                
-                                @Html.DropDownList("ProjectTypeModel",Model.ProjectTypeList)
+
+                                @Html.DropDownList("ProjectTypeModel", Model.ProjectTypeList)
                             </td>
                         </tr>
                         <tr>
