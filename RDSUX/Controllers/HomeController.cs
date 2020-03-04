@@ -381,9 +381,8 @@ namespace RDSUX.Controllers
                 HttpResponseMessage response = await client.PostAsJsonAsync("/api/Project/DeleteProject",Id);
 
                 if (response.IsSuccessStatusCode)
-                {                    
-                    ViewBag.result = "Record Deleted Successfully!";
-                    return RedirectToAction("ProjectList", new { redirectResult = ViewBag.result });
+                {
+                    return RedirectToAction("ProjectList");
                 }
             }
             return RedirectToAction("ProjectList");

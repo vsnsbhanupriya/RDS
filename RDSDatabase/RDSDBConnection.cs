@@ -5,7 +5,6 @@ using System.Text;
 
 using System.Configuration;
 using MySql.Data.MySqlClient;
-using System.Web.Configuration;
 
 namespace RDSDatabase
 {
@@ -20,9 +19,7 @@ namespace RDSDatabase
 
         public static MySqlConnection DatabaseConnection()
         {
-            string connection = WebConfigurationManager.AppSettings["connectionstring"];
-            mySQLConnection = new MySqlConnection(connection);
-            mySQLConnection.Open();
+            mySQLConnection = new MySqlConnection("Server=127.0.0.1;port=3306;user=root;database=filemanagement;password=Jan@1c1234");
             return mySQLConnection;
         }
 
@@ -244,8 +241,8 @@ namespace RDSDatabase
         {
             try
             {
-                string connection = WebConfigurationManager.AppSettings["connectionstring"];
-                mySQLConnection = new MySqlConnection(connection);
+                
+                mySQLConnection = new MySqlConnection("Server=127.0.0.1;port=3306;user=root;database=filemanagement;password=root");
                 mySQLConnection.Open();
                 return true;
             }
