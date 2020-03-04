@@ -155,9 +155,9 @@ namespace RDSUX.Controllers
 
                                 if (System.IO.Directory.Exists(Server.MapPath("~") + jobSheetPath) == false)
                                     System.IO.Directory.CreateDirectory(Server.MapPath("~") + jobSheetPath);
-                                projectDetailsModel.JobSheet.SaveAs(Server.MapPath("~") + jobSheetPath + "\\" + string.Format("{0:yyyy-MM-dd_HH-mm-ss-fff}", DateTime.Now) + "_"+ projectDetailsModel.JobSheet.FileName);
+                                projectDetailsModel.JobSheet.SaveAs(Server.MapPath("~") + jobSheetPath + "\\" + string.Format("{0:yyyyMMddHHmmss}", DateTime.Now) + "_"+ projectDetailsModel.JobSheet.FileName);
                             }
-                           
+
                             //if (projectDetailsModel.EngineerReviewDrawings != null)
                             //{
                             //    var EngineerReviewDrawingsPath = "\\SourceFiles\\EngineeringDWGS\\" + projectId;
@@ -166,16 +166,16 @@ namespace RDSUX.Controllers
                             //        System.IO.Directory.CreateDirectory(Server.MapPath("~") + EngineerReviewDrawingsPath);
                             //    projectDetailsModel.EngineerReviewDrawings.SaveAs(Server.MapPath("~") + EngineerReviewDrawingsPath + "\\" + string.Format("{0:yyyy-MM-dd_HH-mm-ss-fff}", DateTime.Now) + "_" + projectDetailsModel.EngineerReviewDrawings.FileName);
                             //}
-                                
+
                             //if (projectDetailsModel.ContractDWGS != null)
                             //{
                             //    var contractDWGSPath = "\\SourceFiles\\ContractDWGS\\" + projectId;
 
                             //    if (System.IO.Directory.Exists(Server.MapPath("~") + contractDWGSPath) == false)
                             //        System.IO.Directory.CreateDirectory(Server.MapPath("~") + contractDWGSPath);
-                            //    projectDetailsModel.ContractDWGS.SaveAs(Server.MapPath("~") + contractDWGSPath + "\\" + string.Format("{0:yyyy-MM-dd_HH-mm-ss-fff}", DateTime.Now) + "_" + projectDetailsModel.ContractDWGS.FileName);
+                            //    projectDetailsModel.ContractDWGS.SaveAs(Server.MapPath("~") + contractDWGSPath + "\\" + string.Format("{0:yyyyMMddHHmmss}", DateTime.Now) + "_" + projectDetailsModel.ContractDWGS.FileName);
                             //}
-                                
+
                             //if (projectDetailsModel.RFIResponses != null)
                             //{
                             //    var RFIResponsesPath = "\\SourceFiles\\RFIResponses\\" + projectId;
@@ -184,7 +184,7 @@ namespace RDSUX.Controllers
                             //        System.IO.Directory.CreateDirectory(Server.MapPath("~") + RFIResponsesPath);
                             //    projectDetailsModel.RFIResponses.SaveAs(Server.MapPath("~") + RFIResponsesPath + "\\" + string.Format("{0:yyyy-MM-dd_HH-mm-ss-fff}", DateTime.Now) + "_" + projectDetailsModel.RFIResponses.FileName);
                             //}
-                                
+
                             ModelState.Clear();
                             ViewBag.result = "Record Inserted Successfully!";
                             return RedirectToAction("Index",new { redirectResult=ViewBag.result }) ;
@@ -263,7 +263,7 @@ namespace RDSUX.Controllers
                                         var contractDWGSPath = "\\SourceFiles\\ContractDWGS\\" + projectId+"_"+contractDrawingId;
                                         if (System.IO.Directory.Exists(Server.MapPath("~") + contractDWGSPath) == false)
                                    System.IO.Directory.CreateDirectory(Server.MapPath("~") + contractDWGSPath);
-                                projectDetailsModel.ContractDWGS.SaveAs(Server.MapPath("~") + contractDWGSPath + "\\" + string.Format("{0:yyyy-MM-dd_HH-mm-ss-fff}", DateTime.Now) + "_" + projectDetailsModel.ContractDWGS.FileName);
+                                projectDetailsModel.ContractDWGS.SaveAs(Server.MapPath("~") + contractDWGSPath + "\\" + string.Format("{0:yyyyMMddHHmmss}", DateTime.Now) + "_" + projectDetailsModel.ContractDWGS.FileName);
 
 
                                     }
@@ -289,7 +289,7 @@ namespace RDSUX.Controllers
                                         var RFIPath = "\\SourceFiles\\RFIResponses\\" + projectId + "_" + rfiResponseId;
                                         if (System.IO.Directory.Exists(Server.MapPath("~") + RFIPath) == false)
                                             System.IO.Directory.CreateDirectory(Server.MapPath("~") + RFIPath);
-                                        projectDetailsModel.RFIResponses.SaveAs(Server.MapPath("~") + RFIPath + "\\" + string.Format("{0:yyyy-MM-dd_HH-mm-ss-fff}", DateTime.Now) + "_" + projectDetailsModel.RFIResponses.FileName);
+                                        projectDetailsModel.RFIResponses.SaveAs(Server.MapPath("~") + RFIPath + "\\" + string.Format("{0:yyyyMMddHHmmss}", DateTime.Now) + "_" + projectDetailsModel.RFIResponses.FileName);
 
 
                                     }
@@ -315,7 +315,7 @@ namespace RDSUX.Controllers
                                         var engPath = "\\SourceFiles\\EngineeringDrawings\\" + projectId + "_" + engineeeringDrawingId;
                                         if (System.IO.Directory.Exists(Server.MapPath("~") + engPath) == false)
                                             System.IO.Directory.CreateDirectory(Server.MapPath("~") + engPath);
-                                        projectDetailsModel.EngineerReviewDrawings.SaveAs(Server.MapPath("~") + engPath + "\\" + string.Format("{0:yyyy-MM-dd_HH-mm-ss-fff}", DateTime.Now) + "_" + projectDetailsModel.EngineerReviewDrawings.FileName);
+                                        projectDetailsModel.EngineerReviewDrawings.SaveAs(Server.MapPath("~") + engPath + "\\" + string.Format("{0:yyyyMMddHHmmss}", DateTime.Now) + "_" + projectDetailsModel.EngineerReviewDrawings.FileName);
 
 
                                     }
