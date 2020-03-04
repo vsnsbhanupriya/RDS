@@ -138,9 +138,7 @@ namespace RDSUX.Controllers
                         project.StandardSplice = Convert.ToInt32(StandardSplice);
                         project.MechanicSplice = Convert.ToInt32(MechanicSplice);
                         project.JobSheetName = projectDetailsModel.JobSheet?.FileName??string.Empty ;
-                        project.RFIResponsesName = projectDetailsModel.RFIResponses?.FileName ?? string.Empty;
-                        project.ContractDWGSName = projectDetailsModel.ContractDWGS?.FileName ?? string.Empty;
-                        project.EngineerReviewDrawingsName = projectDetailsModel.EngineerReviewDrawings?.FileName ?? string.Empty;
+                       
                         client.BaseAddress = new Uri(baseURL);
                             client.DefaultRequestHeaders.Accept.Clear();
                             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -160,32 +158,32 @@ namespace RDSUX.Controllers
                                 projectDetailsModel.JobSheet.SaveAs(Server.MapPath("~") + jobSheetPath + "\\" + string.Format("{0:yyyy-MM-dd_HH-mm-ss-fff}", DateTime.Now) + "_"+ projectDetailsModel.JobSheet.FileName);
                             }
                            
-                            if (projectDetailsModel.EngineerReviewDrawings != null)
-                            {
-                                var EngineerReviewDrawingsPath = "\\SourceFiles\\EngineeringDWGS\\" + projectId;
+                            //if (projectDetailsModel.EngineerReviewDrawings != null)
+                            //{
+                            //    var EngineerReviewDrawingsPath = "\\SourceFiles\\EngineeringDWGS\\" + projectId;
 
-                                if (System.IO.Directory.Exists(Server.MapPath("~") + EngineerReviewDrawingsPath) == false)
-                                    System.IO.Directory.CreateDirectory(Server.MapPath("~") + EngineerReviewDrawingsPath);
-                                projectDetailsModel.EngineerReviewDrawings.SaveAs(Server.MapPath("~") + EngineerReviewDrawingsPath + "\\" + string.Format("{0:yyyy-MM-dd_HH-mm-ss-fff}", DateTime.Now) + "_" + projectDetailsModel.EngineerReviewDrawings.FileName);
-                            }
+                            //    if (System.IO.Directory.Exists(Server.MapPath("~") + EngineerReviewDrawingsPath) == false)
+                            //        System.IO.Directory.CreateDirectory(Server.MapPath("~") + EngineerReviewDrawingsPath);
+                            //    projectDetailsModel.EngineerReviewDrawings.SaveAs(Server.MapPath("~") + EngineerReviewDrawingsPath + "\\" + string.Format("{0:yyyy-MM-dd_HH-mm-ss-fff}", DateTime.Now) + "_" + projectDetailsModel.EngineerReviewDrawings.FileName);
+                            //}
                                 
-                            if (projectDetailsModel.ContractDWGS != null)
-                            {
-                                var contractDWGSPath = "\\SourceFiles\\ContractDWGS\\" + projectId;
+                            //if (projectDetailsModel.ContractDWGS != null)
+                            //{
+                            //    var contractDWGSPath = "\\SourceFiles\\ContractDWGS\\" + projectId;
 
-                                if (System.IO.Directory.Exists(Server.MapPath("~") + contractDWGSPath) == false)
-                                    System.IO.Directory.CreateDirectory(Server.MapPath("~") + contractDWGSPath);
-                                projectDetailsModel.ContractDWGS.SaveAs(Server.MapPath("~") + contractDWGSPath + "\\" + string.Format("{0:yyyy-MM-dd_HH-mm-ss-fff}", DateTime.Now) + "_" + projectDetailsModel.ContractDWGS.FileName);
-                            }
+                            //    if (System.IO.Directory.Exists(Server.MapPath("~") + contractDWGSPath) == false)
+                            //        System.IO.Directory.CreateDirectory(Server.MapPath("~") + contractDWGSPath);
+                            //    projectDetailsModel.ContractDWGS.SaveAs(Server.MapPath("~") + contractDWGSPath + "\\" + string.Format("{0:yyyy-MM-dd_HH-mm-ss-fff}", DateTime.Now) + "_" + projectDetailsModel.ContractDWGS.FileName);
+                            //}
                                 
-                            if (projectDetailsModel.RFIResponses != null)
-                            {
-                                var RFIResponsesPath = "\\SourceFiles\\RFIResponses\\" + projectId;
+                            //if (projectDetailsModel.RFIResponses != null)
+                            //{
+                            //    var RFIResponsesPath = "\\SourceFiles\\RFIResponses\\" + projectId;
 
-                                if (System.IO.Directory.Exists(Server.MapPath("~") + RFIResponsesPath) == false)
-                                    System.IO.Directory.CreateDirectory(Server.MapPath("~") + RFIResponsesPath);
-                                projectDetailsModel.RFIResponses.SaveAs(Server.MapPath("~") + RFIResponsesPath + "\\" + string.Format("{0:yyyy-MM-dd_HH-mm-ss-fff}", DateTime.Now) + "_" + projectDetailsModel.RFIResponses.FileName);
-                            }
+                            //    if (System.IO.Directory.Exists(Server.MapPath("~") + RFIResponsesPath) == false)
+                            //        System.IO.Directory.CreateDirectory(Server.MapPath("~") + RFIResponsesPath);
+                            //    projectDetailsModel.RFIResponses.SaveAs(Server.MapPath("~") + RFIResponsesPath + "\\" + string.Format("{0:yyyy-MM-dd_HH-mm-ss-fff}", DateTime.Now) + "_" + projectDetailsModel.RFIResponses.FileName);
+                            //}
                                 
                             ModelState.Clear();
                             ViewBag.result = "Record Inserted Successfully!";
@@ -296,6 +294,9 @@ namespace RDSUX.Controllers
                     pdm.ProjectTypeId = selectedProject.ProjetTypeId;
                     pdm.ScopeOfWorkId = selectedProject.ScopeOfWorkId;
                     pdm.ProejctId = selectedProject.ProejctId;
+                   
+                    
+
                 }
 
             }
@@ -381,8 +382,9 @@ namespace RDSUX.Controllers
                 HttpResponseMessage response = await client.PostAsJsonAsync("/api/Project/DeleteProject",Id);
 
                 if (response.IsSuccessStatusCode)
-                {
-                    return RedirectToAction("ProjectList");
+                {                    
+                    ViewBag.result = "Record Deleted Successfully!";
+                    return RedirectToAction("ProjectList", new { redirectResult = ViewBag.result });
                 }
             }
             return RedirectToAction("ProjectList");

@@ -26,10 +26,7 @@ namespace RDSUX.Models
         public int MechanicSplice { get; set; }
         public string  JobSheetName { get; set; }
 
-        public string ContractDWGSName { get; set; }
-        public string RFIResponsesName { get; set; }
-
-        public string EngineerReviewDrawingsName { get; set; }
+        
 
     }
 

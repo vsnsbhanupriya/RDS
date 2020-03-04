@@ -117,9 +117,7 @@ namespace RDSUX.Controllers
             sd.Add("@StandardSplice", project.StandardSplice.ToString());
             sd.Add("@MachanicSplice", project.MechanicSplice.ToString());
             sd.Add("@JobSheetName", project.JobSheetName);
-            sd.Add("@DWGSName", project.ContractDWGSName);
-            sd.Add("@RFIResponseName", project.RFIResponsesName);
-            sd.Add("@EnggDrawingsName", project.EngineerReviewDrawingsName);
+            
             RDSService.RDSService rdsService = new RDSService.RDSService();
             DataSet retvalue = rdsService.SelectList("USP_InserProject", "ProejctId", sd );
             var projectId = retvalue.Tables[0].Rows[0][0].ToString();
