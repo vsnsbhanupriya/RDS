@@ -1,6 +1,6 @@
 ﻿@model  RDSUX.Models.ProjectDetailsModel
 <div class="jumbotron">
-    <p>@ViewBag.result</p>
+    <p style="color:green;">@ViewBag.result</p>
     <h3>Create Project</h3>
     @using (Html.BeginForm("CreateProject","Home", FormMethod.Post,new { enctype="multipart/form-data"}))
     {
@@ -110,18 +110,6 @@
             </tr>
             <tr>
                 <td width="30%">Contract DWGS: <input type="file" name="ContractDWGS" /> </td>
-            </tr>
-            <tr>
-                <td>&nbsp;</td>
-            </tr>
-            <tr>
-                <td width="30%">RFI Responses:<input type="file" name="RFIResponses" /></td>
-            </tr>
-            <tr>
-                <td>&nbsp;</td>
-            </tr>
-            <tr>
-                <td width="30%">Engineer Reviewed dawings:<input type="file" name="EngineerReviewDrawings" /></td>
             </tr>
         </table>
         <div align="right">

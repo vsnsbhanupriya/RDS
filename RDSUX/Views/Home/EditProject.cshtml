@@ -1,6 +1,6 @@
 ﻿@model  RDSUX.Models.ProjectDetailsModel
 <div class="jumbotron">
-    <p>@ViewBag.result</p>
+    <p style="color:green;">@ViewBag.result</p>
     <h3>Edit Project</h3>
     @using (Html.BeginForm("UpdateProject", "Home", FormMethod.Post,new { enctype="multipart/form-data"}))
     {
@@ -13,7 +13,7 @@
                         <tr width="100%">
                             <td align="right">Project Name:</td>
                             <td>
-                                @Html.TextBox("ProjectName", Model.ProjectName, new { @class = "form-control" })
+                                @Html.TextBox("ProjectName", Model.ProjectName, new { @class = "form-control", @readonly = "readonly" })
                                 @Html.TextBox("ProejctId", Model.ProejctId, new { @class = "form-control", style = "display: none;" })
                             </td>
                         </tr>
