@@ -247,6 +247,86 @@ namespace RDSUX.Controllers
 
                         if (response.IsSuccessStatusCode == true)
                         {
+                            if (projectDetailsModel.ContractDWGS != null)
+                            {
+                                using(var client1 = new HttpClient())
+                                {
+                                    client1.BaseAddress = new Uri(baseURL);
+                                    client1.DefaultRequestHeaders.Accept.Clear();
+                                    client1.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                                    HttpResponseMessage contrctDWGSResponse = await client1.PostAsJsonAsync("/api/Project/AddContractDWGS", new ContractDWGS(projectDetailsModel.ContractDWGS.FileName, projectDetailsModel.ProejctId.ToString()));
+                                    if (contrctDWGSResponse.IsSuccessStatusCode)
+                                    {
+                                        var result = contrctDWGSResponse.Content.ReadAsStringAsync().Result;
+                                        var contractDrawingId = JsonConvert.DeserializeObject<string>(result);
+                                        var projectId = projectDetailsModel.ProejctId;
+                                        var contractDWGSPath = "\\SourceFiles\\ContractDWGS\\" + projectId+"_"+contractDrawingId;
+                                        if (System.IO.Directory.Exists(Server.MapPath("~") + contractDWGSPath) == false)
+                                   System.IO.Directory.CreateDirectory(Server.MapPath("~") + contractDWGSPath);
+                                projectDetailsModel.ContractDWGS.SaveAs(Server.MapPath("~") + contractDWGSPath + "\\" + string.Format("{0:yyyy-MM-dd_HH-mm-ss-fff}", DateTime.Now) + "_" + projectDetailsModel.ContractDWGS.FileName);
+
+
+                                    }
+
+                                }                            
+                                
+
+                            }
+                            //rfiResponse
+                            if (projectDetailsModel.RFIResponses != null)
+                            {
+                                using (var client2 = new HttpClient())
+                                {
+                                    client2.BaseAddress = new Uri(baseURL);
+                                    client2.DefaultRequestHeaders.Accept.Clear();
+                                    client2.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                                    HttpResponseMessage rfiresponse = await client2.PostAsJsonAsync("/api/Project/AddRFIResponse", new RFIResponse(projectDetailsModel.RFIResponses.FileName, projectDetailsModel.ProejctId.ToString()));
+                                    if (rfiresponse.IsSuccessStatusCode)
+                                    {
+                                        var result = rfiresponse.Content.ReadAsStringAsync().Result;
+                                        var rfiResponseId = JsonConvert.DeserializeObject<string>(result);
+                                        var projectId = projectDetailsModel.ProejctId;
+                                        var RFIPath = "\\SourceFiles\\RFIResponses\\" + projectId + "_" + rfiResponseId;
+                                        if (System.IO.Directory.Exists(Server.MapPath("~") + RFIPath) == false)
+                                            System.IO.Directory.CreateDirectory(Server.MapPath("~") + RFIPath);
+                                        projectDetailsModel.RFIResponses.SaveAs(Server.MapPath("~") + RFIPath + "\\" + string.Format("{0:yyyy-MM-dd_HH-mm-ss-fff}", DateTime.Now) + "_" + projectDetailsModel.RFIResponses.FileName);
+
+
+                                    }
+
+                                }
+
+
+                            }
+                            //enginerrreview
+                            if (projectDetailsModel.EngineerReviewDrawings != null)
+                            {
+                                using (var client3 = new HttpClient())
+                                {
+                                    client3.BaseAddress = new Uri(baseURL);
+                                    client3.DefaultRequestHeaders.Accept.Clear();
+                                    client3.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                                    HttpResponseMessage engieeringReviewDrawings = await client3.PostAsJsonAsync("/api/Project/AddEngineeringReview", new EngineerReviewedDrawings(projectDetailsModel.EngineerReviewDrawings.FileName, projectDetailsModel.ProejctId.ToString()));
+                                    if (engieeringReviewDrawings.IsSuccessStatusCode)
+                                    {
+                                        var result = engieeringReviewDrawings.Content.ReadAsStringAsync().Result;
+                                        var engineeeringDrawingId = JsonConvert.DeserializeObject<string>(result);
+                                        var projectId = projectDetailsModel.ProejctId;
+                                        var engPath = "\\SourceFiles\\EngineeringDrawings\\" + projectId + "_" + engineeeringDrawingId;
+                                        if (System.IO.Directory.Exists(Server.MapPath("~") + engPath) == false)
+                                            System.IO.Directory.CreateDirectory(Server.MapPath("~") + engPath);
+                                        projectDetailsModel.EngineerReviewDrawings.SaveAs(Server.MapPath("~") + engPath + "\\" + string.Format("{0:yyyy-MM-dd_HH-mm-ss-fff}", DateTime.Now) + "_" + projectDetailsModel.EngineerReviewDrawings.FileName);
+
+
+                                    }
+
+                                }
+
+
+                            }
+
+
+
                             ModelState.Clear();
                             ViewBag.result = "Record Updated Successfully!";
                             return RedirectToAction("ProjectList");
@@ -259,7 +339,7 @@ namespace RDSUX.Controllers
 
                 return RedirectToAction("ProjecList");
             }
-            catch
+            catch(Exception ex)
             {
                 return RedirectToAction("Index");
             }
@@ -321,6 +401,7 @@ namespace RDSUX.Controllers
                     }
                 }
               //  ViewBag.ProjectTypeModel = pdm.ProjectType;
+            
             }
 
             using (var client = new HttpClient())

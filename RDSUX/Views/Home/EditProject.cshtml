@@ -2,7 +2,7 @@
 <div class="jumbotron">
     <p>@ViewBag.result</p>
     <h3>Edit Project</h3>
-    @using (Html.BeginForm("UpdateProject", "Home", FormMethod.Post))
+    @using (Html.BeginForm("UpdateProject", "Home", FormMethod.Post,new { enctype="multipart/form-data"}))
     {
         @Html.AntiForgeryToken()
 
@@ -109,19 +109,19 @@
                 <td>&nbsp;</td>
             </tr>
             <tr>
-                <td width="30%">Contract DWGS: <input type="file" id="fileUploadContractDWGS" /></td>
+                <td width="30%">Contract DWGS: <input type="file" name="ContractDWGS" /></td>
             </tr>
             <tr>
                 <td>&nbsp;</td>
             </tr>
             <tr>
-                <td width="30%">RFI Responses: <input type="file" id="FileUploadRFIResponses" /></td>
+                <td width="30%">RFI Responses: <input type="file" name="RFIResponses" /></td>
             </tr>
             <tr>
                 <td>&nbsp;</td>
             </tr>
             <tr>
-                <td width="30%">Engineer Reviewed dawings: <input type="file" id="FileUploadEngineerReviewed" /></td>
+                <td width="30%">Engineer Reviewed dawings: <input type="file" name="EngineerReviewDrawings" /></td>
             </tr>
         </table>
         <div align="right">

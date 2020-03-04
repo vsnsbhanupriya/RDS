@@ -168,6 +168,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\BarCode.cs" />
+    <Compile Include="Models\ContractDWGS.cs" />
     <Compile Include="Models\ProjectDetails.cs" />
     <Compile Include="Models\Project.cs" />
     <Compile Include="Models\ProjectType.cs" />
@@ -266,6 +267,10 @@
     <Content Include="Scripts\jquery-3.3.1.min.map" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\RDSDatabase\RDSDatabase.csproj">
+      <Project>{CEF46DD1-6D23-4EDB-B151-2E09A7EF670B}</Project>
+      <Name>RDSDatabase</Name>
+    </ProjectReference>
     <ProjectReference Include="..\RDSService\RDSService.csproj">
       <Project>{9bbacff8-de02-4823-9f24-02d6514fbaf1}</Project>
       <Name>RDSService</Name>

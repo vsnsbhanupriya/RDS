@@ -8,6 +8,7 @@ using RDSUX.Models;
 using RDSService;
 using System.Data;
 
+
 namespace RDSUX.Controllers
 {
     public class ProjectController : ApiController
@@ -123,6 +124,58 @@ namespace RDSUX.Controllers
             var projectId = retvalue.Tables[0].Rows[0][0].ToString();
             return Ok(projectId);
         }
+
+        [HttpPost]
+        public IHttpActionResult AddContractDWGS(ContractDWGS contractDWGS)
+        {
+
+            SortedDictionary<string, string> sd = new SortedDictionary<string, string>() { };
+            sd.Add("@ProejctId", contractDWGS.ProjectId);
+            sd.Add("@fileName", contractDWGS.FileName);
+            sd.Add("@timeStamp", contractDWGS.TImeStamp);
+
+            RDSService.RDSService rdsService = new RDSService.RDSService();
+            DataSet retvalue = rdsService.SelectList("USP_InsertContractDWGS", "ContractDWGSId", sd);
+            var ContractDWGSId = retvalue.Tables[0].Rows[0][0].ToString();
+            return Ok(ContractDWGSId);
+
+        }
+
+        [HttpPost]
+        public IHttpActionResult AddRFIResponse(RFIResponse rfiresponse)
+        {
+
+            SortedDictionary<string, string> sd = new SortedDictionary<string, string>() { };
+            sd.Add("@ProejctId", rfiresponse.ProjectId);
+            sd.Add("@fileName", rfiresponse.FileName);
+            sd.Add("@timeStamp", rfiresponse.TImeStamp);
+
+            RDSService.RDSService rdsService = new RDSService.RDSService();
+            DataSet retvalue = rdsService.SelectList("USP_InsertRFIResponse", "RFIResponseId", sd);
+            var ContractDWGSId = retvalue.Tables[0].Rows[0][0].ToString();
+            return Ok(ContractDWGSId);
+
+        }
+
+        [HttpPost]
+        public IHttpActionResult AddEngineeringReview(EngineerReviewedDrawings engineerReviewDrawings)
+        {
+
+            SortedDictionary<string, string> sd = new SortedDictionary<string, string>() { };
+            sd.Add("@ProejctId", engineerReviewDrawings.ProjectId);
+            sd.Add("@fileName", engineerReviewDrawings.FileName);
+            sd.Add("@timeStamp", engineerReviewDrawings.TImeStamp);
+
+            RDSService.RDSService rdsService = new RDSService.RDSService();
+            DataSet retvalue = rdsService.SelectList("USP_InsertEngineeringReviewed", "EngineeringReviewId", sd);
+            var ContractDWGSId = retvalue.Tables[0].Rows[0][0].ToString();
+            return Ok(ContractDWGSId);
+
+        }
+
+
+
+
 
         [HttpPost]
         public IHttpActionResult UpdateProject(Project project)
