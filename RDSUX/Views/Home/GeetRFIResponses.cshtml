@@ -1,0 +1,43 @@
+﻿@model IEnumerable<RDSUX.Models.RFIResponse>
+
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.ProjectId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FileName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TImeStamp)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.ProjectId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FileName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TImeStamp)
+        </td>
+        <td>
+            @{
+                var downloadmodel = "RFIResponses_" + item.RfiResponseId + "_" + item.ProjectId;
+            }
+            <a href='/Home/DownloadRFIResponse?downloadmodel=@downloadmodel'>Download</a>
+         
+
+        
+            <a href='/Home/DeleteRFIDocument?downloadmodel=@downloadmodel'>Delete</a>
+            @*@Html.ActionLink("Delete", "Delete", "Home", new { /* id=item.PrimaryKey */ })*@
+        </td>
+    </tr>
+}
+
+</table>

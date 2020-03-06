@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Configuration;
 using System.Web.Mvc;
+using System.Web.Routing;
 using Newtonsoft.Json;
 using RDSUX.Models;
 
@@ -103,6 +104,77 @@ namespace RDSUX.Controllers
             }
             return View(lisProject);
         }
+
+        public ActionResult GetContractDwgs(int id)
+        {
+            var drawings = new List<ContractDWGS>();
+
+            string baseURL = WebConfigurationManager.AppSettings["baseurl"];
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(baseURL);
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage contrctDWGSResponse =  client.GetAsync("/api/Project/GetContractDWGS?projectId="  +id.ToString()).Result;
+                if (contrctDWGSResponse.IsSuccessStatusCode)
+                {
+                    var result = contrctDWGSResponse.Content.ReadAsStringAsync().Result;
+                     drawings = JsonConvert.DeserializeObject<List<ContractDWGS>>(result);
+
+                }
+
+                }
+            return View(drawings);
+        }
+
+        public ActionResult GetEngineeringReviewedDwgs(int id)
+        {
+            var drawings = new List<EngineerReviewedDrawings>();
+
+            string baseURL = WebConfigurationManager.AppSettings["baseurl"];
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(baseURL);
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage EngineeringReviewedDrawingsResponse = client.GetAsync("/api/Project/GetEngineeringReviewedDrawings?projectId=" + id.ToString()).Result;
+                if (EngineeringReviewedDrawingsResponse.IsSuccessStatusCode)
+                {
+                    var result = EngineeringReviewedDrawingsResponse.Content.ReadAsStringAsync().Result;
+                    drawings = JsonConvert.DeserializeObject<List<EngineerReviewedDrawings>>(result);
+
+                }
+
+            }
+            return View(drawings);
+        }
+
+
+
+        public ActionResult GeetRFIResponses(int id)
+        {
+            var rfiResponses = new List<RFIResponse>();
+
+            string baseURL = WebConfigurationManager.AppSettings["baseurl"];
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(baseURL);
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage contrctDWGSResponse = client.GetAsync("/api/Project/GetRFIResponses?projectId=" + id.ToString()).Result;
+                if (contrctDWGSResponse.IsSuccessStatusCode)
+                {
+                    var result = contrctDWGSResponse.Content.ReadAsStringAsync().Result;
+                    rfiResponses = JsonConvert.DeserializeObject<List<RFIResponse>>(result);
+
+                }
+
+            }
+            return View(rfiResponses);
+
+
+        }
+
 
         public async Task<ActionResult> CreateProject(ProjectDetailsModel projectDetailsModel, FormCollection formCollection)
         {
@@ -239,7 +311,7 @@ namespace RDSUX.Controllers
                         project.BarCodeGrade = BarCodeGrade;
                         project.StandardSplice = Convert.ToInt32(StandardSplice);
                         project.MechanicSplice = Convert.ToInt32(MachanicSplice);
-
+                        project.JobSheetName = projectDetailsModel.JobSheetName;
                         client.BaseAddress = new Uri(baseURL);
                         client.DefaultRequestHeaders.Accept.Clear();
                         client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -344,6 +416,287 @@ namespace RDSUX.Controllers
                 return RedirectToAction("Index");
             }
         }
+        
+        public ActionResult Download(string downloadmodel)
+        {
+            var model = downloadmodel.Split('_');
+            var folder = model[0];
+            var contractId = model[1];
+            var projectId = model[2];
+            var drawings = new List<ContractDWGS>();
+
+            string baseURL = WebConfigurationManager.AppSettings["baseurl"];
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(baseURL);
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage contrctDWGSResponse = client.GetAsync("/api/Project/GetContractDWGS?projectId=" + projectId).Result;
+                if (contrctDWGSResponse.IsSuccessStatusCode)
+                {
+                    var result = contrctDWGSResponse.Content.ReadAsStringAsync().Result;
+                    drawings = JsonConvert.DeserializeObject<List<ContractDWGS>>(result);
+
+                }
+
+            }
+            var selectedDrawing = drawings.FirstOrDefault(e => e.ContractDrawingId.Equals( contractId, StringComparison.InvariantCultureIgnoreCase));
+            if (selectedDrawing != null)
+            {
+                var fileName = selectedDrawing.FileName;
+
+                var path = "\\SourceFiles\\" + folder + "\\" + projectId + "_" + contractId;
+                if (System.IO.Directory.Exists(Server.MapPath("~") + path))
+                {
+                    
+                    var directoryInfo = new System.IO.DirectoryInfo(Server.MapPath("~") + path);
+                    var fileinfo = directoryInfo.GetFiles().FirstOrDefault();
+                    byte[] fileBytes = System.IO.File.ReadAllBytes(fileinfo.FullName);
+
+                    return File(fileBytes, System.Net.Mime.MediaTypeNames.Application.Octet, fileName);
+                }
+                else
+                {
+                    throw new Exception("File NOt found");
+                }
+            }
+            else
+            {
+                throw new Exception("File NOt found");
+            }
+          
+            
+        }
+
+        public ActionResult DownloadRFIResponse(string downloadmodel)
+        {
+            var model = downloadmodel.Split('_');
+            var folder = model[0];
+            var rfiResponseId = model[1];
+            var projectId = model[2];
+            var rFIResponses = new List<RFIResponse>();
+
+            string baseURL = WebConfigurationManager.AppSettings["baseurl"];
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(baseURL);
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage contrctDWGSResponse = client.GetAsync("/api/Project/GetRFIResponses?projectId=" + projectId).Result;
+                if (contrctDWGSResponse.IsSuccessStatusCode)
+                {
+                    var result = contrctDWGSResponse.Content.ReadAsStringAsync().Result;
+                    rFIResponses = JsonConvert.DeserializeObject<List<RFIResponse>>(result);
+
+                }
+
+            }
+            var selectedDrawing = rFIResponses.FirstOrDefault(e => e.RfiResponseId.Equals(rfiResponseId, StringComparison.InvariantCultureIgnoreCase));
+            if (selectedDrawing != null)
+            {
+                var fileName = selectedDrawing.FileName;
+
+                var path = "\\SourceFiles\\" + folder + "\\" + projectId + "_" + rfiResponseId;
+                if (System.IO.Directory.Exists(Server.MapPath("~") + path))
+                {
+
+                    var directoryInfo = new System.IO.DirectoryInfo(Server.MapPath("~") + path);
+                    var fileinfo = directoryInfo.GetFiles().FirstOrDefault();
+                    byte[] fileBytes = System.IO.File.ReadAllBytes(fileinfo.FullName);
+
+                    return File(fileBytes, System.Net.Mime.MediaTypeNames.Application.Octet, fileName);
+                }
+                else
+                {
+                    throw new Exception("File NOt found");
+                }
+            }
+            else
+            {
+                throw new Exception("File NOt found");
+            }
+
+
+        }
+
+        public ActionResult DownloadEngineeringRiewedDrawings(string downloadmodel)
+        {
+            var model = downloadmodel.Split('_');
+            var folder = model[0];
+            var engDrawingId = model[1];
+            var projectId = model[2];
+            var rFIResponses = new List<EngineerReviewedDrawings>();
+
+            string baseURL = WebConfigurationManager.AppSettings["baseurl"];
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(baseURL);
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage contrctDWGSResponse = client.GetAsync("/api/Project/GetEngineeringReviewedDrawings?projectId=" + projectId).Result;
+                if (contrctDWGSResponse.IsSuccessStatusCode)
+                {
+                    var result = contrctDWGSResponse.Content.ReadAsStringAsync().Result;
+                    rFIResponses = JsonConvert.DeserializeObject<List<EngineerReviewedDrawings>>(result);
+
+                }
+
+            }
+            var selectedDrawing = rFIResponses.FirstOrDefault(e => e.EngineeringDrawingId.Equals(engDrawingId, StringComparison.InvariantCultureIgnoreCase));
+            if (selectedDrawing != null)
+            {
+                var fileName = selectedDrawing.FileName;
+
+                var path = "\\SourceFiles\\" + folder + "\\" + projectId + "_" + engDrawingId;
+                if (System.IO.Directory.Exists(Server.MapPath("~") + path))
+                {
+
+                    var directoryInfo = new System.IO.DirectoryInfo(Server.MapPath("~") + path);
+                    var fileinfo = directoryInfo.GetFiles().FirstOrDefault();
+                    byte[] fileBytes = System.IO.File.ReadAllBytes(fileinfo.FullName);
+
+                    return File(fileBytes, System.Net.Mime.MediaTypeNames.Application.Octet, fileName);
+                }
+                else
+                {
+                    throw new Exception("File NOt found");
+                }
+            }
+            else
+            {
+                throw new Exception("File NOt found");
+            }
+
+
+        }
+
+
+
+        public async Task<ActionResult> DeleteDocument(string downloadmodel)
+        {
+
+            var model = downloadmodel.Split('_');
+            var folder = model[0];
+            var contractId = model[1];
+            var projectId = model[2];
+            string baseURL = WebConfigurationManager.AppSettings["baseurl"];
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(baseURL);
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                var contrctdwgs = new ContractDWGS { ProjectId = projectId, ContractDrawingId = contractId };
+                HttpResponseMessage response = await client.PostAsJsonAsync("/api/Project/DeleteContractDWGS", contrctdwgs);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var path = "\\SourceFiles\\" + folder + "\\" + projectId + "_" + contractId;
+
+                    if (System.IO.Directory.Exists(Server.MapPath("~") + path))
+                    {
+
+                        var directoryInfo = new System.IO.DirectoryInfo(Server.MapPath("~") + path);
+                        foreach (var file in directoryInfo.GetFiles())
+                        {
+                            file.Delete();
+                        }
+                        directoryInfo.Delete();
+                        return RedirectToAction("EditProject", new RouteValueDictionary(
+        new { controller = "Home", action = "EditProject", Id = projectId }));
+                    }
+                    
+                }
+            }
+
+
+
+
+            throw new Exception("Something went wrong.");
+        }
+
+        public async Task<ActionResult> DeleteRFIDocument(string downloadmodel)
+        {
+
+            var model = downloadmodel.Split('_');
+            var folder = model[0];
+            var RfiId = model[1];
+            var projectId = model[2];
+            string baseURL = WebConfigurationManager.AppSettings["baseurl"];
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(baseURL);
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                var rfiResponse = new RFIResponse { ProjectId = projectId, RfiResponseId = RfiId };
+                HttpResponseMessage response = await client.PostAsJsonAsync("/api/Project/DeleteRFIResponses", rfiResponse);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var path = "\\SourceFiles\\" + folder + "\\" + projectId + "_" + RfiId;
+
+                    if (System.IO.Directory.Exists(Server.MapPath("~") + path))
+                    {
+
+                        var directoryInfo = new System.IO.DirectoryInfo(Server.MapPath("~") + path);
+                        foreach (var file in directoryInfo.GetFiles())
+                        {
+                            file.Delete();
+                        }
+                        directoryInfo.Delete();
+                        return RedirectToAction("EditProject", new RouteValueDictionary(
+        new { controller = "Home", action = "EditProject", Id = projectId }));
+                    }
+
+                }
+            }
+
+
+
+
+            throw new Exception("Something went wrong.");
+        }
+
+        public async Task<ActionResult> DeleteEngineeringReviewedDocument(string downloadmodel)
+        {
+
+            var model = downloadmodel.Split('_');
+            var folder = model[0];
+            var engineeredReviewedDocId = model[1];
+            var projectId = model[2];
+            string baseURL = WebConfigurationManager.AppSettings["baseurl"];
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(baseURL);
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                var engineeringReviewedDrawring = new EngineerReviewedDrawings { ProjectId = projectId, EngineeringDrawingId = engineeredReviewedDocId };
+                HttpResponseMessage response = await client.PostAsJsonAsync("/api/Project/DeleteEngineeringDrawings", engineeringReviewedDrawring);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var path = "\\SourceFiles\\" + folder + "\\" + projectId + "_" + engineeredReviewedDocId;
+
+                    if (System.IO.Directory.Exists(Server.MapPath("~") + path))
+                    {
+
+                        var directoryInfo = new System.IO.DirectoryInfo(Server.MapPath("~") + path);
+                        foreach (var file in directoryInfo.GetFiles())
+                        {
+                            file.Delete();
+                        }
+                        directoryInfo.Delete();
+                        return RedirectToAction("EditProject", new RouteValueDictionary(
+        new { controller = "Home", action = "EditProject", Id = projectId }));
+                    }
+
+                }
+            }
+
+
+
+
+            throw new Exception("Something went wrong.");
+        }
 
         public async Task<ActionResult> EditProject(string Id)
         {
@@ -374,6 +727,8 @@ namespace RDSUX.Controllers
                     pdm.ProjectTypeId = selectedProject.ProjetTypeId;
                     pdm.ScopeOfWorkId = selectedProject.ScopeOfWorkId;
                     pdm.ProejctId = selectedProject.ProejctId;
+                    pdm.JobSheetName = selectedProject.JobSheetName;
+                    
                    
                     
 

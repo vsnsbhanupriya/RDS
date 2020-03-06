@@ -2,7 +2,7 @@
 <div class="jumbotron">
     <p style="color:green;">@ViewBag.result</p>
     <h3>Edit Project</h3>
-    @using (Html.BeginForm("UpdateProject", "Home", FormMethod.Post,new { enctype="multipart/form-data"}))
+    @using (Html.BeginForm("UpdateProject", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
         @Html.AntiForgeryToken()
 
@@ -24,7 +24,7 @@
                             <td align="right">Project Type:</td>
                             <td>
                                 
-                                @Html.DropDownList("ProjectTypeModel",Model.ProjectTypeList)
+                                @Html.DropDownList("ProjectTypeModel", Model.ProjectTypeList)
                             </td>
                         </tr>
                         <tr>
@@ -59,7 +59,7 @@
 
                 <td width="30%" align="center">Job Number:   @Html.TextBox("JobNumber", Model.JobNumber, new { @class = "form-control" })</td>
                 <td>&nbsp;</td>
-                <td width="30%">Job Sheet: <input type="file" id="fileUploadJobsheet" /></td>
+                <td width="30%">Job Sheet: <b>@Model.JobSheetName </b></td>
                 <td width="30%">Purchase Order:  @Html.TextBox("PurchaseOrder", Model.PurchaseOrder, new { @class = "form-control" })</td>
             </tr>
             <tr>
@@ -112,17 +112,25 @@
                 <td width="30%">Contract DWGS: <input type="file" name="ContractDWGS" /></td>
             </tr>
             <tr>
-                <td>&nbsp;</td>
+                <td>
+                    <div>
+                        @{Html.RenderAction("GetContractDwgs", "Home", new { id = Model.ProejctId });}
+                    </div>
+                </td>
             </tr>
             <tr>
                 <td width="30%">RFI Responses: <input type="file" name="RFIResponses" /></td>
             </tr>
             <tr>
-                <td>&nbsp;</td>
+                <td>   @{Html.RenderAction("GeetRFIResponses", "Home", new { id = Model.ProejctId });}</td>
             </tr>
             <tr>
                 <td width="30%">Engineer Reviewed dawings: <input type="file" name="EngineerReviewDrawings" /></td>
             </tr>
+            <tr>
+                <td>   @{Html.RenderAction("GetEngineeringReviewedDwgs", "Home", new { id = Model.ProejctId });}</td>
+            </tr>
+
         </table>
         <div align="right">
             <input type="submit" class="btn btn-default" value="UpdateProject"

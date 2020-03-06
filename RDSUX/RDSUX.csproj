@@ -169,6 +169,7 @@
     </Compile>
     <Compile Include="Models\BarCode.cs" />
     <Compile Include="Models\ContractDWGS.cs" />
+    <Compile Include="Models\DownloadModel.cs" />
     <Compile Include="Models\ProjectDetails.cs" />
     <Compile Include="Models\Project.cs" />
     <Compile Include="Models\ProjectType.cs" />
@@ -207,6 +208,7 @@
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ApiGroup.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\Api.cshtml" />
     <Content Include="Properties\PublishProfiles\RDSFileManagement.PublishSettings" />
+    <Content Include="libman.json" />
     <None Include="Properties\PublishProfiles\RDSFileManagement - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\RDSFileManagement - ReadOnly - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\RDSFileManagement - Web Deploy.pubxml" />
@@ -233,6 +235,9 @@
     <Content Include="Views\Home\Edit.cshtml" />
     <Content Include="Views\Home\ProjectList.cshtml" />
     <Content Include="Views\Home\EditProject.cshtml" />
+    <Content Include="Views\Home\GetContractDwgs.cshtml" />
+    <Content Include="Views\Home\GeetRFIResponses.cshtml" />
+    <Content Include="Views\Home\GetEngineeringReviewedDwgs.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

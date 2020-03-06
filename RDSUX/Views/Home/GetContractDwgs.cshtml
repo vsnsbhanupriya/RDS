@@ -1,0 +1,49 @@
+﻿@model IEnumerable<RDSUX.Models.ContractDWGS>
+
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.ContractDrawingId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ProjectId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FileName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TImeStamp)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.ContractDrawingId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ProjectId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FileName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TImeStamp)
+        </td>
+        <td>
+            @{
+                var downloadmodel = "ContractDWGS_" + item.ContractDrawingId + "_" + item.ProjectId;
+            }
+            <a href='/Home/Download?downloadmodel=@downloadmodel'>Download</a>
+            @*@(Html.ActionLink("Download", "Download", "Home", new { downloadmodel = @downloadmodel }))
+
+        @Html.ActionLink()*@
+            <a href='/Home/DeleteDocument?downloadmodel=@downloadmodel'>Delete</a>
+            @*@Html.ActionLink("Delete", "Delete", "Home", new { /* id=item.PrimaryKey */ })*@
+        </td>
+    </tr>
+}
+
+</table>

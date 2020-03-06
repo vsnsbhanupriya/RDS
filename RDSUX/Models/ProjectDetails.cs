@@ -20,7 +20,7 @@ namespace RDSUX.Models
         public int ProjectTypeId { get; set; }
         public int ScopeOfWorkId { get; set; }
         public string StatusId { get; set; }
-
+        public string JobSheetName { get; set; }
         public string BarCodeId { get; set; }
         public HttpPostedFileBase JobSheet { get; set; }
         public HttpPostedFileBase ContractDWGS { get; set; }

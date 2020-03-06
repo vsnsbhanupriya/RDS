@@ -141,6 +141,120 @@ namespace RDSUX.Controllers
 
         }
 
+        [HttpGet]
+        public IHttpActionResult GetContractDWGS(string projectId)
+        {
+            SortedDictionary<string, string> sd = new SortedDictionary<string, string>() { };
+            sd.Add("@ProejctId", projectId.ToString());
+            RDSService.RDSService rdsService = new RDSService.RDSService();
+            DataSet ds = rdsService.SelectList("USP_GetContractDWGS", sd);
+            var contractDwgs = new List<ContractDWGS>();
+            if (ds != null&& ds.Tables.Count>0) 
+            {
+
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+
+                    var drawings = new ContractDWGS { ProjectId = dr[0].ToString(), ContractDrawingId=dr[1].ToString(), FileName=dr[2].ToString(), TImeStamp=dr[3].ToString()};
+                    contractDwgs.Add(drawings);
+                }
+
+
+            }
+            return Ok(contractDwgs);
+        }
+
+        [HttpGet]
+        public IHttpActionResult GetRFIResponses(string projectId)
+        {
+            SortedDictionary<string, string> sd = new SortedDictionary<string, string>() { };
+            sd.Add("@ProejctId", projectId.ToString());
+            RDSService.RDSService rdsService = new RDSService.RDSService();
+            DataSet ds = rdsService.SelectList("USP_GetRFIResponses", sd);
+            var rfiResponses = new List<RFIResponse>();
+            if (ds != null && ds.Tables.Count > 0)
+            {
+
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+
+                    var rfiResponse = new RFIResponse { ProjectId = dr[0].ToString(), RfiResponseId= dr[1].ToString(), FileName = dr[2].ToString(), TImeStamp = dr[3].ToString() };
+                    rfiResponses.Add(rfiResponse);
+                }
+
+
+            }
+            return Ok(rfiResponses);
+
+        }
+        [HttpGet]
+        public IHttpActionResult GetEngineeringReviewedDrawings(string projectId)
+        {
+            SortedDictionary<string, string> sd = new SortedDictionary<string, string>() { };
+            sd.Add("@ProejctId", projectId.ToString());
+            RDSService.RDSService rdsService = new RDSService.RDSService();
+            DataSet ds = rdsService.SelectList("USP_GetEngineeringReviewedDrawings", sd);
+            var engineerReviewedDrawings = new List<EngineerReviewedDrawings>();
+            if (ds != null && ds.Tables.Count > 0)
+            {
+
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+
+                    var engReviewedDrawing = new EngineerReviewedDrawings { ProjectId = dr[0].ToString(), EngineeringDrawingId = dr[1].ToString(), FileName = dr[2].ToString(), TImeStamp = dr[3].ToString() };
+                    engineerReviewedDrawings.Add(engReviewedDrawing);
+                }
+
+
+            }
+            return Ok(engineerReviewedDrawings);
+
+        }
+
+        [HttpPost]
+        public IHttpActionResult DeleteEngineeringDrawings(EngineerReviewedDrawings engDrawings)
+        {
+            if (engDrawings == null)
+                return BadRequest();
+            SortedDictionary<string, string> sd = new SortedDictionary<string, string>() { };
+            sd.Add("@ProejctId", engDrawings.ProjectId);
+            sd.Add("@EngReviewdDrawingId", engDrawings.EngineeringDrawingId);
+            RDSService.RDSService rdsService = new RDSService.RDSService();
+            DataSet retvalue = rdsService.SelectList("USP_DeleteEngineeringReviewedDrawings", sd);
+            return Ok(retvalue);
+
+        }
+
+        [HttpPost]
+        public IHttpActionResult DeleteContractDWGS(ContractDWGS contractDWGS)
+        {
+            if (contractDWGS == null)
+                return BadRequest();
+            SortedDictionary<string, string> sd = new SortedDictionary<string, string>() { };
+            sd.Add("@ProejctId", contractDWGS.ProjectId);
+            sd.Add("@ContractId", contractDWGS.ContractDrawingId);
+            RDSService.RDSService rdsService = new RDSService.RDSService();
+            DataSet retvalue = rdsService.SelectList("USP_DeleteContractDWGS", sd);
+            return Ok(retvalue);
+
+        }
+
+
+        [HttpPost]
+        public IHttpActionResult DeleteRFIResponses(RFIResponse rfiResponse)
+        {
+            if (rfiResponse == null)
+                return BadRequest();
+            SortedDictionary<string, string> sd = new SortedDictionary<string, string>() { };
+            sd.Add("@ProejctId", rfiResponse.ProjectId);
+            sd.Add("@RFiResponseId", rfiResponse.RfiResponseId);
+            RDSService.RDSService rdsService = new RDSService.RDSService();
+            DataSet retvalue = rdsService.SelectList("USP_DeleteRFIResponses", sd);
+            return Ok(retvalue);
+
+        }
+
+
         [HttpPost]
         public IHttpActionResult AddRFIResponse(RFIResponse rfiresponse)
         {
@@ -152,6 +266,7 @@ namespace RDSUX.Controllers
 
             RDSService.RDSService rdsService = new RDSService.RDSService();
             DataSet retvalue = rdsService.SelectList("USP_InsertRFIResponse", "RFIResponseId", sd);
+            
             var ContractDWGSId = retvalue.Tables[0].Rows[0][0].ToString();
             return Ok(ContractDWGSId);
 
@@ -237,6 +352,7 @@ namespace RDSUX.Controllers
                     project.ProjetTypeId = Convert.ToInt32(dr["ProjectType_ProjectTypeId"].ToString());
                     project.ScopeOfWorkId = Convert.ToInt32(dr["ScopeOfWork_ScopeOfWorkId"].ToString());
                     project.StatusId = Convert.ToInt32(dr["Status_StatusId"].ToString());
+                    project.JobSheetName = dr["JobSheetName"].ToString();
                     lstProjects.Add(project);
                 }
                 
