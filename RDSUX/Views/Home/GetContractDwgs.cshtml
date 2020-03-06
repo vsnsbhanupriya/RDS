@@ -1,38 +1,38 @@
 ﻿@model IEnumerable<RDSUX.Models.ContractDWGS>
 
 
-<table class="table">
+<table class="table" with="100%">
     <tr>
-        <th>
+        <th width="20%">
             @Html.DisplayNameFor(model => model.ContractDrawingId)
         </th>
-        <th>
+        @*<th>
             @Html.DisplayNameFor(model => model.ProjectId)
-        </th>
-        <th>
+        </th>*@
+        <th width="20%">
             @Html.DisplayNameFor(model => model.FileName)
         </th>
-        <th>
+        <th width="20%">
             @Html.DisplayNameFor(model => model.TImeStamp)
         </th>
-        <th></th>
+        <th width="20%"></th>
     </tr>
 
 @foreach (var item in Model) {
     <tr>
-        <td>
+        <td width="20%">
             @Html.DisplayFor(modelItem => item.ContractDrawingId)
         </td>
-        <td>
+        @*<td>
             @Html.DisplayFor(modelItem => item.ProjectId)
-        </td>
-        <td>
+        </td>*@
+        <td width="20%">
             @Html.DisplayFor(modelItem => item.FileName)
         </td>
-        <td>
+        <td width="20%">
             @Html.DisplayFor(modelItem => item.TImeStamp)
         </td>
-        <td>
+        <td width="20%">
             @{
                 var downloadmodel = "ContractDWGS_" + item.ContractDrawingId + "_" + item.ProjectId;
             }

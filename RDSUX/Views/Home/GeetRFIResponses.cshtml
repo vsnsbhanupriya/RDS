@@ -1,32 +1,32 @@
 ﻿@model IEnumerable<RDSUX.Models.RFIResponse>
 
 
-<table class="table">
+<table class="table" width="100%">
     <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.ProjectId)
+        <th width="20%">
+            @Html.DisplayNameFor(model => model.RfiResponseId)
         </th>
-        <th>
+        <th width="20%">
             @Html.DisplayNameFor(model => model.FileName)
         </th>
-        <th>
+        <th width="20%">
             @Html.DisplayNameFor(model => model.TImeStamp)
         </th>
-        <th></th>
+        <th width="20%"></th>
     </tr>
 
 @foreach (var item in Model) {
     <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.ProjectId)
+        <td width="20%">
+            @Html.DisplayFor(modelItem => item.RfiResponseId)
         </td>
-        <td>
+        <td width="20%">
             @Html.DisplayFor(modelItem => item.FileName)
         </td>
-        <td>
+        <td width="20%">
             @Html.DisplayFor(modelItem => item.TImeStamp)
         </td>
-        <td>
+        <td width="20%">
             @{
                 var downloadmodel = "RFIResponses_" + item.RfiResponseId + "_" + item.ProjectId;
             }

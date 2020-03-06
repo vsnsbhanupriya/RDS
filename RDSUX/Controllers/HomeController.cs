@@ -124,7 +124,7 @@ namespace RDSUX.Controllers
                 }
 
                 }
-            return View(drawings);
+            return PartialView(drawings);
         }
 
         public ActionResult GetEngineeringReviewedDwgs(int id)
@@ -146,7 +146,7 @@ namespace RDSUX.Controllers
                 }
 
             }
-            return View(drawings);
+            return PartialView(drawings);
         }
 
 
@@ -170,7 +170,7 @@ namespace RDSUX.Controllers
                 }
 
             }
-            return View(rfiResponses);
+            return PartialView(rfiResponses);
 
 
         }

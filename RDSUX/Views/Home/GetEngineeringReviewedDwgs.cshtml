@@ -1,18 +1,18 @@
 ﻿@model IEnumerable<RDSUX.Models.EngineerReviewedDrawings>
 
 
-<table class="table">
+<table class="table" width="100%">
     <tr>
-        <th>
+        <th width="20%">
             @Html.DisplayNameFor(model => model.EngineeringDrawingId)
         </th>
-        <th>
+        @*<th>
             @Html.DisplayNameFor(model => model.ProjectId)
-        </th>
-        <th>
+        </th>*@
+        <th width="20%">
             @Html.DisplayNameFor(model => model.FileName)
         </th>
-        <th>
+        <th width="20%"> 
             @Html.DisplayNameFor(model => model.TImeStamp)
         </th>
         <th></th>
@@ -20,19 +20,19 @@
 
 @foreach (var item in Model) {
     <tr>
-        <td>
+        <td width="20%">
             @Html.DisplayFor(modelItem => item.EngineeringDrawingId)
         </td>
-        <td>
+        @*<td>
             @Html.DisplayFor(modelItem => item.ProjectId)
-        </td>
-        <td>
+        </td>*@
+        <td width="20%">
             @Html.DisplayFor(modelItem => item.FileName)
         </td>
-        <td>
+        <td width="20%">
             @Html.DisplayFor(modelItem => item.TImeStamp)
         </td>
-        <td>
+        <td width="20%">
             @{
                 var downloadmodel = "EngineeringDrawings_" + item.EngineeringDrawingId + "_" + item.ProjectId;
             }
