@@ -318,6 +318,8 @@ namespace RDSUX.Controllers
             return Ok(retvalue);
         }
 
+
+
         [HttpPost]
         public IHttpActionResult DeleteProject([FromBody] string Id)
         {
@@ -332,6 +334,7 @@ namespace RDSUX.Controllers
         [HttpGet]
         public IHttpActionResult GetProjectList()
         {
+            
             RDSService.RDSService rdsService = new RDSService.RDSService();
             DataSet ds = rdsService.SelectList("USP_GetProjects");
            

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Formatting;
@@ -805,7 +806,137 @@ namespace RDSUX.Controllers
             ViewBag.ProjectDetailsModel = pdm;
             return View(pdm);
         }
-        
+
+        [HttpPost]
+        public  async Task<ActionResult> UploadDocuments(Project project)
+        {
+            string baseURL = WebConfigurationManager.AppSettings["baseurl"];
+            try
+            {
+                if (System.Web.HttpContext.Current.Request.Files.AllKeys.Any())
+                {
+                    var documentfile = System.Web.HttpContext.Current.Request.Files["contractDWGSFile"];
+                    var projectId = System.Web.HttpContext.Current.Request.Form["projectId"];
+                    HttpPostedFileBase filebase = new HttpPostedFileWrapper(documentfile);
+                    var fileName = Path.GetFileName(filebase.FileName);
+
+                    using (var client1 = new HttpClient())
+                    {
+                        client1.BaseAddress = new Uri(baseURL);
+                        client1.DefaultRequestHeaders.Accept.Clear();
+                        client1.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                        HttpResponseMessage contrctDWGSResponse = await client1.PostAsJsonAsync("/api/Project/AddContractDWGS", new ContractDWGS(fileName, projectId));
+                        if (contrctDWGSResponse.IsSuccessStatusCode)
+                        {
+                            var result = contrctDWGSResponse.Content.ReadAsStringAsync().Result;
+                            var contractDrawingId = JsonConvert.DeserializeObject<string>(result);
+                          
+                            var contractDWGSPath = "\\SourceFiles\\ContractDWGS\\" + projectId + "_" + contractDrawingId;
+                            if (System.IO.Directory.Exists(Server.MapPath("~") + contractDWGSPath) == false)
+                                System.IO.Directory.CreateDirectory(Server.MapPath("~") + contractDWGSPath);
+                            filebase.SaveAs(Server.MapPath("~") + contractDWGSPath + "\\" + string.Format("{0:yyyyMMddHHmmss}", DateTime.Now) + "_" + fileName);
+
+                            return Json("OK");
+                        }
+                        return Json("Unable to Upload");
+
+                    }
+
+
+
+                }
+                else { return Json("No File Saved."); }
+            }
+            catch (Exception ex) { return Json("Error While Saving."); }
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> UploadEngineerReviewDocuments(Project project)
+        {
+            string baseURL = WebConfigurationManager.AppSettings["baseurl"];
+            try
+            {
+                if (System.Web.HttpContext.Current.Request.Files.AllKeys.Any())
+                {
+                    var documentfile = System.Web.HttpContext.Current.Request.Files["EngReviewDwgFile"];
+                    var projectId = System.Web.HttpContext.Current.Request.Form["projectId"];
+                    HttpPostedFileBase filebase = new HttpPostedFileWrapper(documentfile);
+                    var fileName = Path.GetFileName(filebase.FileName);
+
+                    using (var client1 = new HttpClient())
+                    {
+                        client1.BaseAddress = new Uri(baseURL);
+                        client1.DefaultRequestHeaders.Accept.Clear();
+                        client1.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                        HttpResponseMessage engieeringReviewDrawings = await client1.PostAsJsonAsync("/api/Project/AddEngineeringReview", new EngineerReviewedDrawings(fileName, projectId));
+
+                        if (engieeringReviewDrawings.IsSuccessStatusCode)
+                        {
+                            var result = engieeringReviewDrawings.Content.ReadAsStringAsync().Result;
+                            var engneerReviewDrawingId = JsonConvert.DeserializeObject<string>(result);
+                            var engPath = "\\SourceFiles\\EngineeringDrawings\\" + projectId + "_" + engneerReviewDrawingId;
+                            if (System.IO.Directory.Exists(Server.MapPath("~") + engPath) == false)
+                                System.IO.Directory.CreateDirectory(Server.MapPath("~") + engPath);
+                            filebase.SaveAs(Server.MapPath("~") + engPath + "\\" + string.Format("{0:yyyyMMddHHmmss}", DateTime.Now) + "_" + fileName);
+
+                            return Json("OK");
+                        }
+                        return Json("Unable to Upload");
+
+                    }
+
+
+
+                }
+                else { return Json("No File Saved."); }
+            }
+            catch (Exception ex) { return Json("Error While Saving."); }
+        }
+
+
+        [HttpPost]
+        public async Task<ActionResult> UploadRFIDocuments(Project project)
+        {
+            string baseURL = WebConfigurationManager.AppSettings["baseurl"];
+            try
+            {
+                if (System.Web.HttpContext.Current.Request.Files.AllKeys.Any())
+                {
+                    var documentfile = System.Web.HttpContext.Current.Request.Files["RFIResponseFile"];
+                    var projectId = System.Web.HttpContext.Current.Request.Form["projectId"];
+                    HttpPostedFileBase filebase = new HttpPostedFileWrapper(documentfile);
+                    var fileName = Path.GetFileName(filebase.FileName);
+
+                    using (var client1 = new HttpClient())
+                    {
+                        client1.BaseAddress = new Uri(baseURL);
+                        client1.DefaultRequestHeaders.Accept.Clear();
+                        client1.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                        HttpResponseMessage rfiresponse = await client1.PostAsJsonAsync("/api/Project/AddRFIResponse", new RFIResponse(fileName, projectId));
+
+                        if (rfiresponse.IsSuccessStatusCode)
+                        {
+                            var result = rfiresponse.Content.ReadAsStringAsync().Result;
+                            var rfiResponseId = JsonConvert.DeserializeObject<string>(result);
+                            var RFIPath = "\\SourceFiles\\RFIResponses\\" + projectId + "_" + rfiResponseId;
+                            
+                            if (System.IO.Directory.Exists(Server.MapPath("~") + RFIPath) == false)
+                                System.IO.Directory.CreateDirectory(Server.MapPath("~") + RFIPath);
+                            filebase.SaveAs(Server.MapPath("~") + RFIPath + "\\" + string.Format("{0:yyyyMMddHHmmss}", DateTime.Now) + "_" + fileName);
+
+                            return Json("OK");
+                        }
+                        return Json("Unable to Upload");
+
+                    }
+
+
+
+                }
+                else { return Json("No File Saved."); }
+            }
+            catch (Exception ex) { return Json("Error While Saving."); }
+        }
         public async Task<ActionResult> DeleteProject(string Id)
         {
             var project = ViewData["ProjectModel"];

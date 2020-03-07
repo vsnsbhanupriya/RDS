@@ -2,7 +2,7 @@
 <div class="jumbotron">
     <p style="color:green;">@ViewBag.result</p>
     <h3>Edit Project</h3>
-    @using (Html.BeginForm("UpdateProject", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    @using (Html.BeginForm("UpdateProject", "Home", FormMethod.Post, new { enctype = "multipart/form-data" ,id="frmUpdateProject"}))
     {
         @Html.AntiForgeryToken()
 
@@ -109,26 +109,44 @@
                 <td>&nbsp;</td>
             </tr>
             <tr>
-                <td width="30%">Contract DWGS: <input type="file" name="ContractDWGS" /></td>
+                <td width="30%">Contract DWGS: <input type="file" name="ContractDWGS" id="ContractDWGS"/></td>
+                <td width="30%">
+                    <input type="button" id="btnContractDWGSUpload" class="btn btn-default" value="Upload" />
+                </td>
             </tr>
             <tr>
                 <td>
-                    <div>
+                    <div id="dvContractDwgs">
                         @{Html.RenderAction("GetContractDwgs", "Home", new { id = Model.ProejctId });}
                     </div>
                 </td>
             </tr>
             <tr>
-                <td width="30%">RFI Responses: <input type="file" name="RFIResponses" /></td>
+                <td width="30%">RFI Responses: <input type="file" name="RFIResponses"  id="RFIResponses"/></td>
+                <td width="30%">
+                    <input type="button" id="btnRFIResponseUpload" class="btn btn-default" value="Upload" />
+                </td>
             </tr>
             <tr>
-                <td>   @{Html.RenderAction("GeetRFIResponses", "Home", new { id = Model.ProejctId });}</td>
+                <td>
+                    <div id="dvRfiResponses">
+                        @{Html.RenderAction("GeetRFIResponses", "Home", new { id = Model.ProejctId });}
+                        </div>
+                </td>
             </tr>
             <tr>
-                <td width="30%">Engineer Reviewed dawings: <input type="file" name="EngineerReviewDrawings" /></td>
+                <td width="30%">Engineer Reviewed dawings: <input type="file" name="EngineerReviewDrawings" id="EngineerReviewDrawings" /></td>
+                <td width="30%">
+                    <input type="button" id="btnEngReviewedDrawingsUpload" class="btn btn-default" value="Upload" />
+                </td>
             </tr>
             <tr>
-                <td>   @{Html.RenderAction("GetEngineeringReviewedDwgs", "Home", new { id = Model.ProejctId });}</td>
+                <td>
+                    <div id="dvEngreviewedDwgs">
+                        @{Html.RenderAction("GetEngineeringReviewedDwgs", "Home", new { id = Model.ProejctId });}
+                    </div>
+                    </td>
+
             </tr>
 
         </table>
@@ -142,3 +160,5 @@
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>
+
+
