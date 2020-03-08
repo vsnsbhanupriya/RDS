@@ -1,48 +1,50 @@
 ﻿@model IEnumerable<RDSUX.Models.EngineerReviewedDrawings>
 
 
-<table class="table" width="100%">
-    <tr>
-        <th width="20%">
-            @Html.DisplayNameFor(model => model.EngineeringDrawingId)
-        </th>
-        @*<th>
-            @Html.DisplayNameFor(model => model.ProjectId)
-        </th>*@
-        <th width="20%">
-            @Html.DisplayNameFor(model => model.FileName)
-        </th>
-        <th width="20%"> 
-            @Html.DisplayNameFor(model => model.TImeStamp)
-        </th>
-        <th></th>
-    </tr>
+<table class="table" >
+    <tbody>
+        <tr class="thbody-bg">
+            <th width="20%">
+                @Html.DisplayNameFor(model => model.EngineeringDrawingId)
+            </th>
+            @*<th>
+                @Html.DisplayNameFor(model => model.ProjectId)
+            </th>*@
+            <th width="20%">
+                @Html.DisplayNameFor(model => model.FileName)
+            </th>
+            <th width="20%">
+                @Html.DisplayNameFor(model => model.TImeStamp)
+            </th>
+            <th></th>
+        </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td width="20%">
-            @Html.DisplayFor(modelItem => item.EngineeringDrawingId)
-        </td>
-        @*<td>
-            @Html.DisplayFor(modelItem => item.ProjectId)
-        </td>*@
-        <td width="20%">
-            @Html.DisplayFor(modelItem => item.FileName)
-        </td>
-        <td width="20%">
-            @Html.DisplayFor(modelItem => item.TImeStamp)
-        </td>
-        <td width="20%">
-            @{
-                var downloadmodel = "EngineeringDrawings_" + item.EngineeringDrawingId + "_" + item.ProjectId;
-            }
-            <a href='/Home/DownloadEngineeringRiewedDrawings?downloadmodel=@downloadmodel'>Download</a>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td width="20%">
+                    @Html.DisplayFor(modelItem => item.EngineeringDrawingId)
+                </td>
+                @*<td>
+                    @Html.DisplayFor(modelItem => item.ProjectId)
+                </td>*@
+                <td width="20%">
+                    @Html.DisplayFor(modelItem => item.FileName)
+                </td>
+                <td width="20%">
+                    @Html.DisplayFor(modelItem => item.TImeStamp)
+                </td>
+                <td width="20%">
+                    @{
+                        var downloadmodel = "EngineeringDrawings_" + item.EngineeringDrawingId + "_" + item.ProjectId;
+                    }
+                    <a href='/Home/DownloadEngineeringRiewedDrawings?downloadmodel=@downloadmodel'>Download</a>
 
 
 
-            <a href='/Home/DeleteEngineeringReviewedDocument?downloadmodel=@downloadmodel'>Delete</a>
-        </td>
-    </tr>
-}
-
+                    <a href='/Home/DeleteEngineeringReviewedDocument?downloadmodel=@downloadmodel'>Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
 </table>

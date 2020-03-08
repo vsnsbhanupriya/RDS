@@ -1,11 +1,11 @@
 ﻿@model IEnumerable<RDSUX.Models.Project>
 
 @{
-    ViewBag.Title = "List";
+    ViewBag.Title = "Projects";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>List</h2>
+<h2 class="create-title">Projects</h2>
 <p style="color:green;">@ViewBag.result</p>
 <p>
     @Html.ActionLink("Create New Project", "Index", "Home", new { area = "" }, null)
@@ -13,8 +13,9 @@
 @using (Html.BeginForm("ProjectList", "Home", FormMethod.Post))
 {
     @Html.AntiForgeryToken()
-    <table class="table">
-        <tr>
+<table class="table">
+    <tbody>
+        <tr class="thbody-bg">
             <th>
                 @Html.DisplayNameFor(model => model.ProejctId)
             </th>
@@ -49,7 +50,7 @@
                     @Html.DisplayFor(modelItem => item.ProejctId)
                 </td>
                 <td>
-                    @Html.ActionLink(item.ProjectName, "EditProject", "Home", new { Id = item.ProejctId }, null)    
+                    @Html.ActionLink(item.ProjectName, "EditProject", "Home", new { Id = item.ProejctId }, null)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Notes)
@@ -71,11 +72,11 @@
                 </td>
                 <td>
                     @*@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |*@
-                    @Html.ActionLink("Delete", "DeleteProject", new { id=item.ProejctId })
+                        @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |*@
+                    @Html.ActionLink("Delete", "DeleteProject", new { id = item.ProejctId })
                 </td>
             </tr>
         }
-
-    </table>
+</tbody>
+</table>
 }

@@ -1,48 +1,48 @@
 ﻿@model  RDSUX.Models.ProjectDetailsModel
-<div class="jumbotron">
+<div class="jumbotron jumbotron-container">
     <p style="color:green;">@ViewBag.result</p>
-    <h3>Create Project</h3>
+    <h3 class="create-title">Create Project</h3>
     @using (Html.BeginForm("CreateProject","Home", FormMethod.Post,new { enctype="multipart/form-data"}))
     {
         @Html.AntiForgeryToken()
 
-        <table width="80%">
+    <table width="100%">
+        <tbody>
             <tr width="100%">
-                <td>
-                    <table wi
-                           dth="100%">
-                        <tr width="100%">
-                            <td align="right">Project Name:</td>
+                <td class="form-td">
+                    <table class="width100">
+                        <tr class="width100">
+                            <td align="right" class="listnames">Project Name:</td>
                             <td>
-                                @Html.TextBox("ProjectName",Model.ProjectName , new { @class = "form-control" })
+                                @Html.TextBox("ProjectName", Model.ProjectName, new { @class = "form-control" })
                             </td>
                         </tr>
                         <tr>
                             <td>&nbsp;</td>.
                         </tr>
-                        <tr width="100%">
-                            <td align="right">Project Type:</td>
+                        <tr class="width100">
+                            <td align="right" class="listnames">Project Type:</td>
                             <td>
-                                @Html.DropDownList("ProjectTypeModel",Model.ProjectTypeList)
-                               </td>
+                                @Html.DropDownList("ProjectTypeModel", Model.ProjectTypeList)
+                            </td>
                         </tr>
                         <tr>
                             <td>&nbsp;</td>
                         </tr>
-                        <tr width="100%">
-                            <td align="right">Scope of Work:</td>
+                        <tr class="width100">
+                            <td align="right" class="listnames">Scope of Work:</td>
                             <td>
-                            @Html.DropDownList("SOWModel", Model.ScopeOfWork)
+                                @Html.DropDownList("SOWModel", Model.ScopeOfWork)
                             </td>
                         </tr>
                     </table>
                 </td>
                 <td>
-                    <table width="100%">
-                        <tr width="100%">
-                            <td align="right">Notes:</td>
+                    <table class="width100">
+                        <tr class="width100">
+                            <td align="right" class="listnames" valign="middle">Notes:</td>
                             <td>
-                                @Html.TextArea("Notes", Model.Notes, 10,30, new { @class = "form-control" })
+                                @Html.TextArea("Notes", Model.Notes, 10, 30, new { @class = "form-control" })
                             </td>
                         </tr>
                     </table>
@@ -51,57 +51,60 @@
             <tr>
                 <td>&nbsp;</td>
             </tr>
-        </table>
-        <table width="100%">
+            </tbody>
+    </table>
+        <table class="width100">
 
-            <tr>
+            <tr class="tdbody-bg">
 
-                <td width="30%" align="center">Job Number:   @Html.TextBox("JobNumber", Model.JobNumber, new { @class = "form-control" })</td>
+                <td width="30%" class="font12">Job Number:   @Html.TextBox("JobNumber", Model.JobNumber, new { @class = "form-control" })</td>
                 <td>&nbsp;</td>
-                <td width="30%">Job Sheet:<input type="file" name="JobSheet" />
+                <td width="30%" class="font12">Job Sheet:<input type="file" name="JobSheet" />
                  </td>
-                <td width="30%" style="display:none">Purchase Order:  </td>
+                <td width="30%" style="display:none" >  </td>
             </tr>
             <tr>
-                <td>&nbsp;</td>
+                <td colspan="3">&nbsp;</td>
             </tr>
         </table>
 
-        <table style="border:dashed" width="80%">
-            <tr width="100%">
-                <td colspan="2">
-                    <h4> Barcode Information</h4>
-                </td>
+        <table class="table-inner width100">
+            <tbody class="tbody-inner">
+                <tr class="width100">
+                    <td colspan="2">
+                        <h4> Barcode Information</h4>
+                    </td>
 
-            </tr>
-            <tr width="100%">
-                <td align="center">Stock Length :</td>
-                <td>
-                    @Html.TextBox("StockLength", Model.BarCode[0].StockLength, new { @class = "form-control" })
-                </td>
-            </tr>
-            <tr width="100%">
-                <td align="center">BarcodeGrade: </td>
-                <td>
-                    @Html.TextBox("BarCodeGrade", Model.BarCode[0].BarCodeGrade, new { @class = "form-control" })
-                </td>
-            </tr>
+                </tr>
+                <tr class="width100">
+                    <td class="font12">Stock Length :</td>
+                    <td class="td-margin">
+                        @Html.TextBox("StockLength", Model.BarCode[0].StockLength, new { @class = "form-control" })
+                    </td>
+                </tr>
+                <tr class="width100">
+                    <td class="font12">BarcodeGrade: </td>
+                    <td class="td-margin">
+                        @Html.TextBox("BarCodeGrade", Model.BarCode[0].BarCodeGrade, new { @class = "form-control" })
+                    </td>
+                </tr>
 
-            <tr width="100%">
-                <td align="center">Standard Splice: </td>
-                <td>
-                    @Html.TextBox("StandardSplice", Model.BarCode[0].StandardSplice, new { @class = "form-control" })
-                </td>
-            </tr>
-            <tr width="100%">
-                <td align="center">Mechanical Splice: </td>
-                <td>
-                    @Html.TextBox("MachanicSplice", Model.BarCode[0].MachanicSplice, new { @class = "form-control" })
-                </td>
-            </tr>
-            <tr width="100%">
-                <td colspan="2">&nbsp;</td>
-            </tr>
+                <tr class="width100">
+                    <td class="font12">Standard Splice: </td>
+                    <td class="td-margin">
+                        @Html.TextBox("StandardSplice", Model.BarCode[0].StandardSplice, new { @class = "form-control" })
+                    </td>
+                </tr>
+                <tr class="width100">
+                    <td class="font12">Mechanical Splice: </td>
+                    <td class="td-margin">
+                        @Html.TextBox("MachanicSplice", Model.BarCode[0].MachanicSplice, new { @class = "form-control" })
+                    </td>
+                </tr>
+                <tr width="100%">
+                    <td colspan="2">&nbsp;</td>
+                </tr>
+                </tbody>
         </table>
 
         <table width="100%">
@@ -109,16 +112,16 @@
                 <td>&nbsp;</td>
             </tr>
             <tr>
-                <td width="30%">Contract DWGS: <input type="file" name="ContractDWGS" /> </td>
+                <td width="30%" class="font12">Contract DWGS: <input type="file" name="ContractDWGS" /> </td>
             </tr>
         </table>
         <div align="right">
-            <input type="submit" class="btn btn-default" value="CreateProject" 
+            <input type="submit" class="btn btn-default create-btn" value="Save" 
                    onclick="location.href='@Url.Action("Home", "Home11")'"/>
         </div>
 
     }
     </div>
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back to Projects", "ProjectList")
 </div>

@@ -1,47 +1,50 @@
 ﻿@model IEnumerable<RDSUX.Models.ContractDWGS>
 
 
-<table class="table" with="100%">
-    <tr>
-        <th width="20%">
-            @Html.DisplayNameFor(model => model.ContractDrawingId)
-        </th>
-        @*<th>
-            @Html.DisplayNameFor(model => model.ProjectId)
-        </th>*@
-        <th width="20%">
-            @Html.DisplayNameFor(model => model.FileName)
-        </th>
-        <th width="20%">
-            @Html.DisplayNameFor(model => model.TImeStamp)
-        </th>
-        <th width="20%"></th>
-    </tr>
+<table class="table">
+    <tbody>
+        <tr class="thbody-bg">
 
-@foreach (var item in Model) {
-    <tr>
-        <td width="20%">
-            @Html.DisplayFor(modelItem => item.ContractDrawingId)
-        </td>
-        @*<td>
-            @Html.DisplayFor(modelItem => item.ProjectId)
-        </td>*@
-        <td width="20%">
-            @Html.DisplayFor(modelItem => item.FileName)
-        </td>
-        <td width="20%">
-            @Html.DisplayFor(modelItem => item.TImeStamp)
-        </td>
-        <td width="20%">
-            @{
-                var downloadmodel = "ContractDWGS_" + item.ContractDrawingId + "_" + item.ProjectId;
-            }
-            <a href='/Home/Download?downloadmodel=@downloadmodel'>Download</a>
+            <th width="20%">
+                @Html.DisplayNameFor(model => model.ContractDrawingId)
+            </th>
+            @*<th>
+                    @Html.DisplayNameFor(model => model.ProjectId)
+                </th>*@
+            <th width="20%">
+                @Html.DisplayNameFor(model => model.FileName)
+            </th>
+            <th width="20%">
+                @Html.DisplayNameFor(model => model.TImeStamp)
+            </th>
+            <th width="20%"></th>
+        </tr>
 
-            <a href='/Home/DeleteDocument?downloadmodel=@downloadmodel'>Delete</a>
-           
-        </td>
-    </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td width="20%">
+                    @Html.DisplayFor(modelItem => item.ContractDrawingId)
+                </td>
+                @*<td>
+                        @Html.DisplayFor(modelItem => item.ProjectId)
+                    </td>*@
+                <td width="20%">
+                    @Html.DisplayFor(modelItem => item.FileName)
+                </td>
+                <td width="20%">
+                    @Html.DisplayFor(modelItem => item.TImeStamp)
+                </td>
+                <td width="20%">
+                    @{
+                        var downloadmodel = "ContractDWGS_" + item.ContractDrawingId + "_" + item.ProjectId;
+                    }
+                    <a href='/Home/Download?downloadmodel=@downloadmodel'>Download</a>
 
+                    <a href='/Home/DeleteDocument?downloadmodel=@downloadmodel'>Delete</a>
+
+                </td>
+            </tr>
+        }
+        </tbody>
 </table>

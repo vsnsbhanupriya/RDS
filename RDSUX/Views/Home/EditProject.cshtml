@@ -1,68 +1,69 @@
 ﻿@model  RDSUX.Models.ProjectDetailsModel
 <div class="jumbotron">
     <p style="color:green;">@ViewBag.result</p>
-    <h3>Edit Project</h3>
+    <h3 class="create-title">Edit Project</h3>
     @using (Html.BeginForm("UpdateProject", "Home", FormMethod.Post, new { enctype = "multipart/form-data", id = "frmUpdateProject" }))
     {
         @Html.AntiForgeryToken()
 
-        <table width="80%">
-            <tr width="100%">
-                <td>
-                    <table width="100%">
-                        <tr width="100%">
-                            <td align="right">Project Name:</td>
-                            <td>
-                                @Html.TextBox("ProjectName", Model.ProjectName, new { @class = "form-control", @readonly = "readonly" })
-                                @Html.TextBox("ProejctId", Model.ProejctId, new { @class = "form-control", style = "display: none;" })
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>&nbsp;</td>.
-                        </tr>
-                        <tr width="100%">
-                            <td align="right">Project Type:</td>
-                            <td>
-
-                                @Html.DropDownList("ProjectTypeModel", Model.ProjectTypeList)
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>&nbsp;</td>
-                        </tr>
-                        <tr width="100%">
-                            <td align="right">Scope of Work:</td>
-                            <td>
-                                @Html.DropDownList("SOWModel", Model.ScopeOfWork)
-                            </td>
-                        </tr>
-                    </table>
-                </td>
-                <td>
-                    <table width="100%">
-                        <tr width="100%">
-                            <td align="right">Notes:</td>
-                            <td>
-                                @Html.TextArea("Notes", Model.Notes, 10, 30, new { @class = "form-control" })
-                            </td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-            <tr>
-                <td>&nbsp;</td>
-            </tr>
-        </table>
         <table width="100%">
+            <tbody>
+                <tr width="100%">
+                    <td class="form-td">
+                        <table class="width100">
+                            <tr class="width100">
+                                <td align="right" class="listnames">Project Name:</td>
+                                <td>
+                                    @Html.TextBox("ProjectName", Model.ProjectName, new { @class = "form-control", @readonly = "readonly" })
+                                    @Html.TextBox("ProejctId", Model.ProejctId, new { @class = "form-control", style = "display: none;" })
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>&nbsp;</td>.
+                            </tr>
+                            <tr class="width100">
+                                <td align="right" class="listnames">Project Type:</td>
+                                <td>
 
-            <tr>
+                                    @Html.DropDownList("ProjectTypeModel", Model.ProjectTypeList)
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr class="width100">
+                                <td align="right" class="listnames">Scope of Work:</td>
+                                <td>
+                                    @Html.DropDownList("SOWModel", Model.ScopeOfWork)
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td>
+                        <table class="width100">
+                            <tr class="width100">
+                                <td align="right" class="listnames" valign="middle">Notes:</td>
+                                <td>
+                                    @Html.TextArea("Notes", Model.Notes, 10, 30, new { @class = "form-control" })
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="width100">
 
-                <td width="30%">Job Number:   @Html.TextBox("JobNumber", Model.JobNumber, new { @class = "form-control" })</td>
+            <tr class="tdbody-bg">
 
-                <td width="30%">Purchase Order:  @Html.TextBox("PurchaseOrder", Model.PurchaseOrder, new { @class = "form-control" })</td>
-            </tr>
-            <tr>
-                <td width="30%">
+                <td width="20%" class="font12">Job Number:   @Html.TextBox("JobNumber", Model.JobNumber, new { @class = "form-control" })</td>
+                <td width="10%">&nbsp;</td>
+                <td width="20%" class="font12">Purchase Order:  @Html.TextBox("PurchaseOrder", Model.PurchaseOrder, new { @class = "form-control" })</td>
+                <td width="10%">&nbsp;</td>
+                <td width="40%">
                     Job Sheet: <b>@Model.JobSheetName </b>
                     @if (!string.IsNullOrEmpty(Model.JobSheetName))
                     {
@@ -74,109 +75,127 @@
                     }
                 </td>
             </tr>
+
         </table>
 
-        <table style="border:dashed" width="80%">
-            <tr width="100%">
-                <td colspan="2">
-                    <h4> Barcode Information</h4>
-                </td>
-            </tr>
-            <tr width="100%">
-                <td align="center">Stock Length :</td>
-                <td>
-                    @Html.TextBox("StockLength", Model.BarCode[0].StockLength, new { @class = "form-control" })
-                </td>
-            </tr>
-            <tr width="100%">
-                <td align="center">BarcodeGrade: </td>
-                <td>
-                    @Html.TextBox("BarCodeGrade", Model.BarCode[0].BarCodeGrade, new { @class = "form-control" })
-                </td>
-            </tr>
+        <table class="table-inner width100">
+            <tbody class="tbody-inner">
+                <tr width="100%">
+                    <td colspan="2">
+                        <h4> Barcode Information</h4>
+                    </td>
+                </tr>
+                <tr class="width100">
+                    <td class="font12">Stock Length :</td>
+                    <td class="td-margin">
+                        @Html.TextBox("StockLength", Model.BarCode[0].StockLength, new { @class = "form-control" })
+                    </td>
+                </tr>
+                <tr class="width100">
+                    <td class="font12">BarcodeGrade: </td>
+                    <td class="td-margin">
+                        @Html.TextBox("BarCodeGrade", Model.BarCode[0].BarCodeGrade, new { @class = "form-control" })
+                    </td>
+                </tr>
 
-            <tr width="100%">
-                <td align="center">Standard Splice: </td>
-                <td>
-                    @Html.TextBox("StandardSplice", Model.BarCode[0].StandardSplice, new { @class = "form-control" })
-                </td>
-            </tr>
-            <tr width="100%">
-                <td align="center">Mechanical Splice: </td>
-                <td>
-                    @Html.TextBox("MachanicSplice", Model.BarCode[0].MachanicSplice, new { @class = "form-control" })
-                </td>
-            </tr>
-            <tr width="100%">
-                <td colspan="2">&nbsp;</td>
-            </tr>
+                <tr class="width100">
+                    <td class="font12">Standard Splice: </td>
+                    <td class="td-margin">
+                        @Html.TextBox("StandardSplice", Model.BarCode[0].StandardSplice, new { @class = "form-control" })
+                    </td>
+                </tr>
+                <tr class="width100">
+                    <td class="font12">Mechanical Splice: </td>
+                    <td class="td-margin">
+                        @Html.TextBox("MachanicSplice", Model.BarCode[0].MachanicSplice, new { @class = "form-control" })
+                    </td>
+                </tr>
+                <tr class="width100">
+                    <td colspan="2">&nbsp;</td>
+                </tr>
+            </tbody>
         </table>
 
-        <table width="100%">
-            <tr>
-                <td>&nbsp;</td>
-            </tr>
-            <tr>
-                <td width="30%">Shop Drawings: <input type="file" name="ShopDrawings" id="ShopDrawings" /></td>
-                <td width="30%">
-                    <input type="button" id="btnShopDrawingsUpload" class="btn btn-default" value="Upload" />
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div id="dvShopDrawings">
-                        @{Html.RenderAction("GetShopDrawings", "Home", new { id = Model.ProejctId });}
-                    </div>
-                </td>
-            </tr>
+        <table class="table-inner width100">
+            <tbody class="tbody-inner">
+                <tr>
+                    <td width="20%"><h4>Shop Drawings</h4> <input type="file" name="ShopDrawings" id="ShopDrawings" /></td>
+                    <td width="10%">
+                        <input type="button" id="btnShopDrawingsUpload" class="btn btn-default create-btn" value="Upload Shop" />
+                    </td>
+                    <td width="70%">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <div id="dvShopDrawings">
+                            @{Html.RenderAction("GetShopDrawings", "Home", new { id = Model.ProejctId });}
+                        </div>
+                    </td>
+                </tr>
 
-            <tr>
-                <td width="30%">Contract DWGS: <input type="file" name="ContractDWGS" id="ContractDWGS" /></td>
-                <td width="30%">
-                    <input type="button" id="btnContractDWGSUpload" class="btn btn-default" value="Upload" />
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div id="dvContractDwgs">
-                        @{Html.RenderAction("GetContractDwgs", "Home", new { id = Model.ProejctId });}
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td width="30%">RFI Responses: <input type="file" name="RFIResponses" id="RFIResponses" /></td>
-                <td width="30%">
-                    <input type="button" id="btnRFIResponseUpload" class="btn btn-default" value="Upload" />
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div id="dvRfiResponses">
-                        @{Html.RenderAction("GeetRFIResponses", "Home", new { id = Model.ProejctId });}
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td width="30%">Engineer Reviewed dawings: <input type="file" name="EngineerReviewDrawings" id="EngineerReviewDrawings" /></td>
-                <td width="30%">
-                    <input type="button" id="btnEngReviewedDrawingsUpload" class="btn btn-default" value="Upload" />
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div id="dvEngreviewedDwgs">
-                        @{Html.RenderAction("GetEngineeringReviewedDwgs", "Home", new { id = Model.ProejctId });}
-                    </div>
-                </td>
-            </tr>
+            </tbody>
+        </table>
+        <table class="table-inner width100">
+            <tbody class="tbody-inner">
+                <tr>
+                    <td width="20%"><h4>Contract DWGS</h4><input type="file" name="ContractDWGS" id="ContractDWGS" /></td>
+                    <td width="10%">
+                        <input type="button" id="btnContractDWGSUpload" class="btn btn-default create-btn" value="Upload Contract" />
+                    </td>
+                    <td width="70%">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <div id="dvContractDwgs">
+                            @{Html.RenderAction("GetContractDwgs", "Home", new { id = Model.ProejctId });}
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table-inner width100">
+            <tbody class="tbody-inner">
+                <tr>
+                    <td width="20%"><h4>RFI Responses</h4> <input type="file" name="RFIResponses" id="RFIResponses" /></td>
+                    <td width="10%">
+                        <input type="button" id="btnRFIResponseUpload" class="btn btn-default create-btn" value="Upload RFI Response" />
+                    </td>
+                    <td width="70%">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <div id="dvRfiResponses">
+                            @{Html.RenderAction("GeetRFIResponses", "Home", new { id = Model.ProejctId });}
+                        </div>
+                    </td>
+                </tr>
+</tbody>
+        </table>
+        <table class="table-inner width100">
+            <tbody class="tbody-inner">
+                <tr>
+                    <td width="20%"><h4>Engineer Reviewed dawings</h4> <input type="file" name="EngineerReviewDrawings" id="EngineerReviewDrawings" /></td>
+                    <td width="10%">
+                        <input type="button" id="btnEngReviewedDrawingsUpload" class="btn btn-default create-btn" value="Upload Engineer Reviewed" />
+                    </td>
+                    <td width="70%">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <div id="dvEngreviewedDwgs">
+                            @{Html.RenderAction("GetEngineeringReviewedDwgs", "Home", new { id = Model.ProejctId });}
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
         </table>
         <div align="right">
-            <input type="submit" class="btn btn-default" value="UpdateProject"
+            <input type="submit" class="btn btn-default create-btn" value="UpdateProject"
                    onclick="location.href='@Url.Action("Home", "Home11")'" />
         </div>
 
     }
 </div>
 <div>
-    @Html.ActionLink("Back to List", "ProjectList")
+    @Html.ActionLink("Back to Projects", "ProjectList")
 </div>

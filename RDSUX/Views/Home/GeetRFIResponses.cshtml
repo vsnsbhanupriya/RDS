@@ -1,43 +1,45 @@
 ﻿@model IEnumerable<RDSUX.Models.RFIResponse>
 
 
-<table class="table" width="100%">
-    <tr>
-        <th width="20%">
-            @Html.DisplayNameFor(model => model.RfiResponseId)
-        </th>
-        <th width="20%">
-            @Html.DisplayNameFor(model => model.FileName)
-        </th>
-        <th width="20%">
-            @Html.DisplayNameFor(model => model.TImeStamp)
-        </th>
-        <th width="20%"></th>
-    </tr>
+<table class="table">
+    <tbody>
+        <tr class="thbody-bg">
+            <th width="20%">
+                @Html.DisplayNameFor(model => model.RfiResponseId)
+            </th>
+            <th width="20%">
+                @Html.DisplayNameFor(model => model.FileName)
+            </th>
+            <th width="20%">
+                @Html.DisplayNameFor(model => model.TImeStamp)
+            </th>
+            <th width="20%"></th>
+        </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td width="20%">
-            @Html.DisplayFor(modelItem => item.RfiResponseId)
-        </td>
-        <td width="20%">
-            @Html.DisplayFor(modelItem => item.FileName)
-        </td>
-        <td width="20%">
-            @Html.DisplayFor(modelItem => item.TImeStamp)
-        </td>
-        <td width="20%">
-            @{
-                var downloadmodel = "RFIResponses_" + item.RfiResponseId + "_" + item.ProjectId;
-            }
-            <a href='/Home/DownloadRFIResponse?downloadmodel=@downloadmodel'>Download</a>
-         
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td width="20%">
+                    @Html.DisplayFor(modelItem => item.RfiResponseId)
+                </td>
+                <td width="20%">
+                    @Html.DisplayFor(modelItem => item.FileName)
+                </td>
+                <td width="20%">
+                    @Html.DisplayFor(modelItem => item.TImeStamp)
+                </td>
+                <td width="20%">
+                    @{
+                        var downloadmodel = "RFIResponses_" + item.RfiResponseId + "_" + item.ProjectId;
+                    }
+                    <a href='/Home/DownloadRFIResponse?downloadmodel=@downloadmodel'>Download</a>
 
-        
-            <a href='/Home/DeleteRFIDocument?downloadmodel=@downloadmodel'>Delete</a>
-            @*@Html.ActionLink("Delete", "Delete", "Home", new { /* id=item.PrimaryKey */ })*@
-        </td>
-    </tr>
-}
 
+
+                    <a href='/Home/DeleteRFIDocument?downloadmodel=@downloadmodel'>Delete</a>
+                    @*@Html.ActionLink("Delete", "Delete", "Home", new { /* id=item.PrimaryKey */ })*@
+                </td>
+            </tr>
+        }
+        </tbody>
 </table>
