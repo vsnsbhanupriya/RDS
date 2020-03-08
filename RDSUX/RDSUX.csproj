@@ -239,6 +239,7 @@
     <Content Include="Views\Home\GetContractDwgs.cshtml" />
     <Content Include="Views\Home\GeetRFIResponses.cshtml" />
     <Content Include="Views\Home\GetEngineeringReviewedDwgs.cshtml" />
+    <Content Include="Views\Home\GetShopDrawings.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

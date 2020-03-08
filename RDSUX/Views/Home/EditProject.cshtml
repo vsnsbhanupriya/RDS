@@ -109,7 +109,21 @@
                 <td>&nbsp;</td>
             </tr>
             <tr>
-                <td width="30%">Contract DWGS: <input type="file" name="ContractDWGS" id="ContractDWGS"/></td>
+                <td width="30%">Shop Drawings: <input type="file" name="ShopDrawings" id="ShopDrawings" /></td>
+                <td width="30%">
+                    <input type="button" id="btnShopDrawingsUpload" class="btn btn-default" value="Upload" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div id="dvShopDrawings">
+                        @{Html.RenderAction("GetShopDrawings", "Home", new { id = Model.ProejctId });}
+                    </div>
+                </td>
+            </tr>
+
+            <tr>
+                <td width="30%">Contract DWGS: <input type="file" name="ContractDWGS" id="ContractDWGS" /></td>
                 <td width="30%">
                     <input type="button" id="btnContractDWGSUpload" class="btn btn-default" value="Upload" />
                 </td>
@@ -122,7 +136,7 @@
                 </td>
             </tr>
             <tr>
-                <td width="30%">RFI Responses: <input type="file" name="RFIResponses"  id="RFIResponses"/></td>
+                <td width="30%">RFI Responses: <input type="file" name="RFIResponses" id="RFIResponses" /></td>
                 <td width="30%">
                     <input type="button" id="btnRFIResponseUpload" class="btn btn-default" value="Upload" />
                 </td>
@@ -131,7 +145,7 @@
                 <td>
                     <div id="dvRfiResponses">
                         @{Html.RenderAction("GeetRFIResponses", "Home", new { id = Model.ProejctId });}
-                        </div>
+                    </div>
                 </td>
             </tr>
             <tr>
@@ -145,7 +159,7 @@
                     <div id="dvEngreviewedDwgs">
                         @{Html.RenderAction("GetEngineeringReviewedDwgs", "Home", new { id = Model.ProejctId });}
                     </div>
-                    </td>
+                </td>
 
             </tr>
 

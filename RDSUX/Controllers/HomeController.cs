@@ -106,6 +106,28 @@ namespace RDSUX.Controllers
             return View(lisProject);
         }
 
+        public ActionResult GetShopDrawings(int id)
+        {
+            var drawings = new List<ShopDrawings>();
+            string baseURL = WebConfigurationManager.AppSettings["baseurl"];
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(baseURL);
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage contrctDWGSResponse = client.GetAsync("/api/Project/GetShopDrawings?projectId=" + id.ToString()).Result;
+                if (contrctDWGSResponse.IsSuccessStatusCode)
+                {
+                    var result = contrctDWGSResponse.Content.ReadAsStringAsync().Result;
+                    drawings = JsonConvert.DeserializeObject<List<ShopDrawings>>(result);
+
+                }
+
+            }
+            return PartialView(drawings);
+
+
+        }
         public ActionResult GetContractDwgs(int id)
         {
             var drawings = new List<ContractDWGS>();
@@ -571,6 +593,56 @@ namespace RDSUX.Controllers
 
         }
 
+        public ActionResult DownloadShopDrawings(string downloadmodel)
+        {
+            var model = downloadmodel.Split('_');
+            var folder = model[0];
+            var shopDrawingId = model[1];
+            var projectId = model[2];
+            var shopDrawings = new List<ShopDrawings>();
+
+            string baseURL = WebConfigurationManager.AppSettings["baseurl"];
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(baseURL);
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage shopDrawingsResponse = client.GetAsync("/api/Project/GetShopDrawings?projectId=" + projectId).Result;
+                if (shopDrawingsResponse.IsSuccessStatusCode)
+                {
+                    var result = shopDrawingsResponse.Content.ReadAsStringAsync().Result;
+                    shopDrawings = JsonConvert.DeserializeObject<List<ShopDrawings>>(result);
+
+                }
+
+            }
+            var selectedDrawing = shopDrawings.FirstOrDefault(e => e.ShopDrawingId.Equals(shopDrawingId, StringComparison.InvariantCultureIgnoreCase));
+            if (selectedDrawing != null)
+            {
+                var fileName = selectedDrawing.FileName;
+
+                var path = "\\SourceFiles\\" + folder + "\\" + projectId + "_" + shopDrawingId;
+                if (System.IO.Directory.Exists(Server.MapPath("~") + path))
+                {
+
+                    var directoryInfo = new System.IO.DirectoryInfo(Server.MapPath("~") + path);
+                    var fileinfo = directoryInfo.GetFiles().FirstOrDefault();
+                    byte[] fileBytes = System.IO.File.ReadAllBytes(fileinfo.FullName);
+
+                    return File(fileBytes, System.Net.Mime.MediaTypeNames.Application.Octet, fileName);
+                }
+                else
+                {
+                    throw new Exception("File NOt found");
+                }
+            }
+            else
+            {
+                throw new Exception("File NOt found");
+            }
+
+
+        }
 
 
         public async Task<ActionResult> DeleteDocument(string downloadmodel)
@@ -698,6 +770,49 @@ namespace RDSUX.Controllers
 
             throw new Exception("Something went wrong.");
         }
+
+        public async Task<ActionResult> DeleteShopDrawingsDocument(string downloadmodel)
+        {
+
+            var model = downloadmodel.Split('_');
+            var folder = model[0];
+            var shopDrawingId = model[1];
+            var projectId = model[2];
+            string baseURL = WebConfigurationManager.AppSettings["baseurl"];
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(baseURL);
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                var shopDrawing = new ShopDrawings { ProjectId = projectId, ShopDrawingId = shopDrawingId };
+                HttpResponseMessage response = await client.PostAsJsonAsync("/api/Project/DeleteShopDrawings", shopDrawing);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var path = "\\SourceFiles\\" + folder + "\\" + projectId + "_" + shopDrawingId;
+
+                    if (System.IO.Directory.Exists(Server.MapPath("~") + path))
+                    {
+
+                        var directoryInfo = new System.IO.DirectoryInfo(Server.MapPath("~") + path);
+                        foreach (var file in directoryInfo.GetFiles())
+                        {
+                            file.Delete();
+                        }
+                        directoryInfo.Delete();
+                        return RedirectToAction("EditProject", new RouteValueDictionary(
+        new { controller = "Home", action = "EditProject", Id = projectId }));
+                    }
+
+                }
+            }
+
+
+
+
+            throw new Exception("Something went wrong.");
+        }
+
 
         public async Task<ActionResult> EditProject(string Id)
         {
@@ -832,6 +947,49 @@ namespace RDSUX.Controllers
                             var contractDrawingId = JsonConvert.DeserializeObject<string>(result);
                           
                             var contractDWGSPath = "\\SourceFiles\\ContractDWGS\\" + projectId + "_" + contractDrawingId;
+                            if (System.IO.Directory.Exists(Server.MapPath("~") + contractDWGSPath) == false)
+                                System.IO.Directory.CreateDirectory(Server.MapPath("~") + contractDWGSPath);
+                            filebase.SaveAs(Server.MapPath("~") + contractDWGSPath + "\\" + string.Format("{0:yyyyMMddHHmmss}", DateTime.Now) + "_" + fileName);
+
+                            return Json("OK");
+                        }
+                        return Json("Unable to Upload");
+
+                    }
+
+
+
+                }
+                else { return Json("No File Saved."); }
+            }
+            catch (Exception ex) { return Json("Error While Saving."); }
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> UploadShopDrawingDocuments(Project project)
+        {
+            string baseURL = WebConfigurationManager.AppSettings["baseurl"];
+            try
+            {
+                if (System.Web.HttpContext.Current.Request.Files.AllKeys.Any())
+                {
+                    var documentfile = System.Web.HttpContext.Current.Request.Files["shopDrawingsFile"];
+                    var projectId = System.Web.HttpContext.Current.Request.Form["projectId"];
+                    HttpPostedFileBase filebase = new HttpPostedFileWrapper(documentfile);
+                    var fileName = Path.GetFileName(filebase.FileName);
+
+                    using (var client1 = new HttpClient())
+                    {
+                        client1.BaseAddress = new Uri(baseURL);
+                        client1.DefaultRequestHeaders.Accept.Clear();
+                        client1.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                        HttpResponseMessage shopDrawingsResponse = await client1.PostAsJsonAsync("/api/Project/AddShopDrawings", new ShopDrawings(fileName, projectId));
+                        if (shopDrawingsResponse.IsSuccessStatusCode)
+                        {
+                            var result = shopDrawingsResponse.Content.ReadAsStringAsync().Result;
+                            var contractDrawingId = JsonConvert.DeserializeObject<string>(result);
+
+                            var contractDWGSPath = "\\SourceFiles\\ShopDrawings\\" + projectId + "_" + contractDrawingId;
                             if (System.IO.Directory.Exists(Server.MapPath("~") + contractDWGSPath) == false)
                                 System.IO.Directory.CreateDirectory(Server.MapPath("~") + contractDWGSPath);
                             filebase.SaveAs(Server.MapPath("~") + contractDWGSPath + "\\" + string.Format("{0:yyyyMMddHHmmss}", DateTime.Now) + "_" + fileName);

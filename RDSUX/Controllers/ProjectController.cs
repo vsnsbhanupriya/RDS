@@ -126,6 +126,22 @@ namespace RDSUX.Controllers
         }
 
         [HttpPost]
+        public IHttpActionResult AddShopDrawings(ShopDrawings shopDrawings)
+        {
+
+            SortedDictionary<string, string> sd = new SortedDictionary<string, string>() { };
+            sd.Add("@ProejctId", shopDrawings.ProjectId);
+            sd.Add("@fileName", shopDrawings.FileName);
+            sd.Add("@timeStamp", shopDrawings.TImeStamp);
+
+            RDSService.RDSService rdsService = new RDSService.RDSService();
+            DataSet retvalue = rdsService.SelectList("USP_InsertShopDrawings", "ShopDrawingId", sd);
+            var shopDrawingId = retvalue.Tables[0].Rows[0][0].ToString();
+            return Ok(shopDrawingId);
+
+        }
+
+        [HttpPost]
         public IHttpActionResult AddContractDWGS(ContractDWGS contractDWGS)
         {
 
@@ -162,6 +178,29 @@ namespace RDSUX.Controllers
 
             }
             return Ok(contractDwgs);
+        }
+
+        [HttpGet]
+        public IHttpActionResult GetShopDrawings(string projectId)
+        {
+            SortedDictionary<string, string> sd = new SortedDictionary<string, string>() { };
+            sd.Add("@ProejctId", projectId.ToString());
+            RDSService.RDSService rdsService = new RDSService.RDSService();
+            DataSet ds = rdsService.SelectList("USP_GetShopDrawings", sd);
+            var shopDrawings = new List<ShopDrawings>();
+            if (ds != null && ds.Tables.Count > 0)
+            {
+
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+
+                    var drawings = new ShopDrawings { ProjectId = dr[0].ToString(), ShopDrawingId = dr[1].ToString(), FileName = dr[2].ToString(), TImeStamp = dr[3].ToString() };
+                    shopDrawings.Add(drawings);
+                }
+
+
+            }
+            return Ok(shopDrawings);
         }
 
         [HttpGet]
@@ -253,6 +292,22 @@ namespace RDSUX.Controllers
             return Ok(retvalue);
 
         }
+
+        [HttpPost]
+        public IHttpActionResult DeleteShopDrawings(ShopDrawings shopDrawings)
+        {
+            if (shopDrawings == null)
+                return BadRequest();
+            SortedDictionary<string, string> sd = new SortedDictionary<string, string>() { };
+            sd.Add("@ProejctId", shopDrawings.ProjectId);
+            sd.Add("@shopDrawingId", shopDrawings.ShopDrawingId);
+            RDSService.RDSService rdsService = new RDSService.RDSService();
+            DataSet retvalue = rdsService.SelectList("USP_DeleteShopDrawings", sd);
+            return Ok(retvalue);
+
+        }
+
+
 
 
         [HttpPost]

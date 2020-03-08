@@ -25,7 +25,7 @@ namespace RDSUX.Models
         public HttpPostedFileBase JobSheet { get; set; }
         public HttpPostedFileBase ContractDWGS { get; set; }
         public HttpPostedFileBase RFIResponses { get; set; }
-
+        public HttpPostedFileBase ShopDrawings { get; set; }
         public HttpPostedFileBase EngineerReviewDrawings { get; set; }
         public IEnumerable<SelectListItem> ProjectTypeList { get; set; }
         //  public List<ProjectType> ProjectType { get; set; }

@@ -37,11 +37,9 @@
                 var downloadmodel = "ContractDWGS_" + item.ContractDrawingId + "_" + item.ProjectId;
             }
             <a href='/Home/Download?downloadmodel=@downloadmodel'>Download</a>
-            @*@(Html.ActionLink("Download", "Download", "Home", new { downloadmodel = @downloadmodel }))
 
-        @Html.ActionLink()*@
             <a href='/Home/DeleteDocument?downloadmodel=@downloadmodel'>Delete</a>
-            @*@Html.ActionLink("Delete", "Delete", "Home", new { /* id=item.PrimaryKey */ })*@
+           
         </td>
     </tr>
 }
