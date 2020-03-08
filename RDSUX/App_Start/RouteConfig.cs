@@ -20,7 +20,7 @@ namespace RDSUX
             );
 
             routes.MapRoute(
-                name: "CreateProject",
+                name: "Save",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
             );

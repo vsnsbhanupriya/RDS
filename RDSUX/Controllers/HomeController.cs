@@ -176,7 +176,7 @@ namespace RDSUX.Controllers
             return PartialView(rfiResponses);
         }
 
-        public async Task<ActionResult> Save(ProjectDetailsModel projectDetailsModel, FormCollection formCollection)
+        public async Task<ActionResult> CreateProject(ProjectDetailsModel projectDetailsModel, FormCollection formCollection)
         {
             try
             {
