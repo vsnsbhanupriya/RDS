@@ -255,8 +255,8 @@ namespace RDSUX.Controllers
             DataSet retvalue = rdsService.SelectList("USP_DeleteRFIResponses", sd);
             return Ok(retvalue);
         }
-
-        [HttpPost]
+       
+       [HttpPost]
         public IHttpActionResult DeleteShopDrawings(ShopDrawings shopDrawings)
         {
             if (shopDrawings == null)
