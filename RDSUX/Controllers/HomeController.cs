@@ -1,25 +1,22 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using RDSUX.Models;
+using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
-using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Configuration;
 using System.Web.Mvc;
 using System.Web.Routing;
-using Newtonsoft.Json;
-using RDSUX.Models;
 
 namespace RDSUX.Controllers
 {
     public class HomeController : Controller
     {
-       
-       public async Task<ActionResult> Index(string redirectResult="")
+        public async Task<ActionResult> Index(string redirectResult = "")
         {
             ViewBag.Title = "Home Page";
             ViewBag.result = redirectResult;
@@ -29,9 +26,6 @@ namespace RDSUX.Controllers
 
             using (var client = new HttpClient())
             {
-
-
-
                 client.BaseAddress = new Uri(baseURL);
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -43,11 +37,9 @@ namespace RDSUX.Controllers
                     if (result != null)
                     {
                         pdm.ProjectTypeList = projectTypes.Select(x => new SelectListItem { Value = x.ProjectTypeId.ToString(), Text = x.ProjectName, Selected = x.ProjectTypeId == pdm.ProjectTypeId });
-
-                       
                     }
                 }
-             //   ViewBag.ProjectTypeModel = pdm.ProjectType;
+                //   ViewBag.ProjectTypeModel = pdm.ProjectType;
             }
 
             using (var client = new HttpClient())
@@ -79,9 +71,9 @@ namespace RDSUX.Controllers
 
             ViewBag.ProjectDetailsModel = pdm;
             return View(pdm);
-        //    return View();
+            //    return View();
         }
-       
+
         public async Task<ActionResult> ProjectList()
         {
             string baseURL = WebConfigurationManager.AppSettings["baseurl"];
@@ -96,12 +88,11 @@ namespace RDSUX.Controllers
                 if (response.IsSuccessStatusCode)
                 {
                     var result = response.Content.ReadAsStringAsync().Result;
-                     lisProject = JsonConvert.DeserializeObject<List<Project>>(result);
+                    lisProject = JsonConvert.DeserializeObject<List<Project>>(result);
 
                     if (result != null)
                         ViewBag.ProjectList = lisProject;
                 }
-                
             }
             return View(lisProject);
         }
@@ -120,14 +111,11 @@ namespace RDSUX.Controllers
                 {
                     var result = contrctDWGSResponse.Content.ReadAsStringAsync().Result;
                     drawings = JsonConvert.DeserializeObject<List<ShopDrawings>>(result);
-
                 }
-
             }
             return PartialView(drawings);
-
-
         }
+
         public ActionResult GetContractDwgs(int id)
         {
             var drawings = new List<ContractDWGS>();
@@ -138,15 +126,13 @@ namespace RDSUX.Controllers
                 client.BaseAddress = new Uri(baseURL);
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                HttpResponseMessage contrctDWGSResponse =  client.GetAsync("/api/Project/GetContractDWGS?projectId="  +id.ToString()).Result;
+                HttpResponseMessage contrctDWGSResponse = client.GetAsync("/api/Project/GetContractDWGS?projectId=" + id.ToString()).Result;
                 if (contrctDWGSResponse.IsSuccessStatusCode)
                 {
                     var result = contrctDWGSResponse.Content.ReadAsStringAsync().Result;
-                     drawings = JsonConvert.DeserializeObject<List<ContractDWGS>>(result);
-
+                    drawings = JsonConvert.DeserializeObject<List<ContractDWGS>>(result);
                 }
-
-                }
+            }
             return PartialView(drawings);
         }
 
@@ -165,14 +151,10 @@ namespace RDSUX.Controllers
                 {
                     var result = EngineeringReviewedDrawingsResponse.Content.ReadAsStringAsync().Result;
                     drawings = JsonConvert.DeserializeObject<List<EngineerReviewedDrawings>>(result);
-
                 }
-
             }
             return PartialView(drawings);
         }
-
-
 
         public ActionResult GeetRFIResponses(int id)
         {
@@ -189,15 +171,10 @@ namespace RDSUX.Controllers
                 {
                     var result = contrctDWGSResponse.Content.ReadAsStringAsync().Result;
                     rfiResponses = JsonConvert.DeserializeObject<List<RFIResponse>>(result);
-
                 }
-
             }
             return PartialView(rfiResponses);
-
-
         }
-
 
         public async Task<ActionResult> CreateProject(ProjectDetailsModel projectDetailsModel, FormCollection formCollection)
         {
@@ -205,9 +182,9 @@ namespace RDSUX.Controllers
             {
                 string baseURL = WebConfigurationManager.AppSettings["baseurl"];
                 if (ModelState.IsValid)
-                {                    
-                       using (var client = new HttpClient())
-                        {
+                {
+                    using (var client = new HttpClient())
+                    {
                         string projectType = formCollection["ProjectTypeModel"].ToString();
                         string sow = formCollection["SOWModel"].ToString();
                         string notes = formCollection["Notes"].ToString();
@@ -220,7 +197,7 @@ namespace RDSUX.Controllers
                         Project project = new Project();
                         project.AssignDate = DateTime.Now;
                         project.CreateBy = "System";
-                        project.CreateDate =  DateTime.Now;
+                        project.CreateDate = DateTime.Now;
                         project.JobNumber = Convert.ToInt32(JobNumber);
                         project.Notes = notes;
                         project.PurchaseOrder = string.Empty;
@@ -232,25 +209,25 @@ namespace RDSUX.Controllers
                         project.BarCodeGrade = BarCodeGrade;
                         project.StandardSplice = Convert.ToInt32(StandardSplice);
                         project.MechanicSplice = Convert.ToInt32(MechanicSplice);
-                        project.JobSheetName = projectDetailsModel.JobSheet?.FileName??string.Empty ;
-                       
+                        project.JobSheetName = projectDetailsModel.JobSheet?.FileName ?? string.Empty;
+
                         client.BaseAddress = new Uri(baseURL);
-                            client.DefaultRequestHeaders.Accept.Clear();
-                            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                        client.DefaultRequestHeaders.Accept.Clear();
+                        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                         HttpResponseMessage response = await client.PostAsJsonAsync("/api/Project/CreateProject", project);
 
                         if (response.IsSuccessStatusCode == true)
                         {
                             var result = response.Content.ReadAsStringAsync().Result;
                             var projectId = JsonConvert.DeserializeObject<string>(result);
-                           
+
                             if (projectDetailsModel.JobSheet != null)
                             {
                                 var jobSheetPath = "\\SourceFiles\\JobSheet\\" + projectId;
 
                                 if (System.IO.Directory.Exists(Server.MapPath("~") + jobSheetPath) == false)
                                     System.IO.Directory.CreateDirectory(Server.MapPath("~") + jobSheetPath);
-                                projectDetailsModel.JobSheet.SaveAs(Server.MapPath("~") + jobSheetPath + "\\" + string.Format("{0:yyyyMMddHHmmss}", DateTime.Now) + "_"+ projectDetailsModel.JobSheet.FileName);
+                                projectDetailsModel.JobSheet.SaveAs(Server.MapPath("~") + jobSheetPath + "\\" + string.Format("{0:yyyyMMddHHmmss}", DateTime.Now) + "_" + projectDetailsModel.JobSheet.FileName);
                             }
 
                             //if (projectDetailsModel.EngineerReviewDrawings != null)
@@ -282,17 +259,16 @@ namespace RDSUX.Controllers
 
                             ModelState.Clear();
                             ViewBag.result = "Record Inserted Successfully!";
-                            return RedirectToAction("Index",new { redirectResult=ViewBag.result }) ;
+                            return RedirectToAction("Index", new { redirectResult = ViewBag.result });
                         }
 
                         return RedirectToAction("Index");
-
                     }
                 }
 
                 return RedirectToAction("Index");
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return RedirectToAction("Index");
             }
@@ -317,7 +293,7 @@ namespace RDSUX.Controllers
                         string MachanicSplice = formCollection["MachanicSplice"].ToString();
                         string ProjectId = formCollection["ProejctId"].ToString();
                         string PurchaseOrder = formCollection["PurchaseOrder"].ToString();
-                    
+
                         Project project = new Project();
                         project.AssignDate = DateTime.Now;
                         project.CreateBy = "System";
@@ -329,7 +305,7 @@ namespace RDSUX.Controllers
                         project.ProjetTypeId = Convert.ToInt32(projectType);
                         project.ScopeOfWorkId = Convert.ToInt32(sow);
                         project.StatusId = 1;
-                        project.ProejctId =  Convert.ToInt32(ProjectId);
+                        project.ProejctId = Convert.ToInt32(ProjectId);
                         project.StockLength = Convert.ToInt32(StockLength);
                         project.BarCodeGrade = BarCodeGrade;
                         project.StandardSplice = Convert.ToInt32(StandardSplice);
@@ -344,7 +320,7 @@ namespace RDSUX.Controllers
                         {
                             if (projectDetailsModel.ContractDWGS != null)
                             {
-                                using(var client1 = new HttpClient())
+                                using (var client1 = new HttpClient())
                                 {
                                     client1.BaseAddress = new Uri(baseURL);
                                     client1.DefaultRequestHeaders.Accept.Clear();
@@ -355,17 +331,12 @@ namespace RDSUX.Controllers
                                         var result = contrctDWGSResponse.Content.ReadAsStringAsync().Result;
                                         var contractDrawingId = JsonConvert.DeserializeObject<string>(result);
                                         var projectId = projectDetailsModel.ProejctId;
-                                        var contractDWGSPath = "\\SourceFiles\\ContractDWGS\\" + projectId+"_"+contractDrawingId;
+                                        var contractDWGSPath = "\\SourceFiles\\ContractDWGS\\" + projectId + "_" + contractDrawingId;
                                         if (System.IO.Directory.Exists(Server.MapPath("~") + contractDWGSPath) == false)
-                                   System.IO.Directory.CreateDirectory(Server.MapPath("~") + contractDWGSPath);
-                                projectDetailsModel.ContractDWGS.SaveAs(Server.MapPath("~") + contractDWGSPath + "\\" + string.Format("{0:yyyyMMddHHmmss}", DateTime.Now) + "_" + projectDetailsModel.ContractDWGS.FileName);
-
-
+                                            System.IO.Directory.CreateDirectory(Server.MapPath("~") + contractDWGSPath);
+                                        projectDetailsModel.ContractDWGS.SaveAs(Server.MapPath("~") + contractDWGSPath + "\\" + string.Format("{0:yyyyMMddHHmmss}", DateTime.Now) + "_" + projectDetailsModel.ContractDWGS.FileName);
                                     }
-
-                                }                            
-                                
-
+                                }
                             }
                             //rfiResponse
                             if (projectDetailsModel.RFIResponses != null)
@@ -385,13 +356,8 @@ namespace RDSUX.Controllers
                                         if (System.IO.Directory.Exists(Server.MapPath("~") + RFIPath) == false)
                                             System.IO.Directory.CreateDirectory(Server.MapPath("~") + RFIPath);
                                         projectDetailsModel.RFIResponses.SaveAs(Server.MapPath("~") + RFIPath + "\\" + string.Format("{0:yyyyMMddHHmmss}", DateTime.Now) + "_" + projectDetailsModel.RFIResponses.FileName);
-
-
                                     }
-
                                 }
-
-
                             }
                             //enginerrreview
                             if (projectDetailsModel.EngineerReviewDrawings != null)
@@ -411,16 +377,9 @@ namespace RDSUX.Controllers
                                         if (System.IO.Directory.Exists(Server.MapPath("~") + engPath) == false)
                                             System.IO.Directory.CreateDirectory(Server.MapPath("~") + engPath);
                                         projectDetailsModel.EngineerReviewDrawings.SaveAs(Server.MapPath("~") + engPath + "\\" + string.Format("{0:yyyyMMddHHmmss}", DateTime.Now) + "_" + projectDetailsModel.EngineerReviewDrawings.FileName);
-
-
                                     }
-
                                 }
-
-
                             }
-
-
 
                             ModelState.Clear();
                             ViewBag.result = "Record Updated Successfully!";
@@ -428,18 +387,17 @@ namespace RDSUX.Controllers
                         }
 
                         return RedirectToAction("ProjectList");
-
                     }
                 }
 
                 return RedirectToAction("ProjecList");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return RedirectToAction("Index");
             }
         }
-        
+
         public ActionResult Download(string downloadmodel)
         {
             var model = downloadmodel.Split('_');
@@ -459,11 +417,9 @@ namespace RDSUX.Controllers
                 {
                     var result = contrctDWGSResponse.Content.ReadAsStringAsync().Result;
                     drawings = JsonConvert.DeserializeObject<List<ContractDWGS>>(result);
-
                 }
-
             }
-            var selectedDrawing = drawings.FirstOrDefault(e => e.ContractDrawingId.Equals( contractId, StringComparison.InvariantCultureIgnoreCase));
+            var selectedDrawing = drawings.FirstOrDefault(e => e.ContractDrawingId.Equals(contractId, StringComparison.InvariantCultureIgnoreCase));
             if (selectedDrawing != null)
             {
                 var fileName = selectedDrawing.FileName;
@@ -471,7 +427,6 @@ namespace RDSUX.Controllers
                 var path = "\\SourceFiles\\" + folder + "\\" + projectId + "_" + contractId;
                 if (System.IO.Directory.Exists(Server.MapPath("~") + path))
                 {
-                    
                     var directoryInfo = new System.IO.DirectoryInfo(Server.MapPath("~") + path);
                     var fileinfo = directoryInfo.GetFiles().FirstOrDefault();
                     byte[] fileBytes = System.IO.File.ReadAllBytes(fileinfo.FullName);
@@ -487,8 +442,6 @@ namespace RDSUX.Controllers
             {
                 throw new Exception("File NOt found");
             }
-          
-            
         }
 
         public ActionResult DownloadRFIResponse(string downloadmodel)
@@ -510,9 +463,7 @@ namespace RDSUX.Controllers
                 {
                     var result = contrctDWGSResponse.Content.ReadAsStringAsync().Result;
                     rFIResponses = JsonConvert.DeserializeObject<List<RFIResponse>>(result);
-
                 }
-
             }
             var selectedDrawing = rFIResponses.FirstOrDefault(e => e.RfiResponseId.Equals(rfiResponseId, StringComparison.InvariantCultureIgnoreCase));
             if (selectedDrawing != null)
@@ -522,7 +473,6 @@ namespace RDSUX.Controllers
                 var path = "\\SourceFiles\\" + folder + "\\" + projectId + "_" + rfiResponseId;
                 if (System.IO.Directory.Exists(Server.MapPath("~") + path))
                 {
-
                     var directoryInfo = new System.IO.DirectoryInfo(Server.MapPath("~") + path);
                     var fileinfo = directoryInfo.GetFiles().FirstOrDefault();
                     byte[] fileBytes = System.IO.File.ReadAllBytes(fileinfo.FullName);
@@ -538,8 +488,6 @@ namespace RDSUX.Controllers
             {
                 throw new Exception("File NOt found");
             }
-
-
         }
 
         public ActionResult DownloadEngineeringRiewedDrawings(string downloadmodel)
@@ -561,9 +509,7 @@ namespace RDSUX.Controllers
                 {
                     var result = contrctDWGSResponse.Content.ReadAsStringAsync().Result;
                     rFIResponses = JsonConvert.DeserializeObject<List<EngineerReviewedDrawings>>(result);
-
                 }
-
             }
             var selectedDrawing = rFIResponses.FirstOrDefault(e => e.EngineeringDrawingId.Equals(engDrawingId, StringComparison.InvariantCultureIgnoreCase));
             if (selectedDrawing != null)
@@ -573,7 +519,6 @@ namespace RDSUX.Controllers
                 var path = "\\SourceFiles\\" + folder + "\\" + projectId + "_" + engDrawingId;
                 if (System.IO.Directory.Exists(Server.MapPath("~") + path))
                 {
-
                     var directoryInfo = new System.IO.DirectoryInfo(Server.MapPath("~") + path);
                     var fileinfo = directoryInfo.GetFiles().FirstOrDefault();
                     byte[] fileBytes = System.IO.File.ReadAllBytes(fileinfo.FullName);
@@ -589,8 +534,6 @@ namespace RDSUX.Controllers
             {
                 throw new Exception("File NOt found");
             }
-
-
         }
 
         public ActionResult DownloadShopDrawings(string downloadmodel)
@@ -612,9 +555,7 @@ namespace RDSUX.Controllers
                 {
                     var result = shopDrawingsResponse.Content.ReadAsStringAsync().Result;
                     shopDrawings = JsonConvert.DeserializeObject<List<ShopDrawings>>(result);
-
                 }
-
             }
             var selectedDrawing = shopDrawings.FirstOrDefault(e => e.ShopDrawingId.Equals(shopDrawingId, StringComparison.InvariantCultureIgnoreCase));
             if (selectedDrawing != null)
@@ -624,7 +565,6 @@ namespace RDSUX.Controllers
                 var path = "\\SourceFiles\\" + folder + "\\" + projectId + "_" + shopDrawingId;
                 if (System.IO.Directory.Exists(Server.MapPath("~") + path))
                 {
-
                     var directoryInfo = new System.IO.DirectoryInfo(Server.MapPath("~") + path);
                     var fileinfo = directoryInfo.GetFiles().FirstOrDefault();
                     byte[] fileBytes = System.IO.File.ReadAllBytes(fileinfo.FullName);
@@ -640,14 +580,88 @@ namespace RDSUX.Controllers
             {
                 throw new Exception("File NOt found");
             }
-
-
         }
 
+        public async Task<ActionResult> DownloadJobSheet(int id)
+        {
+            string baseURL = WebConfigurationManager.AppSettings["baseurl"];
+            List<Project> lisProject = new List<Project>();
+            Project selectedProject = new Project();
+            string jobSheet = string.Empty;
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(baseURL);
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                HttpResponseMessage response = await client.GetAsync("/api/Project/GetProjectList");
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = response.Content.ReadAsStringAsync().Result;
+                    lisProject = JsonConvert.DeserializeObject<List<Project>>(result);
+
+                    if (result != null)
+                        ViewBag.ProjectList = lisProject;
+                    selectedProject = lisProject.Where(s => s.ProejctId == Convert.ToInt32(id)).FirstOrDefault();
+                    if (selectedProject != null)
+                    {
+                        jobSheet = selectedProject.JobSheetName;
+                    }
+                }
+            }
+            if (!string.IsNullOrEmpty(jobSheet))
+            {
+                var path = "\\SourceFiles\\JobSheet\\" + id;
+                if (System.IO.Directory.Exists(Server.MapPath("~") + path))
+                {
+                    var directoryInfo = new System.IO.DirectoryInfo(Server.MapPath("~") + path);
+                    var fileinfo = directoryInfo.GetFiles().FirstOrDefault();
+                    byte[] fileBytes = System.IO.File.ReadAllBytes(fileinfo.FullName);
+
+                    return File(fileBytes, System.Net.Mime.MediaTypeNames.Application.Octet, jobSheet);
+                }
+                else
+                {
+                    throw new Exception("File NOt found");
+                }
+            }
+            throw new Exception("Unable to download Job sheet");
+        }
+
+        public async Task<ActionResult> DeleteJobSheet(int id)
+        {
+            string baseURL = WebConfigurationManager.AppSettings["baseurl"];
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(baseURL);
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                HttpResponseMessage response = await client.PostAsJsonAsync("/api/Project/DeleteJobSheet", id);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var path = "\\SourceFiles\\JobSheet\\" + id;
+
+                    if (System.IO.Directory.Exists(Server.MapPath("~") + path))
+                    {
+                        var directoryInfo = new System.IO.DirectoryInfo(Server.MapPath("~") + path);
+                        foreach (var file in directoryInfo.GetFiles())
+                        {
+                            file.Delete();
+                        }
+                        directoryInfo.Delete();
+                        return RedirectToAction("EditProject", new RouteValueDictionary(
+        new { controller = "Home", action = "EditProject", Id = id }));
+                    }
+                }
+            }
+
+            throw new Exception("Something went wrong.");
+        }
 
         public async Task<ActionResult> DeleteDocument(string downloadmodel)
         {
-
             var model = downloadmodel.Split('_');
             var folder = model[0];
             var contractId = model[1];
@@ -667,7 +681,6 @@ namespace RDSUX.Controllers
 
                     if (System.IO.Directory.Exists(Server.MapPath("~") + path))
                     {
-
                         var directoryInfo = new System.IO.DirectoryInfo(Server.MapPath("~") + path);
                         foreach (var file in directoryInfo.GetFiles())
                         {
@@ -677,19 +690,14 @@ namespace RDSUX.Controllers
                         return RedirectToAction("EditProject", new RouteValueDictionary(
         new { controller = "Home", action = "EditProject", Id = projectId }));
                     }
-                    
                 }
             }
-
-
-
 
             throw new Exception("Something went wrong.");
         }
 
         public async Task<ActionResult> DeleteRFIDocument(string downloadmodel)
         {
-
             var model = downloadmodel.Split('_');
             var folder = model[0];
             var RfiId = model[1];
@@ -709,7 +717,6 @@ namespace RDSUX.Controllers
 
                     if (System.IO.Directory.Exists(Server.MapPath("~") + path))
                     {
-
                         var directoryInfo = new System.IO.DirectoryInfo(Server.MapPath("~") + path);
                         foreach (var file in directoryInfo.GetFiles())
                         {
@@ -719,19 +726,14 @@ namespace RDSUX.Controllers
                         return RedirectToAction("EditProject", new RouteValueDictionary(
         new { controller = "Home", action = "EditProject", Id = projectId }));
                     }
-
                 }
             }
-
-
-
 
             throw new Exception("Something went wrong.");
         }
 
         public async Task<ActionResult> DeleteEngineeringReviewedDocument(string downloadmodel)
         {
-
             var model = downloadmodel.Split('_');
             var folder = model[0];
             var engineeredReviewedDocId = model[1];
@@ -751,7 +753,6 @@ namespace RDSUX.Controllers
 
                     if (System.IO.Directory.Exists(Server.MapPath("~") + path))
                     {
-
                         var directoryInfo = new System.IO.DirectoryInfo(Server.MapPath("~") + path);
                         foreach (var file in directoryInfo.GetFiles())
                         {
@@ -761,19 +762,14 @@ namespace RDSUX.Controllers
                         return RedirectToAction("EditProject", new RouteValueDictionary(
         new { controller = "Home", action = "EditProject", Id = projectId }));
                     }
-
                 }
             }
-
-
-
 
             throw new Exception("Something went wrong.");
         }
 
         public async Task<ActionResult> DeleteShopDrawingsDocument(string downloadmodel)
         {
-
             var model = downloadmodel.Split('_');
             var folder = model[0];
             var shopDrawingId = model[1];
@@ -793,7 +789,6 @@ namespace RDSUX.Controllers
 
                     if (System.IO.Directory.Exists(Server.MapPath("~") + path))
                     {
-
                         var directoryInfo = new System.IO.DirectoryInfo(Server.MapPath("~") + path);
                         foreach (var file in directoryInfo.GetFiles())
                         {
@@ -803,16 +798,11 @@ namespace RDSUX.Controllers
                         return RedirectToAction("EditProject", new RouteValueDictionary(
         new { controller = "Home", action = "EditProject", Id = projectId }));
                     }
-
                 }
             }
 
-
-
-
             throw new Exception("Something went wrong.");
         }
-
 
         public async Task<ActionResult> EditProject(string Id)
         {
@@ -844,18 +834,10 @@ namespace RDSUX.Controllers
                     pdm.ScopeOfWorkId = selectedProject.ScopeOfWorkId;
                     pdm.ProejctId = selectedProject.ProejctId;
                     pdm.JobSheetName = selectedProject.JobSheetName;
-                    
-                   
-                    
-
                 }
-
             }
             using (var client = new HttpClient())
             {
-
-
-
                 client.BaseAddress = new Uri(baseURL);
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -864,15 +846,14 @@ namespace RDSUX.Controllers
                 {
                     var result = response.Content.ReadAsStringAsync().Result;
                     List<ProjectType> projectTypes = JsonConvert.DeserializeObject<List<ProjectType>>(result);
-                    if (result != null && projectTypes.Any() )
+                    if (result != null && projectTypes.Any())
                     {
                         pdm.ProjectTypeList = projectTypes.Select(x => new SelectListItem { Value = x.ProjectTypeId.ToString(), Text = x.ProjectName, Selected = x.ProjectTypeId == pdm.ProjectTypeId });
 
-                       // pdm.ProjectType = projectTypes;
+                        // pdm.ProjectType = projectTypes;
                     }
                 }
-              //  ViewBag.ProjectTypeModel = pdm.ProjectType;
-            
+                //  ViewBag.ProjectTypeModel = pdm.ProjectType;
             }
 
             using (var client = new HttpClient())
@@ -888,18 +869,18 @@ namespace RDSUX.Controllers
                     List<ScopeOfWork> scopeOfWorks = JsonConvert.DeserializeObject<List<ScopeOfWork>>(result);
 
                     if (result != null)
-                        pdm.ScopeOfWork = scopeOfWorks.Select(x => new SelectListItem { Value = x.ScopeOfWorkId.ToString(), Text = x.ScopeOfWorkName, Selected = x.ScopeOfWorkId == pdm.ScopeOfWorkId }); 
+                        pdm.ScopeOfWork = scopeOfWorks.Select(x => new SelectListItem { Value = x.ScopeOfWorkId.ToString(), Text = x.ScopeOfWorkName, Selected = x.ScopeOfWorkId == pdm.ScopeOfWorkId });
                 }
-             //   ViewBag.SOWModel = pdm.ScopeOfWork;
+                //   ViewBag.SOWModel = pdm.ScopeOfWork;
             }
             List<BarCode> lstBarCode = new List<BarCode>();
             BarCode barCode = new BarCode();
-            using (var client=new HttpClient())
+            using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(baseURL);
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                HttpResponseMessage response = await client.GetAsync("/api/Project/GetBarCode?projectId="+Id);
+                HttpResponseMessage response = await client.GetAsync("/api/Project/GetBarCode?projectId=" + Id);
                 if (response.IsSuccessStatusCode)
                 {
                     var result = response.Content.ReadAsStringAsync().Result;
@@ -910,11 +891,9 @@ namespace RDSUX.Controllers
                         // pdm.ProjectType = projectTypes;
                     }
                 }
-
             }
 
-
-               // lstBarCode.Add(barCode);
+            // lstBarCode.Add(barCode);
             //ViewBag.BarCodeModel = lstBarCode;
             //pdm.BarCode = lstBarCode;
 
@@ -923,7 +902,7 @@ namespace RDSUX.Controllers
         }
 
         [HttpPost]
-        public  async Task<ActionResult> UploadDocuments(Project project)
+        public async Task<ActionResult> UploadDocuments(Project project)
         {
             string baseURL = WebConfigurationManager.AppSettings["baseurl"];
             try
@@ -945,7 +924,7 @@ namespace RDSUX.Controllers
                         {
                             var result = contrctDWGSResponse.Content.ReadAsStringAsync().Result;
                             var contractDrawingId = JsonConvert.DeserializeObject<string>(result);
-                          
+
                             var contractDWGSPath = "\\SourceFiles\\ContractDWGS\\" + projectId + "_" + contractDrawingId;
                             if (System.IO.Directory.Exists(Server.MapPath("~") + contractDWGSPath) == false)
                                 System.IO.Directory.CreateDirectory(Server.MapPath("~") + contractDWGSPath);
@@ -954,11 +933,7 @@ namespace RDSUX.Controllers
                             return Json("OK");
                         }
                         return Json("Unable to Upload");
-
                     }
-
-
-
                 }
                 else { return Json("No File Saved."); }
             }
@@ -997,11 +972,7 @@ namespace RDSUX.Controllers
                             return Json("OK");
                         }
                         return Json("Unable to Upload");
-
                     }
-
-
-
                 }
                 else { return Json("No File Saved."); }
             }
@@ -1040,17 +1011,12 @@ namespace RDSUX.Controllers
                             return Json("OK");
                         }
                         return Json("Unable to Upload");
-
                     }
-
-
-
                 }
                 else { return Json("No File Saved."); }
             }
             catch (Exception ex) { return Json("Error While Saving."); }
         }
-
 
         [HttpPost]
         public async Task<ActionResult> UploadRFIDocuments(Project project)
@@ -1077,7 +1043,7 @@ namespace RDSUX.Controllers
                             var result = rfiresponse.Content.ReadAsStringAsync().Result;
                             var rfiResponseId = JsonConvert.DeserializeObject<string>(result);
                             var RFIPath = "\\SourceFiles\\RFIResponses\\" + projectId + "_" + rfiResponseId;
-                            
+
                             if (System.IO.Directory.Exists(Server.MapPath("~") + RFIPath) == false)
                                 System.IO.Directory.CreateDirectory(Server.MapPath("~") + RFIPath);
                             filebase.SaveAs(Server.MapPath("~") + RFIPath + "\\" + string.Format("{0:yyyyMMddHHmmss}", DateTime.Now) + "_" + fileName);
@@ -1085,16 +1051,13 @@ namespace RDSUX.Controllers
                             return Json("OK");
                         }
                         return Json("Unable to Upload");
-
                     }
-
-
-
                 }
                 else { return Json("No File Saved."); }
             }
             catch (Exception ex) { return Json("Error While Saving."); }
         }
+
         public async Task<ActionResult> DeleteProject(string Id)
         {
             var project = ViewData["ProjectModel"];
@@ -1104,16 +1067,15 @@ namespace RDSUX.Controllers
                 client.BaseAddress = new Uri(baseURL);
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                HttpResponseMessage response = await client.PostAsJsonAsync("/api/Project/DeleteProject",Id);
+                HttpResponseMessage response = await client.PostAsJsonAsync("/api/Project/DeleteProject", Id);
 
                 if (response.IsSuccessStatusCode)
-                {                    
+                {
                     ViewBag.result = "Record Deleted Successfully!";
                     return RedirectToAction("ProjectList", new { redirectResult = ViewBag.result });
                 }
             }
             return RedirectToAction("ProjectList");
         }
-
     }
 }
