@@ -8,7 +8,7 @@
 <h2 class="create-title">Projects</h2>
 <p style="color:green;">@ViewBag.result</p>
 <p>
-    @Html.ActionLink("Create New Project", "Index", "Home", new { area = "" }, null)
+    <b> <h4> @Html.ActionLink("Create New Project", "Index", "Home", new { area = "" }, null)</h4></b>
 </p>
 @using (Html.BeginForm("ProjectList", "Home", FormMethod.Post))
 {
@@ -17,65 +17,49 @@
     <tbody>
         <tr class="thbody-bg">
             <th>
-                @Html.DisplayNameFor(model => model.ProejctId)
+                SL NO
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.ProjectName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Notes)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PurchaseOrder)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.AssignDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreateDate)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.CreateBy)
             </th>
+
             <th>
-                @Html.DisplayNameFor(model => model.JobNumber)
+                @Html.DisplayNameFor(model => model.Notes)
             </th>
             <th></th>
         </tr>
 
-        @foreach (var item in Model)
+        @foreach (var item in Model.Select((item, index) => new { item, index }))
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ProejctId)
-                </td>
-                <td>
-                    @Html.ActionLink(item.ProjectName, "EditProject", "Home", new { Id = item.ProejctId }, null)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Notes)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.PurchaseOrder)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.AssignDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CreateDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CreateBy)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.JobNumber)
-                </td>
-                <td>
-                    @*@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                        @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |*@
-                    @Html.ActionLink("Delete", "DeleteProject", new { id = item.ProejctId })
-                </td>
-            </tr>
+        <tr>
+            <td>
+                @(item.index+1)
+            </td>
+            <td>
+                @Html.ActionLink(item.item.ProjectName, "EditProject", "Home", new { Id = item.item.ProejctId }, null)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.item.AssignDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.item.CreateBy)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.item.Notes)
+            </td>
+
+            <td>
+                @*@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |*@
+                @Html.ActionLink("Delete", "DeleteProject", new { id = item.item.ProejctId })
+            </td>
+        </tr>
         }
 </tbody>
 </table>

@@ -61,7 +61,7 @@
                 <td>&nbsp;</td>
                 <td width="30%" class="font12">Job Sheet:<input type="file" name="JobSheet" />
                  </td>
-                <td width="30%" style="display:none" >  </td>
+                <td width="30%" >Contract DWGS: <input type="file" name="ContractDWGS" />  </td>
             </tr>
             <tr>
                 <td colspan="3">&nbsp;</td>
@@ -72,7 +72,7 @@
             <tbody class="tbody-inner">
                 <tr class="width100">
                     <td colspan="2">
-                        <h4> Barcode Information</h4>
+                        <h4> Standard Information</h4>
                     </td>
 
                 </tr>
@@ -83,20 +83,20 @@
                     </td>
                 </tr>
                 <tr class="width100">
-                    <td class="font12">BarcodeGrade: </td>
+                    <td class="font12">Bar Supports: </td>
                     <td class="td-margin">
                         @Html.TextBox("BarCodeGrade", Model.BarCode[0].BarCodeGrade, new { @class = "form-control" })
                     </td>
                 </tr>
 
                 <tr class="width100">
-                    <td class="font12">Standard Splice: </td>
+                    <td class="font12">Client Name: </td>
                     <td class="td-margin">
                         @Html.TextBox("StandardSplice", Model.BarCode[0].StandardSplice, new { @class = "form-control" })
                     </td>
                 </tr>
                 <tr class="width100">
-                    <td class="font12">Mechanical Splice: </td>
+                    <td class="font12">Type of Couplers: </td>
                     <td class="td-margin">
                         @Html.TextBox("MachanicSplice", Model.BarCode[0].MachanicSplice, new { @class = "form-control" })
                     </td>
@@ -107,14 +107,14 @@
                 </tbody>
         </table>
 
-        <table width="100%">
+        @*<table width="100%">
             <tr>
                 <td>&nbsp;</td>
             </tr>
             <tr>
                 <td width="30%" class="font12">Contract DWGS: <input type="file" name="ContractDWGS" /> </td>
             </tr>
-        </table>
+        </table>*@
         <div align="right">
             <input type="submit" class="btn btn-default create-btn" value="CreateProject" 
                    onclick="location.href='@Url.Action("Home", "Home11")'"/>
