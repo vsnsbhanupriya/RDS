@@ -239,23 +239,26 @@ namespace RDSUX.Controllers
                             //    projectDetailsModel.EngineerReviewDrawings.SaveAs(Server.MapPath("~") + EngineerReviewDrawingsPath + "\\" + string.Format("{0:yyyy-MM-dd_HH-mm-ss-fff}", DateTime.Now) + "_" + projectDetailsModel.EngineerReviewDrawings.FileName);
                             //}
 
-                            if (projectDetailsModel.ContractDWGS != null)
+                            if (projectDetailsModel.ContractDWGSFiles.Any())
                             {
-                                using (var client1 = new HttpClient())
+                                foreach (var contractDWGSfilebase in projectDetailsModel.ContractDWGSFiles)
                                 {
-                                    client1.BaseAddress = new Uri(baseURL);
-                                    client1.DefaultRequestHeaders.Accept.Clear();
-                                    client1.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                                    HttpResponseMessage contrctDWGSResponse = await client1.PostAsJsonAsync("/api/Project/AddContractDWGS", new ContractDWGS(projectDetailsModel.ContractDWGS.FileName, projectId));
-                                    if (contrctDWGSResponse.IsSuccessStatusCode)
+                                    using (var client1 = new HttpClient())
                                     {
-                                        var contractDrawingsResponse = contrctDWGSResponse.Content.ReadAsStringAsync().Result;
-                                        var contractDrawingId = JsonConvert.DeserializeObject<string>(contractDrawingsResponse);
+                                        client1.BaseAddress = new Uri(baseURL);
+                                        client1.DefaultRequestHeaders.Accept.Clear();
+                                        client1.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                                        HttpResponseMessage contrctDWGSResponse = await client1.PostAsJsonAsync("/api/Project/AddContractDWGS", new ContractDWGS(contractDWGSfilebase.FileName, projectId));
+                                        if (contrctDWGSResponse.IsSuccessStatusCode)
+                                        {
+                                            var contractDrawingsResponse = contrctDWGSResponse.Content.ReadAsStringAsync().Result;
+                                            var contractDrawingId = JsonConvert.DeserializeObject<string>(contractDrawingsResponse);
 
-                                        var contractDWGSPath = "\\SourceFiles\\ContractDWGS\\" + projectId + "_" + contractDrawingId;
-                                        if (System.IO.Directory.Exists(Server.MapPath("~") + contractDWGSPath) == false)
-                                            System.IO.Directory.CreateDirectory(Server.MapPath("~") + contractDWGSPath);
-                                        projectDetailsModel.ContractDWGS.SaveAs(Server.MapPath("~") + contractDWGSPath + "\\" + string.Format("{0:yyyyMMddHHmmss}", DateTime.Now) + "_" + projectDetailsModel.ContractDWGS.FileName);
+                                            var contractDWGSPath = "\\SourceFiles\\ContractDWGS\\" + projectId + "_" + contractDrawingId;
+                                            if (System.IO.Directory.Exists(Server.MapPath("~") + contractDWGSPath) == false)
+                                                System.IO.Directory.CreateDirectory(Server.MapPath("~") + contractDWGSPath);
+                                            contractDWGSfilebase.SaveAs(Server.MapPath("~") + contractDWGSPath + "\\" + string.Format("{0:yyyyMMddHHmmss}", DateTime.Now) + "_" + contractDWGSfilebase.FileName);
+                                        }
                                     }
                                 }
                             }

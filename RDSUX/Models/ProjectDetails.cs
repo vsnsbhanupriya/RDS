@@ -8,7 +8,6 @@ namespace RDSUX.Models
 {
     public class ProjectDetailsModel
     {
-
         public int ProejctId { get; set; }
         public string ProjectName { get; set; }
         public string Notes { get; set; }
@@ -28,12 +27,13 @@ namespace RDSUX.Models
         public HttpPostedFileBase ShopDrawings { get; set; }
         public HttpPostedFileBase EngineerReviewDrawings { get; set; }
         public IEnumerable<SelectListItem> ProjectTypeList { get; set; }
+
         //  public List<ProjectType> ProjectType { get; set; }
         // public List<ScopeOfWork> ScopeOfWork { get; set; }
+        public HttpPostedFileBase[] ContractDWGSFiles { get; set; }
+
         public IEnumerable<SelectListItem> ScopeOfWork { get; set; }
         public List<Status> Status { get; set; }
-            public List<BarCode> BarCode { get; set; }
-        
+        public List<BarCode> BarCode { get; set; }
     }
-
 }
