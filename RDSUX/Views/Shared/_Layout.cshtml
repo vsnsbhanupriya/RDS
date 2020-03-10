@@ -32,7 +32,6 @@
         <hr />
 
         <footer>
-            
         </footer>
     </div>
 
@@ -48,7 +47,16 @@
          var projectId = $('#ProejctId').val();
          data.append("projectId",$('#ProejctId').val())
          var files = $("#ContractDWGS").get(0).files;
-     if (files.length > 0) { data.append("contractDWGSFile", files[0]); }
+         if (files.length > 0) {
+             for ( i = 0; i< files.length; i++)
+    {
+         data.append(i.toString(), files[i]);
+
+    }
+
+         } else {
+             return false;
+         }
    $.ajax({
                 url: '@Url.Action("UploadDocuments","Home")', type: "POST", processData: false,
                 data: data, dataType: 'json',
@@ -56,18 +64,18 @@
                 success: function (response) {
                     if (response != null || response != '')
                         $.ajax({
-                            contentType: 'application/html; charset=utf-8',  
-                             type: 'GET',  
+                            contentType: 'application/html; charset=utf-8',
+                             type: 'GET',
                              dataType: 'html',
-                            data: { "id": projectId },                            
+                            data: { "id": projectId },
                        url : '@Url.Action("GetContractDwgs", "Home")',
-                       
+
                            success: function (result) {
                                $('#dvContractDwgs').html(result);
                                $('#ContractDWGS').val('')
                             },
-                            error: function (xhr, status) {  
-alert(status) ;  
+                            error: function (xhr, status) {
+alert(status) ;
 }
                       });
 
@@ -79,12 +87,18 @@ alert(status) ;
 
     $("#btnRFIResponseUpload").click(function (e) {
 
-         
          var data = new FormData();
          var projectId = $('#ProejctId').val();
          data.append("projectId",$('#ProejctId').val())
          var files = $("#RFIResponses").get(0).files;
-        if (files.length > 0) { data.append("RFIResponseFile", files[0]); }
+        if (files.length > 0)
+        {
+              for ( i = 0; i< files.length; i++)
+    {
+         data.append(i.toString(), files[i]);
+
+    }
+        }
         else return false;
    $.ajax({
                 url: '@Url.Action("UploadRFIDocuments","Home")', type: "POST", processData: false,
@@ -93,18 +107,18 @@ alert(status) ;
                 success: function (response) {
                     if (response != null || response != '')
                         $.ajax({
-                            contentType: 'application/html; charset=utf-8',  
-                             type: 'GET',  
+                            contentType: 'application/html; charset=utf-8',
+                             type: 'GET',
                              dataType: 'html',
-                            data: { "id": projectId },                            
+                            data: { "id": projectId },
                        url : '@Url.Action("GeetRFIResponses", "Home")',
-                       
+
                            success: function (result) {
                                $('#dvRfiResponses').html(result);
                                $('#RFIResponses').val('')
                             },
-                            error: function (xhr, status) {  
-alert(status) ;  
+                            error: function (xhr, status) {
+alert(status) ;
 }
                       });
 
@@ -116,12 +130,18 @@ alert(status) ;
 
      $("#btnEngReviewedDrawingsUpload").click(function (e) {
 
-         
          var data = new FormData();
          var projectId = $('#ProejctId').val();
          data.append("projectId",$('#ProejctId').val())
          var files = $("#EngineerReviewDrawings").get(0).files;
-         if (files.length > 0) { data.append("EngReviewDwgFile", files[0]); }
+         if (files.length > 0)
+         {
+              for ( i = 0; i< files.length; i++)
+    {
+         data.append(i.toString(), files[i]);
+
+    }
+         }
          else return false;
    $.ajax({
                 url: '@Url.Action("UploadEngineerReviewDocuments","Home")', type: "POST", processData: false,
@@ -130,18 +150,18 @@ alert(status) ;
                 success: function (response) {
                     if (response != null || response != '')
                         $.ajax({
-                            contentType: 'application/html; charset=utf-8',  
-                             type: 'GET',  
+                            contentType: 'application/html; charset=utf-8',
+                             type: 'GET',
                              dataType: 'html',
-                            data: { "id": projectId },                            
+                            data: { "id": projectId },
                        url : '@Url.Action("GetEngineeringReviewedDwgs", "Home")',
-                       
+
                            success: function (result) {
                                $('#dvEngreviewedDwgs').html(result);
                                $('#EngineerReviewDrawings').val('')
                             },
-                            error: function (xhr, status) {  
-alert(status) ;  
+                            error: function (xhr, status) {
+alert(status) ;
 }
                       });
 
@@ -153,13 +173,17 @@ alert(status) ;
 
     $("#btnShopDrawingsUpload").click(function (e) {
 
-         
          var data = new FormData();
          var projectId = $('#ProejctId').val();
          data.append("projectId",$('#ProejctId').val())
          var files = $("#ShopDrawings").get(0).files;
         if (files.length > 0) {
-            data.append("shopDrawingsFile", files[0]);
+              for ( i = 0; i< files.length; i++)
+    {
+         data.append(i.toString(), files[i]);
+
+    }
+
         }
         else {
             return false;
@@ -172,18 +196,18 @@ alert(status) ;
                 success: function (response) {
                     if (response != null || response != '')
                         $.ajax({
-                            contentType: 'application/html; charset=utf-8',  
-                             type: 'GET',  
+                            contentType: 'application/html; charset=utf-8',
+                             type: 'GET',
                              dataType: 'html',
-                            data: { "id": projectId },                            
+                            data: { "id": projectId },
                        url : '@Url.Action("GetShopDrawings", "Home")',
-                       
+
                            success: function (result) {
                                $('#dvShopDrawings').html(result);
                                $('#ShopDrawings').val('')
                             },
-                            error: function (xhr, status) {  
-alert(status) ;  
+                            error: function (xhr, status) {
+alert(status) ;
 }
                       });
 
@@ -192,7 +216,4 @@ alert(status) ;
 
             });
 });
-
-
-
 </script>

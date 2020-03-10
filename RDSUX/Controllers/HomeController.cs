@@ -921,35 +921,39 @@ namespace RDSUX.Controllers
             {
                 if (System.Web.HttpContext.Current.Request.Files.AllKeys.Any())
                 {
-                    var documentfile = System.Web.HttpContext.Current.Request.Files["contractDWGSFile"];
                     var projectId = System.Web.HttpContext.Current.Request.Form["projectId"];
-                    HttpPostedFileBase filebase = new HttpPostedFileWrapper(documentfile);
-                    var fileName = Path.GetFileName(filebase.FileName);
 
-                    using (var client1 = new HttpClient())
+                    for (int i = 0; i < System.Web.HttpContext.Current.Request.Files.Count; i++)
                     {
-                        client1.BaseAddress = new Uri(baseURL);
-                        client1.DefaultRequestHeaders.Accept.Clear();
-                        client1.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                        HttpResponseMessage contrctDWGSResponse = await client1.PostAsJsonAsync("/api/Project/AddContractDWGS", new ContractDWGS(fileName, projectId));
-                        if (contrctDWGSResponse.IsSuccessStatusCode)
+                        var documentfile = System.Web.HttpContext.Current.Request.Files[i.ToString()];
+                        HttpPostedFileBase filebase = new HttpPostedFileWrapper(documentfile);
+                        var fileName = Path.GetFileName(filebase.FileName);
+                        using (var client1 = new HttpClient())
                         {
-                            var result = contrctDWGSResponse.Content.ReadAsStringAsync().Result;
-                            var contractDrawingId = JsonConvert.DeserializeObject<string>(result);
+                            client1.BaseAddress = new Uri(baseURL);
+                            client1.DefaultRequestHeaders.Accept.Clear();
+                            client1.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                            HttpResponseMessage contrctDWGSResponse = await client1.PostAsJsonAsync("/api/Project/AddContractDWGS", new ContractDWGS(fileName, projectId));
+                            if (contrctDWGSResponse.IsSuccessStatusCode)
+                            {
+                                var result = contrctDWGSResponse.Content.ReadAsStringAsync().Result;
+                                var contractDrawingId = JsonConvert.DeserializeObject<string>(result);
 
-                            var contractDWGSPath = "\\SourceFiles\\ContractDWGS\\" + projectId + "_" + contractDrawingId;
-                            if (System.IO.Directory.Exists(Server.MapPath("~") + contractDWGSPath) == false)
-                                System.IO.Directory.CreateDirectory(Server.MapPath("~") + contractDWGSPath);
-                            filebase.SaveAs(Server.MapPath("~") + contractDWGSPath + "\\" + string.Format("{0:yyyyMMddHHmmss}", DateTime.Now) + "_" + fileName);
-
-                            return Json("OK");
+                                var contractDWGSPath = "\\SourceFiles\\ContractDWGS\\" + projectId + "_" + contractDrawingId;
+                                if (System.IO.Directory.Exists(Server.MapPath("~") + contractDWGSPath) == false)
+                                    System.IO.Directory.CreateDirectory(Server.MapPath("~") + contractDWGSPath);
+                                filebase.SaveAs(Server.MapPath("~") + contractDWGSPath + "\\" + string.Format("{0:yyyyMMddHHmmss}", DateTime.Now) + "_" + fileName);
+                            }
                         }
-                        return Json("Unable to Upload");
                     }
+                    return Json("Ok");
                 }
                 else { return Json("No File Saved."); }
             }
-            catch (Exception ex) { return Json("Error While Saving."); }
+            catch (Exception ex)
+            {
+                return Json("Error While Saving.");
+            }
         }
 
         [HttpPost]
@@ -960,33 +964,38 @@ namespace RDSUX.Controllers
             {
                 if (System.Web.HttpContext.Current.Request.Files.AllKeys.Any())
                 {
-                    var documentfile = System.Web.HttpContext.Current.Request.Files["shopDrawingsFile"];
                     var projectId = System.Web.HttpContext.Current.Request.Form["projectId"];
-                    HttpPostedFileBase filebase = new HttpPostedFileWrapper(documentfile);
-                    var fileName = Path.GetFileName(filebase.FileName);
 
-                    using (var client1 = new HttpClient())
+                    for (int i = 0; i < System.Web.HttpContext.Current.Request.Files.Count; i++)
                     {
-                        client1.BaseAddress = new Uri(baseURL);
-                        client1.DefaultRequestHeaders.Accept.Clear();
-                        client1.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                        HttpResponseMessage shopDrawingsResponse = await client1.PostAsJsonAsync("/api/Project/AddShopDrawings", new ShopDrawings(fileName, projectId));
-                        if (shopDrawingsResponse.IsSuccessStatusCode)
+                        var documentfile = System.Web.HttpContext.Current.Request.Files[i.ToString()];
+                        HttpPostedFileBase filebase = new HttpPostedFileWrapper(documentfile);
+                        var fileName = Path.GetFileName(filebase.FileName);
+
+                        using (var client1 = new HttpClient())
                         {
-                            var result = shopDrawingsResponse.Content.ReadAsStringAsync().Result;
-                            var contractDrawingId = JsonConvert.DeserializeObject<string>(result);
+                            client1.BaseAddress = new Uri(baseURL);
+                            client1.DefaultRequestHeaders.Accept.Clear();
+                            client1.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                            HttpResponseMessage shopDrawingsResponse = await client1.PostAsJsonAsync("/api/Project/AddShopDrawings", new ShopDrawings(fileName, projectId));
+                            if (shopDrawingsResponse.IsSuccessStatusCode)
+                            {
+                                var result = shopDrawingsResponse.Content.ReadAsStringAsync().Result;
+                                var contractDrawingId = JsonConvert.DeserializeObject<string>(result);
 
-                            var contractDWGSPath = "\\SourceFiles\\ShopDrawings\\" + projectId + "_" + contractDrawingId;
-                            if (System.IO.Directory.Exists(Server.MapPath("~") + contractDWGSPath) == false)
-                                System.IO.Directory.CreateDirectory(Server.MapPath("~") + contractDWGSPath);
-                            filebase.SaveAs(Server.MapPath("~") + contractDWGSPath + "\\" + string.Format("{0:yyyyMMddHHmmss}", DateTime.Now) + "_" + fileName);
-
-                            return Json("OK");
+                                var contractDWGSPath = "\\SourceFiles\\ShopDrawings\\" + projectId + "_" + contractDrawingId;
+                                if (System.IO.Directory.Exists(Server.MapPath("~") + contractDWGSPath) == false)
+                                    System.IO.Directory.CreateDirectory(Server.MapPath("~") + contractDWGSPath);
+                                filebase.SaveAs(Server.MapPath("~") + contractDWGSPath + "\\" + string.Format("{0:yyyyMMddHHmmss}", DateTime.Now) + "_" + fileName);
+                            }
                         }
-                        return Json("Unable to Upload");
                     }
+                    return Json("OK");
                 }
-                else { return Json("No File Saved."); }
+                else
+                {
+                    return Json("No File Saved.");
+                }
             }
             catch (Exception ex) { return Json("Error While Saving."); }
         }
@@ -999,31 +1008,32 @@ namespace RDSUX.Controllers
             {
                 if (System.Web.HttpContext.Current.Request.Files.AllKeys.Any())
                 {
-                    var documentfile = System.Web.HttpContext.Current.Request.Files["EngReviewDwgFile"];
                     var projectId = System.Web.HttpContext.Current.Request.Form["projectId"];
-                    HttpPostedFileBase filebase = new HttpPostedFileWrapper(documentfile);
-                    var fileName = Path.GetFileName(filebase.FileName);
-
-                    using (var client1 = new HttpClient())
+                    for (int i = 0; i < System.Web.HttpContext.Current.Request.Files.Count; i++)
                     {
-                        client1.BaseAddress = new Uri(baseURL);
-                        client1.DefaultRequestHeaders.Accept.Clear();
-                        client1.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                        HttpResponseMessage engieeringReviewDrawings = await client1.PostAsJsonAsync("/api/Project/AddEngineeringReview", new EngineerReviewedDrawings(fileName, projectId));
-
-                        if (engieeringReviewDrawings.IsSuccessStatusCode)
+                        var documentfile = System.Web.HttpContext.Current.Request.Files[i.ToString()];
+                        HttpPostedFileBase filebase = new HttpPostedFileWrapper(documentfile);
+                        var fileName = Path.GetFileName(filebase.FileName);
+                        using (var client1 = new HttpClient())
                         {
-                            var result = engieeringReviewDrawings.Content.ReadAsStringAsync().Result;
-                            var engneerReviewDrawingId = JsonConvert.DeserializeObject<string>(result);
-                            var engPath = "\\SourceFiles\\EngineeringDrawings\\" + projectId + "_" + engneerReviewDrawingId;
-                            if (System.IO.Directory.Exists(Server.MapPath("~") + engPath) == false)
-                                System.IO.Directory.CreateDirectory(Server.MapPath("~") + engPath);
-                            filebase.SaveAs(Server.MapPath("~") + engPath + "\\" + string.Format("{0:yyyyMMddHHmmss}", DateTime.Now) + "_" + fileName);
+                            client1.BaseAddress = new Uri(baseURL);
+                            client1.DefaultRequestHeaders.Accept.Clear();
+                            client1.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                            HttpResponseMessage engieeringReviewDrawings = await client1.PostAsJsonAsync("/api/Project/AddEngineeringReview", new EngineerReviewedDrawings(fileName, projectId));
 
-                            return Json("OK");
+                            if (engieeringReviewDrawings.IsSuccessStatusCode)
+                            {
+                                var result = engieeringReviewDrawings.Content.ReadAsStringAsync().Result;
+                                var engneerReviewDrawingId = JsonConvert.DeserializeObject<string>(result);
+                                var engPath = "\\SourceFiles\\EngineeringDrawings\\" + projectId + "_" + engneerReviewDrawingId;
+                                if (System.IO.Directory.Exists(Server.MapPath("~") + engPath) == false)
+                                    System.IO.Directory.CreateDirectory(Server.MapPath("~") + engPath);
+                                filebase.SaveAs(Server.MapPath("~") + engPath + "\\" + string.Format("{0:yyyyMMddHHmmss}", DateTime.Now) + "_" + fileName);
+                            }
                         }
-                        return Json("Unable to Upload");
                     }
+
+                    return Json("OK");
                 }
                 else { return Json("No File Saved."); }
             }
@@ -1038,32 +1048,34 @@ namespace RDSUX.Controllers
             {
                 if (System.Web.HttpContext.Current.Request.Files.AllKeys.Any())
                 {
-                    var documentfile = System.Web.HttpContext.Current.Request.Files["RFIResponseFile"];
                     var projectId = System.Web.HttpContext.Current.Request.Form["projectId"];
-                    HttpPostedFileBase filebase = new HttpPostedFileWrapper(documentfile);
-                    var fileName = Path.GetFileName(filebase.FileName);
-
-                    using (var client1 = new HttpClient())
+                    for (int i = 0; i < System.Web.HttpContext.Current.Request.Files.Count; i++)
                     {
-                        client1.BaseAddress = new Uri(baseURL);
-                        client1.DefaultRequestHeaders.Accept.Clear();
-                        client1.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                        HttpResponseMessage rfiresponse = await client1.PostAsJsonAsync("/api/Project/AddRFIResponse", new RFIResponse(fileName, projectId));
+                        var documentfile = System.Web.HttpContext.Current.Request.Files[i.ToString()];
 
-                        if (rfiresponse.IsSuccessStatusCode)
+                        HttpPostedFileBase filebase = new HttpPostedFileWrapper(documentfile);
+                        var fileName = Path.GetFileName(filebase.FileName);
+                        using (var client1 = new HttpClient())
                         {
-                            var result = rfiresponse.Content.ReadAsStringAsync().Result;
-                            var rfiResponseId = JsonConvert.DeserializeObject<string>(result);
-                            var RFIPath = "\\SourceFiles\\RFIResponses\\" + projectId + "_" + rfiResponseId;
+                            client1.BaseAddress = new Uri(baseURL);
+                            client1.DefaultRequestHeaders.Accept.Clear();
+                            client1.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                            HttpResponseMessage rfiresponse = await client1.PostAsJsonAsync("/api/Project/AddRFIResponse", new RFIResponse(fileName, projectId));
 
-                            if (System.IO.Directory.Exists(Server.MapPath("~") + RFIPath) == false)
-                                System.IO.Directory.CreateDirectory(Server.MapPath("~") + RFIPath);
-                            filebase.SaveAs(Server.MapPath("~") + RFIPath + "\\" + string.Format("{0:yyyyMMddHHmmss}", DateTime.Now) + "_" + fileName);
+                            if (rfiresponse.IsSuccessStatusCode)
+                            {
+                                var result = rfiresponse.Content.ReadAsStringAsync().Result;
+                                var rfiResponseId = JsonConvert.DeserializeObject<string>(result);
+                                var RFIPath = "\\SourceFiles\\RFIResponses\\" + projectId + "_" + rfiResponseId;
 
-                            return Json("OK");
+                                if (System.IO.Directory.Exists(Server.MapPath("~") + RFIPath) == false)
+                                    System.IO.Directory.CreateDirectory(Server.MapPath("~") + RFIPath);
+                                filebase.SaveAs(Server.MapPath("~") + RFIPath + "\\" + string.Format("{0:yyyyMMddHHmmss}", DateTime.Now) + "_" + fileName);
+                            }
                         }
-                        return Json("Unable to Upload");
                     }
+
+                    return Json("Ok");
                 }
                 else { return Json("No File Saved."); }
             }
