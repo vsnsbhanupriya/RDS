@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
@@ -9,13 +10,19 @@ namespace RDSUX.Models
     public class ProjectDetailsModel
     {
         public int ProejctId { get; set; }
+
+        [Required(ErrorMessage = "Please enter Project name.")]
         public string ProjectName { get; set; }
+
         public string Notes { get; set; }
         public string PurchaseOrder { get; set; }
         public string AssignDate { get; set; }
         public string CreateDate { get; set; }
         public string CreateBy { get; set; }
+
+        [Required]
         public string JobNumber { get; set; }
+
         public int ProjectTypeId { get; set; }
         public int ScopeOfWorkId { get; set; }
         public string StatusId { get; set; }
