@@ -64,10 +64,8 @@ namespace RDSUX.Controllers
             pdm.JobNumber = "";
             pdm.PurchaseOrder = "";
             List<BarCode> lstBarCode = new List<BarCode>();
-            BarCode barCode = new BarCode();
-            lstBarCode.Add(barCode);
-            ViewBag.BarCodeModel = lstBarCode;
-            pdm.BarCode = lstBarCode;
+
+            pdm.BarCode = new BarCode();
 
             ViewBag.ProjectDetailsModel = pdm;
             return View(pdm);
@@ -85,6 +83,7 @@ namespace RDSUX.Controllers
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
                 HttpResponseMessage response = await client.GetAsync("/api/Project/GetProjectList");
+
                 if (response.IsSuccessStatusCode)
                 {
                     var result = response.Content.ReadAsStringAsync().Result;
@@ -190,9 +189,9 @@ namespace RDSUX.Controllers
                         string notes = formCollection["Notes"].ToString();
                         string JobNumber = formCollection["JobNumber"].ToString();
                         string StockLength = formCollection["StockLength"].ToString();
-                        string BarCodeGrade = formCollection["BarCodeGrade"].ToString();
-                        string StandardSplice = formCollection["StandardSplice"].ToString();
-                        string MechanicSplice = formCollection["MachanicSplice"].ToString();
+                        //  string BarCodeGrade = formCollection["BarCodeGrade"].ToString();
+                        //string StandardSplice = formCollection["StandardSplice"].ToString();
+                        //string MechanicSplice = formCollection["MachanicSplice"].ToString();
                         var jobsheet = formCollection["fileUploadJobsheet"];
                         Project project = new Project();
                         project.AssignDate = DateTime.Now;
@@ -205,10 +204,10 @@ namespace RDSUX.Controllers
                         project.ProjetTypeId = Convert.ToInt32(projectType);
                         project.ScopeOfWorkId = Convert.ToInt32(sow);
                         project.StatusId = 1;
-                        project.StockLength = Convert.ToInt32(StockLength);
-                        project.BarCodeGrade = BarCodeGrade;
-                        project.StandardSplice = Convert.ToInt32(StandardSplice);
-                        project.MechanicSplice = Convert.ToInt32(MechanicSplice);
+                        project.StockLength = string.IsNullOrEmpty(StockLength) ? 0 : Convert.ToInt32(StockLength);
+                        project.BarCodeGrade = projectDetailsModel.BarCode.BarCodeGrade;
+                        project.StandardSplice = projectDetailsModel.BarCode.StandardSplice;
+                        project.MechanicSplice = projectDetailsModel.BarCode.MachanicSplice;
                         project.JobSheetName = projectDetailsModel.JobSheet?.FileName ?? string.Empty;
 
                         client.BaseAddress = new Uri(baseURL);
@@ -243,6 +242,8 @@ namespace RDSUX.Controllers
                             {
                                 foreach (var contractDWGSfilebase in projectDetailsModel.ContractDWGSFiles)
                                 {
+                                    if (contractDWGSfilebase == null)
+                                        break;
                                     using (var client1 = new HttpClient())
                                     {
                                         client1.BaseAddress = new Uri(baseURL);
@@ -303,9 +304,9 @@ namespace RDSUX.Controllers
                         string notes = formCollection["Notes"].ToString();
                         string JobNumber = formCollection["JobNumber"].ToString();
                         string StockLength = formCollection["StockLength"].ToString();
-                        string BarCodeGrade = formCollection["BarCodeGrade"].ToString();
-                        string StandardSplice = formCollection["StandardSplice"].ToString();
-                        string MachanicSplice = formCollection["MachanicSplice"].ToString();
+                        // string BarCodeGrade = formCollection["BarCodeGrade"].ToString();
+                        //string StandardSplice = formCollection["StandardSplice"].ToString();
+                        //string MachanicSplice = formCollection["MachanicSplice"].ToString();
                         string ProjectId = formCollection["ProejctId"].ToString();
                         string PurchaseOrder = formCollection["PurchaseOrder"].ToString();
 
@@ -322,9 +323,9 @@ namespace RDSUX.Controllers
                         project.StatusId = 1;
                         project.ProejctId = Convert.ToInt32(ProjectId);
                         project.StockLength = Convert.ToInt32(StockLength);
-                        project.BarCodeGrade = BarCodeGrade;
-                        project.StandardSplice = Convert.ToInt32(StandardSplice);
-                        project.MechanicSplice = Convert.ToInt32(MachanicSplice);
+                        project.BarCodeGrade = projectDetailsModel.BarCode.BarCodeGrade;
+                        project.StandardSplice = projectDetailsModel.BarCode.StandardSplice;
+                        project.MechanicSplice = projectDetailsModel.BarCode.MachanicSplice;
                         project.JobSheetName = projectDetailsModel.JobSheetName;
                         client.BaseAddress = new Uri(baseURL);
                         client.DefaultRequestHeaders.Accept.Clear();
@@ -899,12 +900,10 @@ namespace RDSUX.Controllers
                 if (response.IsSuccessStatusCode)
                 {
                     var result = response.Content.ReadAsStringAsync().Result;
-                    List<BarCode> barCodes = JsonConvert.DeserializeObject<List<BarCode>>(result);
-                    if (result != null && barCodes.Any())
-                    {
-                        pdm.BarCode = barCodes;
-                        // pdm.ProjectType = projectTypes;
-                    }
+                    BarCode barCodes = JsonConvert.DeserializeObject<BarCode>(result);
+
+                    pdm.BarCode = barCodes;
+                    // pdm.ProjectType = projectTypes;
                 }
             }
 

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using System.Web.Http;
 
 namespace RDSUX.Controllers
@@ -51,14 +52,14 @@ namespace RDSUX.Controllers
                     {
                         BarCodeId = Convert.ToInt32(dr[0]),
                         StockLength = Convert.ToInt32(dr[1]),
-                        BarCodeGrade = dr[2].ToString(),
-                        StandardSplice = Convert.ToInt32(dr[3]),
+                        BarCodeGrade = dr[2].ToString().Equals("1") ? true : false,
+                        StandardSplice = dr[3].ToString(),
                         MachanicSplice = Convert.ToInt32(dr[4])
                     };
                     lstBarcode.Add(barCode);
                 }
             }
-            return Ok(lstBarcode);
+            return Ok(lstBarcode.First());
         }
 
         [HttpGet]
@@ -102,7 +103,7 @@ namespace RDSUX.Controllers
             sd.Add("@ScopeOfWork_ScopeOfWorkId", project.ScopeOfWorkId.ToString());
             sd.Add("@Status_StatusId", project.StatusId.ToString());
             sd.Add("@StockLength", project.StockLength.ToString());
-            sd.Add("@BarCodeGrade", project.BarCodeGrade);
+            sd.Add("@BarCodeGrade", project.BarCodeGrade == true ? "1" : "0");
             sd.Add("@StandardSplice", project.StandardSplice.ToString());
             sd.Add("@MachanicSplice", project.MechanicSplice.ToString());
             sd.Add("@JobSheetName", project.JobSheetName);
@@ -255,8 +256,8 @@ namespace RDSUX.Controllers
             DataSet retvalue = rdsService.SelectList("USP_DeleteRFIResponses", sd);
             return Ok(retvalue);
         }
-       
-       [HttpPost]
+
+        [HttpPost]
         public IHttpActionResult DeleteShopDrawings(ShopDrawings shopDrawings)
         {
             if (shopDrawings == null)
@@ -329,7 +330,7 @@ namespace RDSUX.Controllers
             sd.Add("@ProejctId", project.ProejctId.ToString());
 
             sd.Add("@StockLength", project.StockLength.ToString());
-            sd.Add("@BarCodeGrade", project.BarCodeGrade);
+            sd.Add("@BarCodeGrade", project.BarCodeGrade == true ? "1" : "0");
             sd.Add("@StandardSplice", project.StandardSplice.ToString());
             sd.Add("@MachanicSplice", project.MechanicSplice.ToString());
             RDSService.RDSService rdsService = new RDSService.RDSService();

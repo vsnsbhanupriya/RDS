@@ -41,6 +41,6 @@ namespace RDSUX.Models
 
         public IEnumerable<SelectListItem> ScopeOfWork { get; set; }
         public List<Status> Status { get; set; }
-        public List<BarCode> BarCode { get; set; }
+        public BarCode BarCode { get; set; }
     }
 }
