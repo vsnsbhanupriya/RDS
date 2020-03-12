@@ -326,7 +326,14 @@ namespace RDSUX.Controllers
                         project.BarCodeGrade = projectDetailsModel.BarCode.BarCodeGrade;
                         project.StandardSplice = projectDetailsModel.BarCode.StandardSplice;
                         project.MechanicSplice = projectDetailsModel.BarCode.MachanicSplice;
-                        project.JobSheetName = projectDetailsModel.JobSheetName;
+                        if (projectDetailsModel.JobSheet != null)
+                        {
+                            project.JobSheetName = projectDetailsModel.JobSheet.FileName;
+                        }
+                        else
+                        {
+                            project.JobSheetName = projectDetailsModel.JobSheetName;
+                        }
                         client.BaseAddress = new Uri(baseURL);
                         client.DefaultRequestHeaders.Accept.Clear();
                         client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -334,6 +341,22 @@ namespace RDSUX.Controllers
 
                         if (response.IsSuccessStatusCode == true)
                         {
+                            if (projectDetailsModel.JobSheet != null)
+                            {
+                                var jobSheetPath = "\\SourceFiles\\JobSheet\\" + project.ProejctId;
+
+                                if (System.IO.Directory.Exists(Server.MapPath("~") + jobSheetPath) == false)
+                                    System.IO.Directory.CreateDirectory(Server.MapPath("~") + jobSheetPath);
+                                else
+                                {
+                                    var directoryInfo = new System.IO.DirectoryInfo(Server.MapPath("~") + jobSheetPath);
+                                    foreach (var file in directoryInfo.GetFiles())
+                                    {
+                                        file.Delete();
+                                    }
+                                }
+                                projectDetailsModel.JobSheet.SaveAs(Server.MapPath("~") + jobSheetPath + "\\" + string.Format("{0:yyyyMMddHHmmss}", DateTime.Now) + "_" + projectDetailsModel.JobSheet.FileName);
+                            }
                             if (projectDetailsModel.ContractDWGS != null)
                             {
                                 using (var client1 = new HttpClient())

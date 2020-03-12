@@ -333,6 +333,7 @@ namespace RDSUX.Controllers
             sd.Add("@BarCodeGrade", project.BarCodeGrade == true ? "1" : "0");
             sd.Add("@StandardSplice", project.StandardSplice.ToString());
             sd.Add("@MachanicSplice", project.MechanicSplice.ToString());
+            sd.Add("@JobSheetName", project.JobSheetName);
             RDSService.RDSService rdsService = new RDSService.RDSService();
             DataSet retvalue = rdsService.SelectList("USP_UpdateProject", sd);
             return Ok(retvalue);
