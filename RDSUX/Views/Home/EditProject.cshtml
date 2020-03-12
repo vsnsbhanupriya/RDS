@@ -24,8 +24,7 @@
                             <tr class="width100">
                                 <td align="right" class="listnames">Project Type:</td>
                                 <td>
-
-                                    @Html.DropDownList("ProjectTypeModel", Model.ProjectTypeList)
+                                    @Html.DropDownList("ProjectTypeModel", Model.ProjectTypeList, "Select", new { @class = "select-dropdown", required = (string)null })
                                 </td>
                             </tr>
                             <tr>
@@ -34,7 +33,7 @@
                             <tr class="width100">
                                 <td align="right" class="listnames">Scope of Work:</td>
                                 <td>
-                                    @Html.DropDownList("SOWModel", Model.ScopeOfWork)
+                                    @Html.DropDownList("SOWModel", Model.ScopeOfWork, "Select", new { @class = "select-dropdown", required = (string)null })
                                 </td>
                             </tr>
                         </table>
@@ -92,8 +91,8 @@
                 </tr>
                 <tr class="width100">
                     <td class="font12">Bar Supports: </td>
-                    <td class="td-margin">
-                        @(Html.CheckBoxFor(m => m.BarCode.BarCodeGrade, new { @class = "form-control" }))
+                    <td width="20px">
+                        @(Html.CheckBoxFor(m => m.BarCode.BarCodeGrade, new { @class = "checkboxnew" }))
                     </td>
                 </tr>
 
