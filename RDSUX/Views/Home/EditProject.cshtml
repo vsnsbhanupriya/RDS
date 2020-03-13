@@ -58,21 +58,21 @@
 
             <tr class="tdbody-bg">
 
-                <td width="40%" class="font12">Job Number:   @Html.TextBox("JobNumber", Model.JobNumber, new { @class = "form-control", required = (string)null } )</td>
+                <td width="40%" class="font12">Job Number:   @Html.TextBox("JobNumber", Model.JobNumber, new { @class = "form-control", required = (string)null })</td>
                 <td width="10%">&nbsp;</td>
                 <td width="40%" class="font12">Purchase Order:  @Html.TextBox("PurchaseOrder", Model.PurchaseOrder, new { @class = "form-control" })</td>
                 <td width="10%">&nbsp;</td>
                 @*<td width="40%">
-                    Job Sheet: <b>@Model.JobSheetName </b>
-                    @if (!string.IsNullOrEmpty(Model.JobSheetName))
-                    {
+                        Job Sheet: <b>@Model.JobSheetName </b>
+                        @if (!string.IsNullOrEmpty(Model.JobSheetName))
+                        {
 
-                        <a href='/Home/DownloadJobSheet?id=@Model.ProejctId'>Download</a>
+                            <a href='/Home/DownloadJobSheet?id=@Model.ProejctId'>Download</a>
 
-                        <a href='/Home/DeleteJobSheet?id=@Model.ProejctId'>Delete</a>
+                            <a href='/Home/DeleteJobSheet?id=@Model.ProejctId'>Delete</a>
 
-                    }
-                </td>*@
+                        }
+                    </td>*@
             </tr>
             <tr>
                 <td width="40%">
@@ -85,7 +85,6 @@
                         <a href='/Home/DeleteJobSheet?id=@Model.ProejctId'>Delete</a>
 
                     }
-                  
                 </td>
                 <td>Edit Job Sheet:    <input type="file" name="JobSheet" /></td>
             </tr>
@@ -192,6 +191,26 @@
                 </tr>
             </tbody>
         </table>
+
+        <table class="table-inner width100">
+            <tbody class="tbody-inner">
+                <tr>
+                    <td width="20%"><h4>Purchase Orders</h4> <input type="file" multiple name="PurchaseOrders" id="PurchaseOrders" /></td>
+                    <td width="10%">
+                        <input type="button" id="btnPurchaseOrderUpload" class="btn btn-default create-btn" value="Upload Purchase Order" />
+                    </td>
+                    <td width="70%">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <div id="dvPurchaseOrders">
+                            @{Html.RenderAction("GetPurchaseOrders", "Home", new { id = Model.ProejctId });}
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
         <table class="table-inner width100">
             <tbody class="tbody-inner">
                 <tr>

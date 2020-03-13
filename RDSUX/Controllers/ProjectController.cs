@@ -142,6 +142,20 @@ namespace RDSUX.Controllers
             return Ok(ContractDWGSId);
         }
 
+        [HttpPost]
+        public IHttpActionResult AddPurchaseOrders(PurchaseOrder purchaseOrder)
+        {
+            SortedDictionary<string, string> sd = new SortedDictionary<string, string>() { };
+            sd.Add("@ProejctId", purchaseOrder.ProjectId);
+            sd.Add("@fileName", purchaseOrder.FileName);
+            sd.Add("@timeStamp", purchaseOrder.TImeStamp);
+
+            RDSService.RDSService rdsService = new RDSService.RDSService();
+            DataSet retvalue = rdsService.SelectList("USP_Insertpurchaseorder", "purchaseorderId", sd);
+            var purchaseOrderId = retvalue.Tables[0].Rows[0][0].ToString();
+            return Ok(purchaseOrderId);
+        }
+
         [HttpGet]
         public IHttpActionResult GetContractDWGS(string projectId)
         {
@@ -218,6 +232,25 @@ namespace RDSUX.Controllers
             return Ok(engineerReviewedDrawings);
         }
 
+        [HttpGet]
+        public IHttpActionResult GetPurchaseOrders(string projectId)
+        {
+            SortedDictionary<string, string> sd = new SortedDictionary<string, string>() { };
+            sd.Add("@ProejctId", projectId.ToString());
+            RDSService.RDSService rdsService = new RDSService.RDSService();
+            DataSet ds = rdsService.SelectList("USP_GetpurchaseOrders", sd);
+            var purchaseOrders = new List<PurchaseOrder>();
+            if (ds != null && ds.Tables.Count > 0)
+            {
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    var purchaseOrder = new PurchaseOrder() { ProjectId = dr[0].ToString(), PurchaseOrderId = dr[1].ToString(), FileName = dr[2].ToString(), TImeStamp = dr[3].ToString() };
+                    purchaseOrders.Add(purchaseOrder);
+                }
+            }
+            return Ok(purchaseOrders);
+        }
+
         [HttpPost]
         public IHttpActionResult DeleteEngineeringDrawings(EngineerReviewedDrawings engDrawings)
         {
@@ -254,6 +287,19 @@ namespace RDSUX.Controllers
             sd.Add("@RFiResponseId", rfiResponse.RfiResponseId);
             RDSService.RDSService rdsService = new RDSService.RDSService();
             DataSet retvalue = rdsService.SelectList("USP_DeleteRFIResponses", sd);
+            return Ok(retvalue);
+        }
+
+        [HttpPost]
+        public IHttpActionResult DeletePurchaseOrders(PurchaseOrder purchaseOrder)
+        {
+            if (purchaseOrder == null)
+                return BadRequest();
+            SortedDictionary<string, string> sd = new SortedDictionary<string, string>() { };
+            sd.Add("@ProejctId", purchaseOrder.ProjectId);
+            sd.Add("@purchaseorderid", purchaseOrder.PurchaseOrderId);
+            RDSService.RDSService rdsService = new RDSService.RDSService();
+            DataSet retvalue = rdsService.SelectList("USP_DeletePurchaseOrders", sd);
             return Ok(retvalue);
         }
 

@@ -115,6 +115,26 @@ namespace RDSUX.Controllers
             return PartialView(drawings);
         }
 
+        public ActionResult GetPurchaseOrders(int id)
+        {
+            var purchaseOrders = new List<PurchaseOrder>();
+
+            string baseURL = WebConfigurationManager.AppSettings["baseurl"];
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(baseURL);
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage purchaseOrdersResponse = client.GetAsync("/api/Project/GetPurchaseOrders?projectId=" + id.ToString()).Result;
+                if (purchaseOrdersResponse.IsSuccessStatusCode)
+                {
+                    var result = purchaseOrdersResponse.Content.ReadAsStringAsync().Result;
+                    purchaseOrders = JsonConvert.DeserializeObject<List<PurchaseOrder>>(result);
+                }
+            }
+            return PartialView(purchaseOrders);
+        }
+
         public ActionResult GetContractDwgs(int id)
         {
             var drawings = new List<ContractDWGS>();
@@ -575,6 +595,52 @@ namespace RDSUX.Controllers
             }
         }
 
+        public ActionResult DownloadPurchaseOrder(string downloadmodel)
+        {
+            var model = downloadmodel.Split('_');
+            var folder = model[0];
+            var purchaseOrderId = model[1];
+            var projectId = model[2];
+            var purchaseOrders = new List<PurchaseOrder>();
+
+            string baseURL = WebConfigurationManager.AppSettings["baseurl"];
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(baseURL);
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage shopDrawingsResponse = client.GetAsync("/api/Project/GetPurchaseOrders?projectId=" + projectId).Result;
+                if (shopDrawingsResponse.IsSuccessStatusCode)
+                {
+                    var result = shopDrawingsResponse.Content.ReadAsStringAsync().Result;
+                    purchaseOrders = JsonConvert.DeserializeObject<List<PurchaseOrder>>(result);
+                }
+            }
+            var purchaseOrder = purchaseOrders.FirstOrDefault(e => e.PurchaseOrderId.Equals(purchaseOrderId, StringComparison.InvariantCultureIgnoreCase));
+            if (purchaseOrder != null)
+            {
+                var fileName = purchaseOrder.FileName;
+
+                var path = "\\SourceFiles\\" + folder + "\\" + projectId + "_" + purchaseOrder.PurchaseOrderId;
+                if (System.IO.Directory.Exists(Server.MapPath("~") + path))
+                {
+                    var directoryInfo = new System.IO.DirectoryInfo(Server.MapPath("~") + path);
+                    var fileinfo = directoryInfo.GetFiles().FirstOrDefault();
+                    byte[] fileBytes = System.IO.File.ReadAllBytes(fileinfo.FullName);
+
+                    return File(fileBytes, System.Net.Mime.MediaTypeNames.Application.Octet, fileName);
+                }
+                else
+                {
+                    throw new Exception("File NOt found");
+                }
+            }
+            else
+            {
+                throw new Exception("File NOt found");
+            }
+        }
+
         public ActionResult DownloadShopDrawings(string downloadmodel)
         {
             var model = downloadmodel.Split('_');
@@ -717,6 +783,42 @@ namespace RDSUX.Controllers
                 if (response.IsSuccessStatusCode)
                 {
                     var path = "\\SourceFiles\\" + folder + "\\" + projectId + "_" + contractId;
+
+                    if (System.IO.Directory.Exists(Server.MapPath("~") + path))
+                    {
+                        var directoryInfo = new System.IO.DirectoryInfo(Server.MapPath("~") + path);
+                        foreach (var file in directoryInfo.GetFiles())
+                        {
+                            file.Delete();
+                        }
+                        directoryInfo.Delete();
+                        return RedirectToAction("EditProject", new RouteValueDictionary(
+        new { controller = "Home", action = "EditProject", Id = projectId }));
+                    }
+                }
+            }
+
+            throw new Exception("Something went wrong.");
+        }
+
+        public async Task<ActionResult> DeletePurchaseOrder(string downloadmodel)
+        {
+            var model = downloadmodel.Split('_');
+            var folder = model[0];
+            var purchaseOrderId = model[1];
+            var projectId = model[2];
+            string baseURL = WebConfigurationManager.AppSettings["baseurl"];
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(baseURL);
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                var purchaseOrder = new PurchaseOrder { ProjectId = projectId, PurchaseOrderId = purchaseOrderId };
+                HttpResponseMessage response = await client.PostAsJsonAsync("/api/Project/DeletePurchaseOrders", purchaseOrder);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var path = "\\SourceFiles\\" + folder + "\\" + projectId + "_" + purchaseOrderId;
 
                     if (System.IO.Directory.Exists(Server.MapPath("~") + path))
                     {
@@ -1059,6 +1161,48 @@ namespace RDSUX.Controllers
                     }
 
                     return Json("OK");
+                }
+                else { return Json("No File Saved."); }
+            }
+            catch (Exception ex) { return Json("Error While Saving."); }
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> UploadPurchaseOrders()
+        {
+            string baseURL = WebConfigurationManager.AppSettings["baseurl"];
+            try
+            {
+                if (System.Web.HttpContext.Current.Request.Files.AllKeys.Any())
+                {
+                    var projectId = System.Web.HttpContext.Current.Request.Form["projectId"];
+                    for (int i = 0; i < System.Web.HttpContext.Current.Request.Files.Count; i++)
+                    {
+                        var documentfile = System.Web.HttpContext.Current.Request.Files[i.ToString()];
+
+                        HttpPostedFileBase filebase = new HttpPostedFileWrapper(documentfile);
+                        var fileName = Path.GetFileName(filebase.FileName);
+                        using (var client1 = new HttpClient())
+                        {
+                            client1.BaseAddress = new Uri(baseURL);
+                            client1.DefaultRequestHeaders.Accept.Clear();
+                            client1.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                            HttpResponseMessage purchaseOrderResponse = await client1.PostAsJsonAsync("/api/Project/AddPurchaseOrders", new PurchaseOrder(fileName, projectId));
+
+                            if (purchaseOrderResponse.IsSuccessStatusCode)
+                            {
+                                var result = purchaseOrderResponse.Content.ReadAsStringAsync().Result;
+                                var purchaseOrderid = JsonConvert.DeserializeObject<string>(result);
+                                var PoPath = "\\SourceFiles\\PurchaseOrders\\" + projectId + "_" + purchaseOrderid;
+
+                                if (System.IO.Directory.Exists(Server.MapPath("~") + PoPath) == false)
+                                    System.IO.Directory.CreateDirectory(Server.MapPath("~") + PoPath);
+                                filebase.SaveAs(Server.MapPath("~") + PoPath + "\\" + string.Format("{0:yyyyMMddHHmmss}", DateTime.Now) + "_" + fileName);
+                            }
+                        }
+                    }
+
+                    return Json("Ok");
                 }
                 else { return Json("No File Saved."); }
             }

@@ -173,6 +173,7 @@
     <Compile Include="Models\ProjectDetails.cs" />
     <Compile Include="Models\Project.cs" />
     <Compile Include="Models\ProjectType.cs" />
+    <Compile Include="Models\PurchaseOrder.cs" />
     <Compile Include="Models\ScopeOfWork.cs" />
     <Compile Include="Models\Status.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -241,6 +242,7 @@
     <Content Include="Views\Home\GeetRFIResponses.cshtml" />
     <Content Include="Views\Home\GetEngineeringReviewedDwgs.cshtml" />
     <Content Include="Views\Home\GetShopDrawings.cshtml" />
+    <Content Include="Views\Home\GetPurchaseOrders.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
