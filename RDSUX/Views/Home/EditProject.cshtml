@@ -38,7 +38,7 @@
                             </tr>
                         </table>
                     </td>
-                    <td>
+                    <td class="form-td">
                         <table class="width100">
                             <tr class="width100">
                                 <td align="right" class="listnames" valign="middle">Notes:</td>
@@ -58,24 +58,11 @@
 
             <tr class="tdbody-bg">
 
-                <td width="40%" class="font12">Job Number:   @Html.TextBox("JobNumber", Model.JobNumber, new { @class = "form-control", required = (string)null })</td>
-                <td width="10%">&nbsp;</td>
-                <td width="40%" class="font12">Purchase Order:  @Html.TextBox("PurchaseOrder", Model.PurchaseOrder, new { @class = "form-control" })</td>
-                <td width="10%">&nbsp;</td>
-                @*<td width="40%">
-                        Job Sheet: <b>@Model.JobSheetName </b>
-                        @if (!string.IsNullOrEmpty(Model.JobSheetName))
-                        {
-
-                            <a href='/Home/DownloadJobSheet?id=@Model.ProejctId'>Download</a>
-
-                            <a href='/Home/DeleteJobSheet?id=@Model.ProejctId'>Delete</a>
-
-                        }
-                    </td>*@
-            </tr>
-            <tr>
-                <td width="40%">
+                <td width="15%" class="font12">Job Number:   @Html.TextBox("JobNumber", Model.JobNumber, new { @class = "form-control", required = (string)null })</td>
+                <td width="5%">&nbsp;</td>
+                <td width="15%" class="font12">Purchase Order:  @Html.TextBox("PurchaseOrder", Model.PurchaseOrder, new { @class = "form-control" })</td>
+                <td width="5%">&nbsp;</td>
+                <td width="25%">
                     Job Sheet: <b>@Model.JobSheetName </b>
                     @if (!string.IsNullOrEmpty(Model.JobSheetName))
                     {
@@ -86,8 +73,10 @@
 
                     }
                 </td>
-                <td>Edit Job Sheet:    <input type="file" name="JobSheet" /></td>
+                <td width="5%">&nbsp;</td>
+                <td width="25%">Edit Job Sheet:    <input type="file" name="JobSheet" /></td>
             </tr>
+           
         </table>
 
         <table class="table-inner width100">
