@@ -9,11 +9,11 @@
         <table width="100%">
             <tbody class="tdbody-bg">
                 <tr >
-                    <td >
+                    <td width="45%">
                         <table class="width100">
                             <tr class="width100">
                                 <td align="right" class="listnames">Project Name:</td>
-                                <td>
+                                <td class="td-margin">
                                     @Html.TextBox("ProjectName", Model.ProjectName, new { @class = "form-control", @readonly = "readonly" })
                                     @Html.TextBox("ProejctId", Model.ProejctId, new { @class = "form-control", style = "display: none;" })
                                 </td>
@@ -23,7 +23,7 @@
                             </tr>
                             <tr class="width100">
                                 <td align="right" class="listnames">Project Type:</td>
-                                <td>
+                                <td class="td-margin">
                                     @Html.DropDownList("ProjectTypeModel", Model.ProjectTypeList, "Select", new { @class = "select-dropdown", required = (string)null })
                                 </td>
                             </tr>
@@ -32,7 +32,7 @@
                             </tr>
                             <tr class="width100">
                                 <td align="right" class="listnames">Scope of Work:</td>
-                                <td>
+                                <td class="td-margin">
                                     @Html.DropDownList("SOWModel", Model.ScopeOfWork, "Select", new { @class = "select-dropdown", required = (string)null })
                                 </td>
                             </tr>
@@ -53,7 +53,7 @@
                 <tr>
                     <td colspan="3">&nbsp;</td>
                 </tr>
-            </tbody>
+            </tbody>        
         </table>
         <table class="width100">
 
@@ -68,6 +68,7 @@
                 </td>
                 <td width="5%">&nbsp;</td>
                 <td width="25%">
+                    Job Sheet:
                     <b>@Model.JobSheetName </b>
                     @if (!string.IsNullOrEmpty(Model.JobSheetName))
                     {
@@ -81,16 +82,13 @@
             </tr>
             <tr class="tdbody-bg">
                 <td width="15%" class="font12">
-                    Purchase Order: @Html.TextBox("PurchaseOrder", Model.PurchaseOrder, new { @class = "form-control" })
-                </td>
-                <td width="5%">&nbsp;</td>
-                <td width="5%">&nbsp;</td>
-                <td width="25%">
+                    Purchase Order:
                     <input type="file" name="PurchaseOrder" />
-                    
                 </td>
                 <td width="5%">&nbsp;</td>
+                <td width="5%">&nbsp;</td>
                 <td width="25%">
+                   
                     <b>@Model.PurchaseOrderFileName </b>
                     @if (!string.IsNullOrEmpty(Model.PurchaseOrderFileName))
                     {
@@ -100,7 +98,10 @@
                         <a href='/Home/DeletePurchaseOrder?id=@Model.ProejctId'>Delete</a>
 
                     }
+
+
                 </td>
+                
             </tr>
         </table>
 
