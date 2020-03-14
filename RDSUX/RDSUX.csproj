@@ -242,7 +242,6 @@
     <Content Include="Views\Home\GeetRFIResponses.cshtml" />
     <Content Include="Views\Home\GetEngineeringReviewedDwgs.cshtml" />
     <Content Include="Views\Home\GetShopDrawings.cshtml" />
-    <Content Include="Views\Home\GetPurchaseOrders.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

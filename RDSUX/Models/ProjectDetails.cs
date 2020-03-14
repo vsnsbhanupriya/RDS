@@ -15,8 +15,10 @@ namespace RDSUX.Models
         public string ProjectName { get; set; }
 
         public string Notes { get; set; }
-        public string PurchaseOrder { get; set; }
+
+       // public string PurchaseOrder { get; set; }
         public string AssignDate { get; set; }
+
         public string CreateDate { get; set; }
         public string CreateBy { get; set; }
 
@@ -27,8 +29,10 @@ namespace RDSUX.Models
         public int ScopeOfWorkId { get; set; }
         public string StatusId { get; set; }
         public string JobSheetName { get; set; }
+        public string PurchaseOrderFileName { get; set; }
         public string BarCodeId { get; set; }
         public HttpPostedFileBase JobSheet { get; set; }
+        public HttpPostedFileBase PurchaseOrder { get; set; }
         public HttpPostedFileBase ContractDWGS { get; set; }
         public HttpPostedFileBase RFIResponses { get; set; }
         public HttpPostedFileBase ShopDrawings { get; set; }

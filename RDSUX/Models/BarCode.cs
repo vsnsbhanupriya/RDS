@@ -11,6 +11,6 @@ namespace RDSUX.Models
         public int StockLength { get; set; }
         public bool BarCodeGrade { get; set; }
         public string StandardSplice { get; set; }
-        public int MachanicSplice { get; set; }
+        public string MachanicSplice { get; set; }
     }
 }

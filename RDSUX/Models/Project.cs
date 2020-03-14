@@ -21,7 +21,7 @@ namespace RDSUX.Models
         public int StockLength { get; set; }
         public bool BarCodeGrade { get; set; }
         public string StandardSplice { get; set; }
-        public int MechanicSplice { get; set; }
+        public string MechanicSplice { get; set; }
         public string JobSheetName { get; set; }
     }
 }

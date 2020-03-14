@@ -62,7 +62,7 @@ namespace RDSUX.Controllers
             pdm.ProjectName = "";
             pdm.Notes = "";
             pdm.JobNumber = "";
-            pdm.PurchaseOrder = "";
+            pdm.PurchaseOrderFileName = "";
             List<BarCode> lstBarCode = new List<BarCode>();
 
             pdm.BarCode = new BarCode();
@@ -328,7 +328,7 @@ namespace RDSUX.Controllers
                         //string StandardSplice = formCollection["StandardSplice"].ToString();
                         //string MachanicSplice = formCollection["MachanicSplice"].ToString();
                         string ProjectId = formCollection["ProejctId"].ToString();
-                        string PurchaseOrder = formCollection["PurchaseOrder"].ToString();
+                        // string PurchaseOrder = formCollection["PurchaseOrder"].ToString();
 
                         Project project = new Project();
                         project.AssignDate = DateTime.Now;
@@ -336,7 +336,7 @@ namespace RDSUX.Controllers
                         project.CreateDate = DateTime.Now;
                         project.JobNumber = Convert.ToInt32(JobNumber);
                         project.Notes = notes;
-                        project.PurchaseOrder = PurchaseOrder;
+                        //  project.PurchaseOrder = PurchaseOrder;
                         project.ProjectName = projectDetailsModel.ProjectName;
                         project.ProjetTypeId = Convert.ToInt32(projectType);
                         project.ScopeOfWorkId = Convert.ToInt32(sow);
@@ -353,6 +353,14 @@ namespace RDSUX.Controllers
                         else
                         {
                             project.JobSheetName = projectDetailsModel.JobSheetName;
+                        }
+                        if (projectDetailsModel.PurchaseOrder != null)
+                        {
+                            project.PurchaseOrder = projectDetailsModel.PurchaseOrder.FileName;
+                        }
+                        else
+                        {
+                            project.PurchaseOrder = projectDetailsModel.PurchaseOrderFileName;
                         }
                         client.BaseAddress = new Uri(baseURL);
                         client.DefaultRequestHeaders.Accept.Clear();
@@ -376,6 +384,22 @@ namespace RDSUX.Controllers
                                     }
                                 }
                                 projectDetailsModel.JobSheet.SaveAs(Server.MapPath("~") + jobSheetPath + "\\" + string.Format("{0:yyyyMMddHHmmss}", DateTime.Now) + "_" + projectDetailsModel.JobSheet.FileName);
+                            }
+
+                            if (projectDetailsModel.PurchaseOrder != null)
+                            {
+                                var PoPath = "\\SourceFiles\\PurchaseOrders\\" + project.ProejctId;
+                                if (System.IO.Directory.Exists(Server.MapPath("~") + PoPath) == false)
+                                    System.IO.Directory.CreateDirectory(Server.MapPath("~") + PoPath);
+                                else
+                                {
+                                    var directoryInfo = new System.IO.DirectoryInfo(Server.MapPath("~") + PoPath);
+                                    foreach (var file in directoryInfo.GetFiles())
+                                    {
+                                        file.Delete();
+                                    }
+                                }
+                                projectDetailsModel.PurchaseOrder.SaveAs(Server.MapPath("~") + PoPath + "\\" + string.Format("{0:yyyyMMddHHmmss}", DateTime.Now) + "_" + projectDetailsModel.PurchaseOrder.FileName);
                             }
                             if (projectDetailsModel.ContractDWGS != null)
                             {
@@ -595,50 +619,50 @@ namespace RDSUX.Controllers
             }
         }
 
-        public ActionResult DownloadPurchaseOrder(string downloadmodel)
+        public async Task<ActionResult> DownloadPurchaseOrder(int id)
         {
-            var model = downloadmodel.Split('_');
-            var folder = model[0];
-            var purchaseOrderId = model[1];
-            var projectId = model[2];
-            var purchaseOrders = new List<PurchaseOrder>();
-
             string baseURL = WebConfigurationManager.AppSettings["baseurl"];
+            List<Project> lisProject = new List<Project>();
+            Project selectedProject = new Project();
+            string purchaseOrder = string.Empty;
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(baseURL);
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                HttpResponseMessage shopDrawingsResponse = client.GetAsync("/api/Project/GetPurchaseOrders?projectId=" + projectId).Result;
-                if (shopDrawingsResponse.IsSuccessStatusCode)
+
+                HttpResponseMessage response = await client.GetAsync("/api/Project/GetProjectList");
+                if (response.IsSuccessStatusCode)
                 {
-                    var result = shopDrawingsResponse.Content.ReadAsStringAsync().Result;
-                    purchaseOrders = JsonConvert.DeserializeObject<List<PurchaseOrder>>(result);
+                    var result = response.Content.ReadAsStringAsync().Result;
+                    lisProject = JsonConvert.DeserializeObject<List<Project>>(result);
+
+                    if (result != null)
+                        ViewBag.ProjectList = lisProject;
+                    selectedProject = lisProject.Where(s => s.ProejctId == Convert.ToInt32(id)).FirstOrDefault();
+                    if (selectedProject != null)
+                    {
+                        purchaseOrder = selectedProject.PurchaseOrder;
+                    }
                 }
             }
-            var purchaseOrder = purchaseOrders.FirstOrDefault(e => e.PurchaseOrderId.Equals(purchaseOrderId, StringComparison.InvariantCultureIgnoreCase));
-            if (purchaseOrder != null)
+            if (!string.IsNullOrEmpty(purchaseOrder))
             {
-                var fileName = purchaseOrder.FileName;
-
-                var path = "\\SourceFiles\\" + folder + "\\" + projectId + "_" + purchaseOrder.PurchaseOrderId;
+                var path = "\\SourceFiles\\PurchaseOrders\\" + id;
                 if (System.IO.Directory.Exists(Server.MapPath("~") + path))
                 {
                     var directoryInfo = new System.IO.DirectoryInfo(Server.MapPath("~") + path);
                     var fileinfo = directoryInfo.GetFiles().FirstOrDefault();
                     byte[] fileBytes = System.IO.File.ReadAllBytes(fileinfo.FullName);
 
-                    return File(fileBytes, System.Net.Mime.MediaTypeNames.Application.Octet, fileName);
+                    return File(fileBytes, System.Net.Mime.MediaTypeNames.Application.Octet, purchaseOrder);
                 }
                 else
                 {
                     throw new Exception("File NOt found");
                 }
             }
-            else
-            {
-                throw new Exception("File NOt found");
-            }
+            throw new Exception("Unable to download Job sheet");
         }
 
         public ActionResult DownloadShopDrawings(string downloadmodel)
@@ -801,24 +825,20 @@ namespace RDSUX.Controllers
             throw new Exception("Something went wrong.");
         }
 
-        public async Task<ActionResult> DeletePurchaseOrder(string downloadmodel)
+        public async Task<ActionResult> DeletePurchaseOrder(int id)
         {
-            var model = downloadmodel.Split('_');
-            var folder = model[0];
-            var purchaseOrderId = model[1];
-            var projectId = model[2];
             string baseURL = WebConfigurationManager.AppSettings["baseurl"];
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(baseURL);
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                var purchaseOrder = new PurchaseOrder { ProjectId = projectId, PurchaseOrderId = purchaseOrderId };
-                HttpResponseMessage response = await client.PostAsJsonAsync("/api/Project/DeletePurchaseOrders", purchaseOrder);
+
+                HttpResponseMessage response = await client.PostAsJsonAsync("/api/Project/DeletePurchaseOrder", id);
 
                 if (response.IsSuccessStatusCode)
                 {
-                    var path = "\\SourceFiles\\" + folder + "\\" + projectId + "_" + purchaseOrderId;
+                    var path = "\\SourceFiles\\PurchaseOrders\\" + id;
 
                     if (System.IO.Directory.Exists(Server.MapPath("~") + path))
                     {
@@ -829,7 +849,7 @@ namespace RDSUX.Controllers
                         }
                         directoryInfo.Delete();
                         return RedirectToAction("EditProject", new RouteValueDictionary(
-        new { controller = "Home", action = "EditProject", Id = projectId }));
+        new { controller = "Home", action = "EditProject", Id = id }));
                     }
                 }
             }
@@ -970,7 +990,7 @@ namespace RDSUX.Controllers
                     pdm.JobNumber = selectedProject.JobNumber.ToString();
                     pdm.Notes = selectedProject.Notes;
                     pdm.ProjectName = selectedProject.ProjectName;
-                    pdm.PurchaseOrder = selectedProject.PurchaseOrder;
+                    pdm.PurchaseOrderFileName = selectedProject.PurchaseOrder;
                     pdm.ProjectTypeId = selectedProject.ProjetTypeId;
                     pdm.ScopeOfWorkId = selectedProject.ScopeOfWorkId;
                     pdm.ProejctId = selectedProject.ProejctId;

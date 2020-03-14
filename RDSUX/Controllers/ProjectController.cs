@@ -54,7 +54,7 @@ namespace RDSUX.Controllers
                         StockLength = Convert.ToInt32(dr[1]),
                         BarCodeGrade = dr[2].ToString().Equals("1") ? true : false,
                         StandardSplice = dr[3].ToString(),
-                        MachanicSplice = Convert.ToInt32(dr[4])
+                        MachanicSplice = dr[4].ToString()
                     };
                     lstBarcode.Add(barCode);
                 }
@@ -330,6 +330,19 @@ namespace RDSUX.Controllers
         }
 
         [HttpPost]
+        public IHttpActionResult DeletePurchaseOrder([FromBody]int projectId)
+        {
+            if (projectId <= 0)
+                return BadRequest();
+            SortedDictionary<string, string> sd = new SortedDictionary<string, string>() { };
+            sd.Add("@ProejctId", projectId.ToString());
+
+            RDSService.RDSService rdsService = new RDSService.RDSService();
+            DataSet retvalue = rdsService.SelectList("USP_Delete_PurchaseOrder", sd);
+            return Ok(retvalue);
+        }
+
+        [HttpPost]
         public IHttpActionResult AddRFIResponse(RFIResponse rfiresponse)
         {
             SortedDictionary<string, string> sd = new SortedDictionary<string, string>() { };
@@ -380,6 +393,7 @@ namespace RDSUX.Controllers
             sd.Add("@StandardSplice", project.StandardSplice.ToString());
             sd.Add("@MachanicSplice", project.MechanicSplice.ToString());
             sd.Add("@JobSheetName", project.JobSheetName);
+            sd.Add("@PurchaseOrderFileName", project.PurchaseOrder);
             RDSService.RDSService rdsService = new RDSService.RDSService();
             DataSet retvalue = rdsService.SelectList("USP_UpdateProject", sd);
             return Ok(retvalue);
@@ -420,6 +434,7 @@ namespace RDSUX.Controllers
                     project.ScopeOfWorkId = Convert.ToInt32(dr["ScopeOfWork_ScopeOfWorkId"].ToString());
                     project.StatusId = Convert.ToInt32(dr["Status_StatusId"].ToString());
                     project.JobSheetName = dr["JobSheetName"].ToString();
+                    project.PurchaseOrder = dr["PurchaseOrderName"].ToString();
                     lstProjects.Add(project);
                 }
             }
