@@ -435,6 +435,7 @@ namespace RDSUX.Controllers
                     project.StatusId = Convert.ToInt32(dr["Status_StatusId"].ToString());
                     project.JobSheetName = dr["JobSheetName"].ToString();
                     project.PurchaseOrder = dr["PurchaseOrderName"].ToString();
+                    project.StatusName = dr["StatusName"].ToString();
                     lstProjects.Add(project);
                 }
             }

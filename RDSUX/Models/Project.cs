@@ -23,5 +23,6 @@ namespace RDSUX.Models
         public string StandardSplice { get; set; }
         public string MechanicSplice { get; set; }
         public string JobSheetName { get; set; }
+        public string StatusName { get; set; }
     }
 }

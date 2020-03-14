@@ -309,7 +309,7 @@ namespace RDSUX.Controllers
                 return RedirectToAction("Index");
             }
         }
-
+        
         public async Task<ActionResult> UpdateProject(ProjectDetailsModel projectDetailsModel, FormCollection formCollection)
         {
             try

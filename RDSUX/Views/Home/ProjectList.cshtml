@@ -26,11 +26,13 @@
                 @Html.DisplayNameFor(model => model.AssignDate)
             </th>
             <th>
-               Assignee
+                Assignee
             </th>
-
             <th>
                 @Html.DisplayNameFor(model => model.Notes)
+            </th>
+            <th>
+               Status
             </th>
             <th></th>
         </tr>
@@ -38,20 +40,23 @@
         @foreach (var item in Model.Select((item, index) => new { item, index }))
         {
         <tr>
-            <td>
-                @(item.index+1)
+            <td width="5%">
+                @(item.index + 1)
             </td>
-            <td>
+            <td width="20%">
                 @Html.ActionLink(item.item.ProjectName, "EditProject", "Home", new { Id = item.item.ProejctId }, null)
             </td>
-            <td>
+            <td width="10%">
                 @Html.DisplayFor(modelItem => item.item.AssignDate)
             </td>
-            <td>
+            <td width="10%">
                 @Html.DisplayFor(modelItem => item.item.CreateBy)
             </td>
-            <td>
+            <td width="40%">
                 @Html.DisplayFor(modelItem => item.item.Notes)
+            </td>
+            <td width="10%">
+                @Html.DisplayFor(modelItem => item.item.StatusName)
             </td>
 
             <td>
