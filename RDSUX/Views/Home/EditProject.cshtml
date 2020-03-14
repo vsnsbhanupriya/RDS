@@ -9,11 +9,11 @@
         <table width="100%">
             <tbody class="tdbody-bg">
                 <tr >
-                    <td width="45%">
+                    <td width="50%">
                         <table class="width100">
                             <tr class="width100">
-                                <td align="right" class="listnames">Project Name:</td>
-                                <td class="td-margin">
+                                <td align="right" class="font12">Project Name:</td>
+                                <td >
                                     @Html.TextBox("ProjectName", Model.ProjectName, new { @class = "form-control", @readonly = "readonly" })
                                     @Html.TextBox("ProejctId", Model.ProejctId, new { @class = "form-control", style = "display: none;" })
                                 </td>
@@ -22,8 +22,8 @@
                                 <td colspan="2">&nbsp;</td>.
                             </tr>
                             <tr class="width100">
-                                <td align="right" class="listnames">Project Type:</td>
-                                <td class="td-margin">
+                                <td align="right" class="font12">Project Type:</td>
+                                <td >
                                     @Html.DropDownList("ProjectTypeModel", Model.ProjectTypeList, "Select", new { @class = "select-dropdown", required = (string)null })
                                 </td>
                             </tr>
@@ -31,15 +31,15 @@
                                 <td colspan="2">&nbsp;</td>
                             </tr>
                             <tr class="width100">
-                                <td align="right" class="listnames">Scope of Work:</td>
-                                <td class="td-margin">
+                                <td align="right" class="font12">Scope of Work:</td>
+                                <td >
                                     @Html.DropDownList("SOWModel", Model.ScopeOfWork, "Select", new { @class = "select-dropdown", required = (string)null })
                                 </td>
                             </tr>
                         </table>
                     </td>
                     <td width="5%">&nbsp;</td>
-                    <td width="50%">
+                    <td width="40%">
                         <table class="width100">
                             <tr class="width100">
                                 <td align="right" class="listnames" valign="middle">Notes:</td>

@@ -9,10 +9,10 @@
         <table width="100%">
             <tbody class="tdbody-bg">
                 <tr>
-                    <td>
+                    <td width="50%"> 
                         <table class="width100">
                             <tr class="width100">
-                                <td align="right" class="listnames">Project Name:</td>
+                                <td align="right" class="font12">Project Name:</td>
                                 <td class="td-margin">
                                     @Html.TextBox("ProjectName", Model.ProjectName, new { @class = "form-control", required = (string)null })
 
@@ -23,7 +23,7 @@
                                 <td>&nbsp;</td>.
                             </tr>
                             <tr class="width100">
-                                <td align="right" class="listnames">Project Type:</td>
+                                <td align="right" class="font12">Project Type:</td>
                                 <td class="td-margin">
                                     @Html.DropDownList("ProjectTypeModel", Model.ProjectTypeList, "Select", new { @class = "select-dropdown", required = (string)null })
                                 </td>
@@ -32,7 +32,7 @@
                                 <td>&nbsp;</td>
                             </tr>
                             <tr class="width100">
-                                <td align="right" class="listnames">Scope of Work:</td>
+                                <td align="right" class="font12">Scope of Work:</td>
                                 <td class="td-margin">
                                     @Html.DropDownList("SOWModel", Model.ScopeOfWork, "Select", new { @class = "select-dropdown", required = (string)null })
                                 </td>
