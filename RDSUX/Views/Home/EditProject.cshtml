@@ -7,9 +7,9 @@
         @Html.AntiForgeryToken()
 
         <table width="100%">
-            <tbody>
-                <tr width="100%">
-                    <td class="form-td">
+            <tbody class="tdbody-bg">
+                <tr >
+                    <td >
                         <table class="width100">
                             <tr class="width100">
                                 <td align="right" class="listnames">Project Name:</td>
@@ -19,7 +19,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>&nbsp;</td>.
+                                <td colspan="2">&nbsp;</td>.
                             </tr>
                             <tr class="width100">
                                 <td align="right" class="listnames">Project Type:</td>
@@ -28,7 +28,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>&nbsp;</td>
+                                <td colspan="2">&nbsp;</td>
                             </tr>
                             <tr class="width100">
                                 <td align="right" class="listnames">Scope of Work:</td>
@@ -38,19 +38,20 @@
                             </tr>
                         </table>
                     </td>
-                    <td class="form-td">
+                    <td width="5%">&nbsp;</td>
+                    <td width="50%">
                         <table class="width100">
                             <tr class="width100">
                                 <td align="right" class="listnames" valign="middle">Notes:</td>
                                 <td>
-                                    @Html.TextArea("Notes", Model.Notes, 10, 30, new { @class = "form-control" })
+                                    @Html.TextArea("Notes", Model.Notes, 10, 50, new { @class = "form-control" })
                                 </td>
                             </tr>
                         </table>
                     </td>
                 </tr>
                 <tr>
-                    <td>&nbsp;</td>
+                    <td colspan="3">&nbsp;</td>
                 </tr>
             </tbody>
         </table>
@@ -62,7 +63,12 @@
                 <td width="5%">&nbsp;</td>
                 <td width="5%">&nbsp;</td>
                 <td width="25%">
-                    Job Sheet: <b>@Model.JobSheetName </b>
+                    <input type="file" name="JobSheet" />
+                    
+                </td>
+                <td width="5%">&nbsp;</td>
+                <td width="25%">
+                    <b>@Model.JobSheetName </b>
                     @if (!string.IsNullOrEmpty(Model.JobSheetName))
                     {
 
@@ -72,12 +78,20 @@
 
                     }
                 </td>
-                <td width="5%">&nbsp;</td>
-                <td width="25%"><input type="file" name="JobSheet" /></td>
             </tr>
             <tr class="tdbody-bg">
                 <td width="15%" class="font12">
-                    Purchase Order:  <b>@Model.PurchaseOrderFileName </b>
+                    Purchase Order: @Html.TextBox("PurchaseOrder", Model.PurchaseOrder, new { @class = "form-control" })
+                </td>
+                <td width="5%">&nbsp;</td>
+                <td width="5%">&nbsp;</td>
+                <td width="25%">
+                    <input type="file" name="PurchaseOrder" />
+                    
+                </td>
+                <td width="5%">&nbsp;</td>
+                <td width="25%">
+                    <b>@Model.PurchaseOrderFileName </b>
                     @if (!string.IsNullOrEmpty(Model.PurchaseOrderFileName))
                     {
 
@@ -87,7 +101,6 @@
 
                     }
                 </td>
-                <td width="25%"><input type="file" name="PurchaseOrder" /></td>
             </tr>
         </table>
 
