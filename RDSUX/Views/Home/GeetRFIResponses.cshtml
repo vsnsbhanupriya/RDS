@@ -1,10 +1,11 @@
 ﻿@model IEnumerable<RDSUX.Models.RFIResponse>
 
+
 <table class="table">
     <tbody>
         <tr class="thbody-bg">
             <th width="20%">
-                RFI Response ID
+               RFI Response ID
             </th>
             <th width="20%">
                 File Name
@@ -31,12 +32,14 @@
                     @{
                         var downloadmodel = "RFIResponses_" + item.RfiResponseId + "_" + item.ProjectId;
                     }
-                    <a href='/Home/DownloadRFIResponse?downloadmodel=@downloadmodel'><span><i class="fa  fa-download" title="Download"></i></span></a>
+                    <a href='/Home/DownloadRFIResponse?downloadmodel=@downloadmodel'>Download</a>
 
-                    <a href='/Home/DeleteRFIDocument?downloadmodel=@downloadmodel'><span><i class="fa  fa-trash" title="Delete"></i></span></a>
+
+
+                    <a href='/Home/DeleteRFIDocument?downloadmodel=@downloadmodel'>Delete</a>
                     @*@Html.ActionLink("Delete", "Delete", "Home", new { /* id=item.PrimaryKey */ })*@
                 </td>
             </tr>
         }
-    </tbody>
+        </tbody>
 </table>

@@ -309,7 +309,7 @@ namespace RDSUX.Controllers
                 return RedirectToAction("Index");
             }
         }
-
+        
         public async Task<ActionResult> UpdateProject(ProjectDetailsModel projectDetailsModel, FormCollection formCollection)
         {
             try
@@ -1047,7 +1047,7 @@ namespace RDSUX.Controllers
                     var result = response.Content.ReadAsStringAsync().Result;
                     BarCode barCodes = JsonConvert.DeserializeObject<BarCode>(result);
 
-                    pdm.BarCode = barCodes == null ? new BarCode() : barCodes;
+                    pdm.BarCode = barCodes;
                     // pdm.ProjectType = projectTypes;
                 }
             }
