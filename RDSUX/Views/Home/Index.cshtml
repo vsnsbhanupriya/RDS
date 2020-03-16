@@ -12,8 +12,8 @@
                     <td width="50%">
                         <table class="width100">
                             <tr class="width100">
-                                <td  class="font12">Project Name:</td>
-                                <td>
+                                <td align="right" class="font12">Project Name:</td>
+                                <td class="td-margin">
                                     @Html.TextBox("ProjectName", Model.ProjectName, new { @class = "form-control", required = (string)null })
 
                                     @Html.ValidationMessage("ProjectName", "", new { @class = "text-danger" })
@@ -23,8 +23,8 @@
                                 <td>&nbsp;</td>.
                             </tr>
                             <tr class="width100">
-                                <td class="font12">Project Type:</td>
-                                <td >
+                                <td align="right" class="font12">Project Type:</td>
+                                <td class="td-margin">
                                     @Html.DropDownList("ProjectTypeModel", Model.ProjectTypeList, "Select", new { @class = "select-dropdown", required = (string)null })
                                 </td>
                             </tr>
@@ -32,8 +32,8 @@
                                 <td>&nbsp;</td>
                             </tr>
                             <tr class="width100">
-                                <td  class="font12">Scope of Work:</td>
-                                <td >
+                                <td align="right" class="font12">Scope of Work:</td>
+                                <td class="td-margin">
                                     @Html.DropDownList("SOWModel", Model.ScopeOfWork, "Select", new { @class = "select-dropdown", required = (string)null })
                                 </td>
                             </tr>

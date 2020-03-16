@@ -4,9 +4,6 @@
     ViewBag.Title = "Projects";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<br />
-<br />
-<br />
 
 <h2 class="create-title">Projects</h2>
 <p style="color:green;">@ViewBag.result</p>
@@ -56,7 +53,7 @@
                         @Html.DisplayFor(modelItem => item.item.CreateBy)
                     </td>
                     <td width="30%">
-                        <div id="tooltip" class="long " title="@item.item.Notes">
+                        <div id="tooltip" class="long ">
                             @item.item.Notes
 
                             @*@Html.DisplayFor(modelItem => item.item.Notes)*@
