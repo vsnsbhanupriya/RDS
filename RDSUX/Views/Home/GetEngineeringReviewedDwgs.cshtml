@@ -1,17 +1,18 @@
 ﻿@model IEnumerable<RDSUX.Models.EngineerReviewedDrawings>
 
-<table class="table">
+
+<table class="table" >
     <tbody>
         <tr class="thbody-bg">
             <th width="20%">
                 Engineering Drawing Id
             </th>
-
+          
             <th width="20%">
                 File Name
             </th>
             <th width="20%">
-                Time Stamp
+               Time Stamp
             </th>
             <th></th>
         </tr>
@@ -23,8 +24,8 @@
                     @Html.DisplayFor(modelItem => item.EngineeringDrawingId)
                 </td>
                 @*<td>
-                        @Html.DisplayFor(modelItem => item.ProjectId)
-                    </td>*@
+                    @Html.DisplayFor(modelItem => item.ProjectId)
+                </td>*@
                 <td width="20%">
                     @Html.DisplayFor(modelItem => item.FileName)
                 </td>
@@ -35,9 +36,11 @@
                     @{
                         var downloadmodel = "EngineeringDrawings_" + item.EngineeringDrawingId + "_" + item.ProjectId;
                     }
-                    <a href='/Home/DownloadEngineeringRiewedDrawings?downloadmodel=@downloadmodel'><span><i class="fa  fa-download"></i></span></a>
+                    <a href='/Home/DownloadEngineeringRiewedDrawings?downloadmodel=@downloadmodel'>Download</a>
 
-                    <a href='/Home/DeleteEngineeringReviewedDocument?downloadmodel=@downloadmodel'><span><i class="fa  fa-trash"></i></span></a>
+
+
+                    <a href='/Home/DeleteEngineeringReviewedDocument?downloadmodel=@downloadmodel'>Delete</a>
                 </td>
             </tr>
         }
