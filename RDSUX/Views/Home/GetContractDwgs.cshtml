@@ -1,18 +1,17 @@
 ﻿@model IEnumerable<RDSUX.Models.ContractDWGS>
 
-
 <table class="table">
     <tbody>
         <tr class="thbody-bg">
 
             <th width="20%">
-              Contract Drawing Id
-            </th>         
-            <th width="20%">
-               File Name
+                Contract Drawing Id
             </th>
             <th width="20%">
-              TIme Stamp
+                File Name
+            </th>
+            <th width="20%">
+                TIme Stamp
             </th>
             <th width="20%"></th>
         </tr>
@@ -36,12 +35,11 @@
                     @{
                         var downloadmodel = "ContractDWGS_" + item.ContractDrawingId + "_" + item.ProjectId;
                     }
-                    <a href='/Home/Download?downloadmodel=@downloadmodel'>Download</a>
+                    <a href='/Home/Download?downloadmodel=@downloadmodel'><span><i class="fa  fa-download" title="Download"></i></span></a>
 
-                    <a href='/Home/DeleteDocument?downloadmodel=@downloadmodel'>Delete</a>
-
+                    <a href='/Home/DeleteDocument?downloadmodel=@downloadmodel'><span><i class="fa  fa-trash" title="Delete"></i></span></a>
                 </td>
             </tr>
         }
-        </tbody>
+    </tbody>
 </table>

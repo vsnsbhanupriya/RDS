@@ -1,43 +1,42 @@
 ﻿@model IEnumerable<RDSUX.Models.ShopDrawings>
 
-
 <table class="table">
     <tbody>
         <tr class="thbody-bg">
-            <th  width="20%">
-               Shop Drawings Id
+            <th width="20%">
+                Shop Drawings Id
             </th>
-            <th  width="20%">
+            <th width="20%">
                 File Name
             </th>
-            <th  width="20%">
+            <th width="20%">
                 Time Stamp
             </th>
-            <th  width="20%"></th>
+            <th width="20%"></th>
         </tr>
 
         @foreach (var item in Model)
         {
             <tr>
-                <td  width="20%">
+                <td width="20%">
                     @Html.DisplayFor(modelItem => item.ShopDrawingId)
                 </td>
                 @*<td>
-                    @Html.DisplayFor(modelItem => item.ProjectId)
-                </td>*@
-                <td  width="20%">
+                        @Html.DisplayFor(modelItem => item.ProjectId)
+                    </td>*@
+                <td width="20%">
                     @Html.DisplayFor(modelItem => item.FileName)
                 </td>
-                <td  width="20%">
+                <td width="20%">
                     @Html.DisplayFor(modelItem => item.TImeStamp)
                 </td>
-                <td  width="20%">
+                <td width="20%">
                     @{
                         var downloadmodel = "ShopDrawings_" + item.ShopDrawingId + "_" + item.ProjectId;
                     }
-                    <a href='/Home/DownloadShopDrawings?downloadmodel=@downloadmodel'>Download</a>
+                    <a href='/Home/DownloadShopDrawings?downloadmodel=@downloadmodel'><span><i class="fa  fa-download" title="Download"></i></span></a>
 
-                    <a href='/Home/DeleteShopDrawingsDocument?downloadmodel=@downloadmodel'>Delete</a>
+                    <a href='/Home/DeleteShopDrawingsDocument?downloadmodel=@downloadmodel'><span><i class="fa  fa-trash" title="Delete"></i></span></a>
                 </td>
             </tr>
         }

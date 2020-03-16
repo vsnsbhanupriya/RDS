@@ -6,6 +6,11 @@
     <title>@ViewBag.Title</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <link href="~/Content/css/font-awesome.css" rel="stylesheet" />
+
+    <script src="~/Scripts/bootstrap.js"></script>
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -27,6 +32,7 @@
             </div>
         </div>
     </div>
+
     <div class="container body-content">
         @RenderBody()
         <hr />
@@ -41,6 +47,7 @@
 </body>
 </html>
 <script type="text/javascript">
+
      $("#btnContractDWGSUpload").click(function (e) {
 
          var data = new FormData();
@@ -57,30 +64,39 @@
          } else {
              return false;
          }
-   $.ajax({
-                url: '@Url.Action("UploadDocuments","Home")', type: "POST", processData: false,
-                data: data, dataType: 'json',
-                contentType: false,
-                success: function (response) {
-                    if (response != null || response != '')
-                        $.ajax({
-                            contentType: 'application/html; charset=utf-8',
-                             type: 'GET',
-                             dataType: 'html',
-                            data: { "id": projectId },
-                       url : '@Url.Action("GetContractDwgs", "Home")',
+         $.ajax({
+             url: '@Url.Action("UploadDocuments","Home")', type: "POST", processData: false,
+             data: data, dataType: 'json',
+             contentType: false,
+             beforeSend: function () {
+                // ShowProgress();
+             },
+             success: function (response) {
 
-                           success: function (result) {
-                               $('#dvContractDwgs').html(result);
-                               $('#ContractDWGS').val('')
-                            },
-                            error: function (xhr, status) {
-alert(status) ;
-}
-                      });
+                 if (response != null || response != '')
+                     $.ajax({
+                         contentType: 'application/html; charset=utf-8',
+                         type: 'GET',
+                         dataType: 'html',
+                         data: { "id": projectId },
+                         url: '@Url.Action("GetContractDwgs", "Home")',
 
-                },
-                error: function (er) { }
+                         success: function (result) {
+                             $('#dvContractDwgs').html(result);
+                             $('#ContractDWGS').val('')
+                         },
+                         error: function (xhr, status) {
+                             alert(status);
+                         }
+                     });
+
+             },
+             complete: function () {
+                // RemoveModal();
+             },
+       error: function (xhr, status) {
+                       //      alert(status);
+                         }
 
             });
      });
