@@ -59,7 +59,7 @@ namespace RDSUX.Controllers
                     lstBarcode.Add(barCode);
                 }
             }
-            return Ok(lstBarcode.First());
+            return Ok(lstBarcode.FirstOrDefault());
         }
 
         [HttpGet]
