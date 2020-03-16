@@ -12,7 +12,7 @@
                     <td width="50%">
                         <table class="width100">
                             <tr class="width100">
-                                <td  class="font12">Project Name:</td>
+                                <td class="font12">Project Name:</td>
                                 <td>
                                     @Html.TextBox("ProjectName", Model.ProjectName, new { @class = "form-control", required = (string)null })
 
@@ -24,7 +24,7 @@
                             </tr>
                             <tr class="width100">
                                 <td class="font12">Project Type:</td>
-                                <td >
+                                <td>
                                     @Html.DropDownList("ProjectTypeModel", Model.ProjectTypeList, "Select", new { @class = "select-dropdown", required = (string)null })
                                 </td>
                             </tr>
@@ -32,8 +32,8 @@
                                 <td>&nbsp;</td>
                             </tr>
                             <tr class="width100">
-                                <td  class="font12">Scope of Work:</td>
-                                <td >
+                                <td class="font12">Scope of Work:</td>
+                                <td>
                                     @Html.DropDownList("SOWModel", Model.ScopeOfWork, "Select", new { @class = "select-dropdown", required = (string)null })
                                 </td>
                             </tr>
@@ -129,7 +129,7 @@
                 </tr>
             </table>*@
         <div align="right">
-            <input type="submit" class="btn btn-primary create-btn" value="CreateProject" />
+            <input type="submit" class="btn btn-primary create-btn" value="Create Project" />
         </div>
 
     }
