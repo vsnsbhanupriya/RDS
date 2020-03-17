@@ -44,6 +44,7 @@
         <footer>
         </footer>
     </div>
+    <div id="wait" style="display:none;width:69px;height:89px;border:1px solid black;position:absolute;top:90%;left:50%;padding:2px;"><img src='~/Images/demo_wait.gif' width="64" height="64" /><br>Loading..</div>
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
@@ -70,7 +71,12 @@
    $.ajax({
                 url: '@Url.Action("UploadDocuments","Home")', type: "POST", processData: false,
                 data: data, dataType: 'json',
-                contentType: false,
+       contentType: false,
+       beforeSend: function () {
+
+               $("#wait").css("display", "block");
+
+       },
                 success: function (response) {
                     if (response != null || response != '')
                         $.ajax({
@@ -90,7 +96,11 @@ alert(status) ;
                       });
 
                 },
-                error: function (er) { }
+       error: function (er) { },
+       complete: function () {
+
+            $("#wait").css("display", "none");
+       }
 
             });
      });
@@ -113,7 +123,12 @@ alert(status) ;
    $.ajax({
                 url: '@Url.Action("UploadRFIDocuments","Home")', type: "POST", processData: false,
                 data: data, dataType: 'json',
-                contentType: false,
+       contentType: false, beforeSend: function () {
+
+               $("#wait").css("display", "block");
+
+       },
+
                 success: function (response) {
                     if (response != null || response != '')
                         $.ajax({
@@ -129,7 +144,12 @@ alert(status) ;
                             },
                             error: function (xhr, status) {
 alert(status) ;
-}
+                            }
+                            ,
+       complete: function () {
+
+            $("#wait").css("display", "none");
+       }
                       });
 
                 },
@@ -156,7 +176,12 @@ alert(status) ;
    $.ajax({
                 url: '@Url.Action("UploadEngineerReviewDocuments","Home")', type: "POST", processData: false,
                 data: data, dataType: 'json',
-                contentType: false,
+       contentType: false,
+                 beforeSend: function () {
+
+               $("#wait").css("display", "block");
+
+       },
                 success: function (response) {
                     if (response != null || response != '')
                         $.ajax({
@@ -176,7 +201,12 @@ alert(status) ;
                       });
 
                 },
-                error: function (er) { }
+       error: function (er) { }
+                ,
+       complete: function () {
+
+            $("#wait").css("display", "none");
+       }
 
             });
 });
@@ -202,7 +232,12 @@ alert(status) ;
    $.ajax({
                 url: '@Url.Action("UploadShopDrawingDocuments","Home")', type: "POST", processData: false,
                 data: data, dataType: 'json',
-                contentType: false,
+       contentType: false,
+                 beforeSend: function () {
+
+               $("#wait").css("display", "block");
+
+       },
                 success: function (response) {
                     if (response != null || response != '')
                         $.ajax({
@@ -222,7 +257,12 @@ alert(status) ;
                       });
 
                 },
-                error: function (er) { }
+       error: function (er) { }
+                ,
+       complete: function () {
+
+            $("#wait").css("display", "none");
+       }
 
             });
     });
