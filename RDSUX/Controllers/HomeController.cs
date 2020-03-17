@@ -16,10 +16,11 @@ namespace RDSUX.Controllers
 {
     public class HomeController : Controller
     {
-        public async Task<ActionResult> Index(string redirectResult = "")
+        public async Task<ActionResult> Index(string redirectResult = "", string error = "")
         {
             ViewBag.Title = "Home Page";
             ViewBag.result = redirectResult;
+            ViewBag.ErrorMessage = error;
             ProjectDetailsModel pdm = new ProjectDetailsModel();
 
             string baseURL = WebConfigurationManager.AppSettings["baseurl"];
@@ -202,6 +203,23 @@ namespace RDSUX.Controllers
                 string baseURL = WebConfigurationManager.AppSettings["baseurl"];
                 if (ModelState.IsValid)
                 {
+                    using (var client = new HttpClient())
+                    {
+                        client.BaseAddress = new Uri(baseURL);
+                        client.DefaultRequestHeaders.Accept.Clear();
+                        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                        HttpResponseMessage response = await client.GetAsync("/api/Project/GetProjectList");
+                        if (response.IsSuccessStatusCode == true)
+                        {
+                            var result = response.Content.ReadAsStringAsync().Result;
+                            var projects = JsonConvert.DeserializeObject<List<Project>>(result);
+                            if (projects.Any(e => e.ProjectName.Equals(projectDetailsModel.ProjectName, StringComparison.InvariantCultureIgnoreCase)))
+                            {
+                                return RedirectToAction("Index", new { error = "Project Name already Exists!" });
+                            }
+                        }
+                    }
+
                     using (var client = new HttpClient())
                     {
                         string projectType = formCollection["ProjectTypeModel"].ToString();

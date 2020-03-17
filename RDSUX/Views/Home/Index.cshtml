@@ -1,6 +1,12 @@
 ﻿@model  RDSUX.Models.ProjectDetailsModel
 <div class="jumbotron jumbotron-container">
     <p style="color:green;">@ViewBag.result</p>
+
+    @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+    {
+        <p style="color:red;">@ViewBag.ErrorMessage</p>
+
+    }
     <h3 class="create-title">Create Project</h3>
     @using (Html.BeginForm("CreateProject", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
@@ -107,7 +113,7 @@
                             }
 
                         }
-                        @(Html.TextBox("StockLength", stockLength, new { @class = "form-control" }))
+                        @(Html.TextBox("StockLength", stockLength, new { @class = "form-control", @type = "number" }))
                     </td>
                 </tr>
 
