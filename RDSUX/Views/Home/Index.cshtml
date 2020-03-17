@@ -2,11 +2,8 @@
 <div class="jumbotron jumbotron-container">
     <p style="color:green;">@ViewBag.result</p>
 
-    @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
-    {
-        <p style="color:red;">@ViewBag.ErrorMessage</p>
+    <p style="color:red;" id="error">@ViewBag.ErrorMessage</p>
 
-    }
     <h3 class="create-title">Create Project</h3>
     @using (Html.BeginForm("CreateProject", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
@@ -22,7 +19,7 @@
                                 <td class="td-margin">
                                     @Html.TextBox("ProjectName", Model.ProjectName, new { @class = "form-control", required = (string)null })
 
-                                    @Html.ValidationMessage("ProjectName", "", new { @class = "text-danger" })
+                                    <span id="errorProjectname" style="color:red; display:none;"> Project name exists</span>
                                 </td>
                             </tr>
                             <tr>
@@ -135,7 +132,7 @@
                 </tr>
             </table>*@
         <div align="right">
-            <input type="submit" class="btn btn-primary create-btn" value="Create Project" />
+            <input type="submit" class="btn btn-primary create-btn" id="btnSubmit" value="Create Project" />
         </div>
 
     }
@@ -143,3 +140,35 @@
 <div>
     @Html.ActionLink("Back to Projects", "ProjectList")
 </div>
+
+@section scripts{
+
+    <script>
+        3
+
+        $(document).ready(function () {
+            ////////////////////////ALL textbox to upper
+            $("#ProjectName").blur(function () {
+                var projectName = $(this).val();
+                $.ajax({
+                    url: '@Url.Action("ChekProjectName", "Home")',
+                    data: { name: projectName },
+                    type: 'POST',
+                    success: function (data) {
+                        if (data == true) {
+                            $('#errorProjectname').css('display', 'block');
+                            $('#btnSubmit').prop('disabled', true);
+
+                        } else {
+                            $('#errorProjectname').css('display', 'none');
+                              $('#btnSubmit').prop('disabled', false);
+
+                        }
+
+                    }
+                });
+
+            });
+        });
+    </script>
+}

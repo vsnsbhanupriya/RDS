@@ -116,6 +116,32 @@ namespace RDSUX.Controllers
             return PartialView(drawings);
         }
 
+        public async Task< ActionResult> ChekProjectName(string name)
+        {
+            string baseURL = WebConfigurationManager.AppSettings["baseurl"];
+            List<Project> lisProject = new List<Project>();
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(baseURL);
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                HttpResponseMessage response = await client.GetAsync("/api/Project/GetProjectList");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = response.Content.ReadAsStringAsync().Result;
+                    lisProject = JsonConvert.DeserializeObject<List<Project>>(result);
+                    if (lisProject.Any(e => e.ProjectName.Equals(name, StringComparison.InvariantCultureIgnoreCase)))
+                    {
+                        return Json(true);
+                    }
+                    else return Json(false);
+                }
+                return Json(false);
+            }
+        }
+
         public ActionResult GetPurchaseOrders(int id)
         {
             var purchaseOrders = new List<PurchaseOrder>();
