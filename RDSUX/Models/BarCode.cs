@@ -8,7 +8,7 @@ namespace RDSUX.Models
     public class BarCode
     {
         public int BarCodeId { get; set; }
-        public int StockLength { get; set; }
+        public string StockLength { get; set; }
         public bool BarCodeGrade { get; set; }
         public string StandardSplice { get; set; }
         public string MachanicSplice { get; set; }

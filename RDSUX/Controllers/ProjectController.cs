@@ -51,7 +51,7 @@ namespace RDSUX.Controllers
                     var barCode = new BarCode()
                     {
                         BarCodeId = Convert.ToInt32(dr[0]),
-                        StockLength = Convert.ToInt32(dr[1]),
+                        StockLength = dr[1].ToString(),
                         BarCodeGrade = dr[2].ToString().Equals("1") ? true : false,
                         StandardSplice = dr[3].ToString(),
                         MachanicSplice = dr[4].ToString()

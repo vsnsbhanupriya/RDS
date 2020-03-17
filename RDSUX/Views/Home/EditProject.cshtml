@@ -130,15 +130,8 @@
                 <tr class="width100">
                     <td class="font12">Stock Length :</td>
                     <td class="td-margin">
-                        @{
-                            string stockLength = string.Empty;
-                            if (Model.BarCode.StockLength != 0)
-                            {
-                                stockLength = Model.BarCode.StockLength.ToString();
-                            }
 
-                        }
-                        @(Html.TextBox("StockLength", stockLength, new { @class = "form-control", @type = "number" }))
+                        @(Html.TextBox("StockLength", Model.BarCode.StockLength, new { @class = "form-control" }))
                     </td>
                 </tr>
 

@@ -268,7 +268,7 @@ namespace RDSUX.Controllers
                         project.ProjetTypeId = Convert.ToInt32(projectType);
                         project.ScopeOfWorkId = Convert.ToInt32(sow);
                         project.StatusId = 1;
-                        project.StockLength = string.IsNullOrEmpty(StockLength) ? 0 : Convert.ToInt32(StockLength);
+                        project.StockLength = StockLength;
                         project.BarCodeGrade = projectDetailsModel.BarCode.BarCodeGrade;
                         project.StandardSplice = projectDetailsModel.BarCode.StandardSplice;
                         project.MechanicSplice = projectDetailsModel.BarCode.MachanicSplice;
@@ -386,7 +386,7 @@ namespace RDSUX.Controllers
                         project.ScopeOfWorkId = Convert.ToInt32(sow);
                         project.StatusId = 1;
                         project.ProejctId = Convert.ToInt32(ProjectId);
-                        project.StockLength = Convert.ToInt32(StockLength);
+                        project.StockLength = StockLength;
                         project.BarCodeGrade = projectDetailsModel.BarCode.BarCodeGrade;
                         project.StandardSplice = projectDetailsModel.BarCode.StandardSplice;
                         project.MechanicSplice = projectDetailsModel.BarCode.MachanicSplice;

@@ -18,7 +18,7 @@ namespace RDSUX.Models
         public int ProjetTypeId { get; set; }
         public int ScopeOfWorkId { get; set; }
         public int StatusId { get; set; }
-        public int StockLength { get; set; }
+        public string StockLength { get; set; }
         public bool BarCodeGrade { get; set; }
         public string StandardSplice { get; set; }
         public string MechanicSplice { get; set; }
