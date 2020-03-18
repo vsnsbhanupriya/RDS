@@ -20,6 +20,12 @@ namespace RDSUX
             );
 
             routes.MapRoute(
+              name: "Login",
+              url: "{controller}/{action}/{id}",
+              defaults: new { controller = "User", action = "Login", id = UrlParameter.Optional }
+          );
+
+            routes.MapRoute(
                 name: "Save",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
@@ -30,7 +36,6 @@ namespace RDSUX
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "List", id = UrlParameter.Optional }
             );
-
         }
     }
 }

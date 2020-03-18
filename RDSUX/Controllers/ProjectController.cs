@@ -87,6 +87,28 @@ namespace RDSUX.Controllers
             return Ok(lstSow);
         }
 
+        [HttpGet]
+        public IHttpActionResult GetUserTypes()
+        {
+            RDSService.RDSService rdsService = new RDSService.RDSService();
+            DataSet ds = rdsService.SelectList("USP_GetUserTypes");
+
+            var userTypes = new List<UserType>();
+            if (ds != null && ds.Tables.Count > 0)
+            {
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    userTypes.Add(new UserType { Name = dr[0].ToString(), Id = Convert.ToInt32(dr[1].ToString()) });
+                }
+                // pdm.ScopeOfWork = lstSow;
+            }
+            else
+            {
+                return NotFound();
+            }
+            return Ok(userTypes);
+        }
+
         [HttpPost]
         public IHttpActionResult CreateProject(Project project)
         {
