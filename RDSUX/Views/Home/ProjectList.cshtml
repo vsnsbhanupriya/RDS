@@ -1,71 +1,35 @@
-﻿@model IEnumerable<RDSUX.Models.Project>
-
-@{
+﻿@{
     ViewBag.Title = "Projects";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<div id="dvProjects" class="row clearfix">
+    @{ Html.RenderAction("LoadProjects", "Home");}
+</div>
 
-<h2 class="create-title">Projects</h2>
-<p style="color:green;">@ViewBag.result</p>
-<p style="text-align:right">
-    <b> <h4> @Html.ActionLink("Create New Project", "Index", "Home", new { area = "" }, null)</h4></b>
-</p>
-@using (Html.BeginForm("ProjectList", "Home", FormMethod.Post))
-{
-    @Html.AntiForgeryToken()
-    <table class="table">
-        <tbody>
-            <tr class="thbody-bg">
-                <th>
-                    SL NO
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.ProjectName)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.AssignDate)
-                </th>
-                <th>
-                    Assignee
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Notes)
-                </th>
-                <th>
-                    Status
-                </th>
-                <th></th>
-            </tr>
+@section scripts{
+    <script>
 
-            @foreach (var item in Model.Select((item, index) => new { item, index }))
-            {
-                <tr>
-                    <td width="5%">
-                        @(item.index + 1)
-                    </td>
-                    <td width="20%">
-                        @Html.ActionLink(item.item.ProjectName, "EditProject", "Home", new { Id = item.item.ProejctId }, null)
-                    </td>
-                    <td width="10%">
-                        @Html.DisplayFor(modelItem => item.item.AssignDate)
-                    </td>
-                    <td width="10%">
-                        @Html.DisplayFor(modelItem => item.item.CreateBy)
-                    </td>
-                    <td width="40%">
-                        @Html.DisplayFor(modelItem => item.item.Notes)
-                    </td>
-                    <td width="10%">
-                        @Html.DisplayFor(modelItem => item.item.StatusName)
-                    </td>
+        function DeleteProject(id,name) {
+            var confirmResult = confirm("Do you want to Delete Project : "+ name);
+            if (confirmResult == true) {
 
-                    <td>
-                        @*@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |*@
-                        @Html.ActionLink("Delete", "DeleteProject", new { id = item.item.ProejctId })
-                    </td>
-                </tr>
+                 $.ajax({
+                        contentType: 'application/html; charset=utf-8',
+                        type: 'GET',
+                        dataType: 'html',
+                        data: { "id": id },
+                        url : '@Url.Action("DeleteProject", "Home")',
+                        success: function (result) {
+                               $('#dvProjects').html(result);
+
+                            },
+                        error: function (xhr, status) {
+                                alert(status) ;
+                                }
+                      });
+
             }
-        </tbody>
-    </table>
+        }
+    </script>
+
 }

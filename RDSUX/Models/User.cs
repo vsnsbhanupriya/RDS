@@ -35,9 +35,9 @@ namespace RDSUX.Models
         [Required]
         public int UserType { get; set; }
 
-        public string? CompanyName { get; set; }
+        public string CompanyName { get; set; }
         public DateTime? DateofBirth { get; set; }
-        public string? Role { get; set; }
+        public string Role { get; set; }
         public DateTime? DateofJoin { get; set; }
         public Double Expereince { get; set; }
         public IEnumerable<SelectListItem> UserTypes { get; set; }
