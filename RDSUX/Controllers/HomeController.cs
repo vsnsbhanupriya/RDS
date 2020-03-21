@@ -75,12 +75,6 @@ namespace RDSUX.Controllers
 
         public async Task<ActionResult> ProjectList()
         {
-            
-            return View();
-        }
-
-        public ActionResult LoadProjects()
-        {
             string baseURL = WebConfigurationManager.AppSettings["baseurl"];
             List<Project> lisProject = new List<Project>();
             using (var client = new HttpClient())
@@ -89,7 +83,7 @@ namespace RDSUX.Controllers
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-                HttpResponseMessage response = client.GetAsync("/api/Project/GetProjectList").Result;
+                HttpResponseMessage response = await client.GetAsync("/api/Project/GetProjectList");
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -122,7 +116,7 @@ namespace RDSUX.Controllers
             return PartialView(drawings);
         }
 
-        public async Task<ActionResult> ChekProjectName(string name)
+        public async Task< ActionResult> ChekProjectName(string name)
         {
             string baseURL = WebConfigurationManager.AppSettings["baseurl"];
             List<Project> lisProject = new List<Project>();
@@ -1338,7 +1332,7 @@ namespace RDSUX.Controllers
                     return RedirectToAction("ProjectList", new { redirectResult = ViewBag.result });
                 }
             }
-            return RedirectToAction("LoadProjects");
+            return RedirectToAction("ProjectList");
         }
     }
 }

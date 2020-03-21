@@ -1,18 +1,11 @@
 ﻿<!DOCTYPE html>
-<html>
+<html class="js flexbox flexboxlegacy canvas canvastext webgl no-touch geolocation postmessage websqldatabase indexeddb hashchange history draganddrop websockets rgba hsla multiplebgs backgroundsize borderimage borderradius boxshadow textshadow opacity cssanimations csscolumns cssgradients cssreflections csstransforms csstransforms3d csstransitions fontface generatedcontent video audio localstorage sessionstorage webworkers no-applicationcache svg inlinesvg smil svgclippaths">
 <head>
-    <meta charset="UTF-8">
-    <meta content="width=device-width, initial-scale=1" name="viewport" />
-    <title>RDS Projects</title>
-    <!-- Favicon-->
-    <link rel="icon" href="images/favicon.png" type="image/x-icon">
-
-    <!-- Plugins Core Css -->
-    <link href="~/css/app.min.css" rel="stylesheet">
-
-    <!-- Custom Css -->
-    <link href="~/css/style.css" rel="stylesheet">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
     <style>
 
         input[type=number]::-webkit-inner-spin-button,
@@ -24,52 +17,41 @@
         }
     </style>
 </head>
-<body class="horizontal-layout">
-    <nav class="navbar">
-        <div class="container-fluid">
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="logo"> <a href="#" rel="home"><img title="BootstrapMade" alt="BootstrapMade" src="~/Images/logo.png"></a></div>
             <div class="navbar-header">
-                <a href="#" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse"
-                   aria-expanded="false"></a>
-                <a href="#" class="bars"></a>
-                <a class="navbar-brand" href="#">
-                    <img src="~/Images/logo.png" alt="" />
-                </a>
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("Dashboard", "ProjectList", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
-            <div class="collapse navbar-collapse" id="navbar-collapse">
-                <ul class="horizontal-list">
-                    <li>  @Html.ActionLink("Dashboard", "ProjectList", "Home", new { area = "" }, null)</li>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
                     <li>  @Html.ActionLink("Create Project", "Index", "Home", new { area = "" }, null)</li>
                     <li>@Html.ActionLink("API", "Index", "Help", new { area = "" }, null)</li>
                 </ul>
             </div>
         </div>
-    </nav>
-    <section class="content">
-        <div class="container-fluid">
-            @RenderBody()
-            <hr />
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
 
-            <footer></footer>
-        </div>
-    </section>
+        <footer>
+        </footer>
+    </div>
     <div id="wait" style="display:none;width:69px;height:89px;border:1px solid black;position:absolute;top:90%;left:50%;padding:2px;"><img src='~/Images/demo_wait.gif' width="64" height="64" /><br>Loading..</div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
 </body>
 </html>
-
-<script src="~/js/app.min.js"></script>
-<script src="~/js/table.min.js"></script>
-
-<!-- Custom Js -->
-<script src="~/js/admin.js"></script>
-<script src="~/js/dataTables.buttons.min.js"></script>
-<script src="~/js/libs/jszip/3.1.3/jszip.min.js"></script>
-<script src="~/js/libs/pdfmake/0.1.32/pdfmake.min.js"></script>
-<script src="~/js/libs/pdfmake/0.1.32/vfs_fonts.js"></script>
-<script src="~/js/buttons.html5.min.js"></script>
-<script src="~/js/pages/tables/jquery-datatable.js"></script>
 <script type="text/javascript">
-
      $("#btnContractDWGSUpload").click(function (e) {
 
          var data = new FormData();

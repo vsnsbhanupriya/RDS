@@ -1,144 +1,166 @@
 ﻿@model  RDSUX.Models.ProjectDetailsModel
+<div class="jumbotron jumbotron-container">
+    <p style="color:green;">@ViewBag.result</p>
 
-<div class="row clearfix">
-    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-        @*<form id="form_advanced_validation" method="POST" novalidate="novalidate">*@
-        <div class="card">
-            <div class="header">
-                <p style="color:green;">@ViewBag.result</p>
+    <p style="color:red;" id="error">@ViewBag.ErrorMessage</p>
 
-                <p style="color:red;" id="error">@ViewBag.ErrorMessage</p>
+    <h3 class="create-title">Create Project</h3>
+    @using (Html.BeginForm("CreateProject", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
 
-                <h2>
-                    <strong>Create Project </strong>
-                </h2>
+        <table width="100%">
+            <tbody class="tdbody-bg">
+                <tr>
+                    <td width="50%">
+                        <table class="width100">
+                            <tr class="width100">
+                                <td align="right" class="font12">Project Name:</td>
+                                <td class="td-margin">
+                                    @Html.TextBox("ProjectName", Model.ProjectName, new { @class = "form-control", required = (string)null })
 
-            </div>
-            <div class="body">
-                @using (Html.BeginForm("CreateProject", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
-                {
-                    @Html.AntiForgeryToken()
-
-                    <div class="row clearfix">
-                        <div class="col-sm-4">
-                            <div class="form-group">
-                                <div class="form-line">
-                                    @Html.TextBox("ProjectName", Model.ProjectName, new { placeholder = "Project Name", @class = "form-control", required = (string)null })
                                     <span id="errorProjectname" style="color:red; display:none;"> Project name exists</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="form-group">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>&nbsp;</td>.
+                            </tr>
+                            <tr class="width100">
+                                <td align="right" class="font12">Project Type:</td>
+                                <td class="td-margin">
+                                    @Html.DropDownList("ProjectTypeModel", Model.ProjectTypeList, "Select", new { @class = "select-dropdown", required = (string)null })
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr class="width100">
+                                <td align="right" class="font12">Scope of Work:</td>
+                                <td class="td-margin">
+                                    @Html.DropDownList("SOWModel", Model.ScopeOfWork, "Select", new { @class = "select-dropdown", required = (string)null })
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td width="5%">&nbsp;</td>
+                    <td width="50%">
+                        <table class="width100">
+                            <tr class="width100">
+                                <td align="right" class="listnames" valign="middle">Notes:</td>
+                                <td>
+                                    @Html.TextArea("Notes", Model.Notes, 10, 30, new { @class = "form-control" })
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3">&nbsp;</td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="width100">
 
-                                <div class="form-line">
-                                    @Html.DropDownList("ProjectTypeModel", Model.ProjectTypeList, "Select Project Type", new { @class = "form-control", required = (string)null })
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="form-group">
+            <tr class="tdbody-bg">
 
-                                <div class="form-line">
-                                    @Html.DropDownList("SOWModel", Model.ScopeOfWork, "Select SOW", new { @class = "form-control", required = (string)null })
+                <td width="30%" class="font12">Job Number:   @Html.TextBox("JobNumber", Model.JobNumber, new { @class = "form-control", @type = "number", required = (string)null })</td>
+                <td>&nbsp;</td>
+                <td width="30%" class="font12">
+                    Job Sheet:<input type="file" name="JobSheet" />
+                </td>
+                <td width="30%" class="font12">Contract DWGS: @Html.TextBoxFor(model => model.ContractDWGSFiles, "", new { @type = "file", @multiple = "multiple" })  </td>
+            </tr>
+        </table>
 
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+        <table class="table-inner width100">
+            <tbody class="tbody-inner">
+                <tr class="width100">
+                    <td colspan="2">
+                        <h4> Standard Information</h4>
+                    </td>
+                </tr>
 
+                <tr class="width100">
+                    <td class="font12">Client Name: </td>
+                    <td class="td-margin">
+                        @(Html.TextBoxFor(m => m.BarCode.StandardSplice, new { @class = "form-control" }))
+                    </td>
+                </tr>
+                <tr class="width100">
+                    <td class="font12">Bar Supports: </td>
+                    <td width="20px">
 
+                        @(Html.CheckBoxFor(m => m.BarCode.BarCodeGrade, new { @class = "checkboxnew" }))
+                    </td>
+                </tr>
+                <tr class="width100">
+                    <td class="font12">Type of Couplers: </td>
+                    <td class="td-margin">
+                        @(Html.TextBoxFor(m => m.BarCode.MachanicSplice, new { @class = "form-control" }))
+                    </td>
+                </tr>
+                <tr class="width100">
+                    <td class="font12">Stock Length :</td>
+                    <td class="td-margin">
 
-                    <div class="row clearfix">
+                        @(Html.TextBox("StockLength", Model.BarCode.StockLength, new { @class = "form-control" }))
+                    </td>
+                </tr>
 
-                        <div class="col-sm-12">
-                            <div class="input-field col s12">
-                                @Html.TextArea("Notes", Model.Notes, 10, 30, new { placeholder = "Notes", @class = "materialize-textarea" })
+                <tr width="100%">
+                    <td colspan="2">&nbsp;</td>
+                </tr>
+            </tbody>
+        </table>
 
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row clearfix">
-                        <div class="col-sm-4">
-                            <div class="form-group">
-                                <div class="form-line">
-                                    @Html.TextBox("JobNumber", Model.JobNumber, new { placeholder = "Job Number", @class = "form-control", @type = "number", required = (string)null })
-
-
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <form action="#">
-                                <div class="file-field input-field">
-                                    <div class="btn">
-                                        <span>File</span>
-                                        <input type="file" name="JobSheet" />
-                                    </div>
-                                    <div class="file-path-wrapper">
-                                        <input class="file-path validate" type="text" placeholder="Upload Job Sheet ">
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="col-sm-4">
-                            <form action="#">
-                                <div class="file-field input-field">
-                                    <div class="btn">
-                                        <span>File</span>
-                                        @Html.TextBoxFor(model => model.ContractDWGSFiles, "", new { @type = "file", @multiple = "multiple" })
-                                    </div>
-                                    <div class="file-path-wrapper">
-                                        <input class="file-path validate" type="text" placeholder="Upload Contract DWGS:">
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                    <h2 class="card-inside-title">
-                        Standard Information
-                    </h2>
-                    <div class="row clearfix">
-                        <div class="col-sm-4">
-                            <div class="form-group">
-                                @(Html.TextBoxFor(m => m.BarCode.StandardSplice, new { placeholder = "Client Name", @class = "form-control" }))
-
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="form-group">
-                                @(Html.CheckBoxFor(m => m.BarCode.BarCodeGrade, new { placeholder = "Type of Couplers", @class = "checkboxnew" }))
-                                <input type="text" class="form-control" placeholder="Type of Couplers" />
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="form-group">
-                                @(Html.TextBoxFor(m => m.BarCode.MachanicSplice, new { placeholder = "Stock Length", @class = "form-control" }))
-
-                            </div>
-                        </div>
-                        @*<div class="col-sm-4">
-                                <div class="form-group">
-                                    <label>
-                                        <span>Bar Supports</span>
-                                    </label>
-                                    @(Html.CheckBoxFor(m => m.BarCode.BarCodeGrade, new { @class = "checkboxnew" }))
-                                </div>
-                            </div>*@
-
-                    </div>
-                    <button class="btn btn-primary waves-effect" id="btnSubmit" type="submit">Create Project</button>
-
-                }
-
-            </div>
+        @*<table width="100%">
+                <tr>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr>
+                    <td width="30%" class="font12">
+                        Contract DWGS:
+                        @Html.TextBoxFor(model => model.ContractDWGSFiles, "", new { @type = "file", @multiple = "multiple" })
+                    </td>
+                </tr>
+            </table>*@
+        <div align="right">
+            <input type="submit" class="btn btn-primary create-btn" id="btnSubmit" value="Create Project" />
         </div>
-        @*</form>*@
-    </div>
+
+    }
 </div>
-
-
 <div>
     @Html.ActionLink("Back to Projects", "ProjectList")
 </div>
 
+@section scripts{
+
+    <script>
+
+        $(document).ready(function () {
+            ////////////////////////ALL textbox to upper
+            $("#ProjectName").blur(function () {
+                var projectName = $(this).val();
+                $.ajax({
+                    url: '@Url.Action("ChekProjectName", "Home")',
+                    data: { name: projectName },
+                    type: 'POST',
+                    success: function (data) {
+                        if (data == true) {
+                            $('#errorProjectname').css('display', 'block');
+                            $('#btnSubmit').prop('disabled', true);
+
+                        } else {
+                            $('#errorProjectname').css('display', 'none');
+                              $('#btnSubmit').prop('disabled', false);
+
+                        }
+
+                    }
+                });
+
+            });
+        });
+    </script>
+}
