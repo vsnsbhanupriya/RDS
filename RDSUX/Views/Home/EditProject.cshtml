@@ -73,7 +73,6 @@
                     {
 
                         <a href='/Home/DownloadJobSheet?id=@Model.ProejctId'>Download</a>
-
                         <a href='/Home/DeleteJobSheet?id=@Model.ProejctId'>Delete</a>
 
                     }
@@ -224,3 +223,10 @@
 <div>
     @Html.ActionLink("Back to Projects", "ProjectList")
 </div>
+@section scripts{
+    <script>
+        $(document).ready(function () {
+
+        });
+    </script>
+}

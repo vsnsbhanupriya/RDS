@@ -126,8 +126,8 @@ namespace RDSUX.Controllers
             sd.Add("@Status_StatusId", project.StatusId.ToString());
             sd.Add("@StockLength", project.StockLength.ToString());
             sd.Add("@BarCodeGrade", project.BarCodeGrade == true ? "1" : "0");
-            sd.Add("@StandardSplice", project.StandardSplice.ToString());
-            sd.Add("@MachanicSplice", project.MechanicSplice.ToString());
+            sd.Add("@StandardSplice", project.StandardSplice?.ToString());
+            sd.Add("@MachanicSplice", project.MechanicSplice?.ToString());
             sd.Add("@JobSheetName", project.JobSheetName);
 
             RDSService.RDSService rdsService = new RDSService.RDSService();
@@ -448,7 +448,7 @@ namespace RDSUX.Controllers
                     project.AssignDate = Convert.ToDateTime(dr["AssignDate"]);
                     project.CreateBy = dr["CreatedBy"].ToString();
                     project.CreateDate = Convert.ToDateTime(dr["CreateDate"]);
-                    project.JobNumber = Convert.ToInt32(dr["JobNumber"].ToString());
+                    project.JobNumber = dr["JobNumber"].ToString();
                     project.Notes = dr["Notes"].ToString();
                     project.ProejctId = Convert.ToInt32(dr["ProejctId"].ToString());
                     project.PurchaseOrder = dr["PurchaseOrder"].ToString();

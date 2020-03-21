@@ -75,6 +75,11 @@ namespace RDSUX.Controllers
 
         public async Task<ActionResult> ProjectList()
         {
+            return View();
+        }
+
+        public ActionResult LoadProjects()
+        {
             string baseURL = WebConfigurationManager.AppSettings["baseurl"];
             List<Project> lisProject = new List<Project>();
             using (var client = new HttpClient())
@@ -83,18 +88,15 @@ namespace RDSUX.Controllers
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-                HttpResponseMessage response = await client.GetAsync("/api/Project/GetProjectList");
+                HttpResponseMessage response = client.GetAsync("/api/Project/GetProjectList").Result;
 
                 if (response.IsSuccessStatusCode)
                 {
                     var result = response.Content.ReadAsStringAsync().Result;
                     lisProject = JsonConvert.DeserializeObject<List<Project>>(result);
-
-                    if (result != null)
-                        ViewBag.ProjectList = lisProject;
                 }
             }
-            return View(lisProject);
+            return PartialView(lisProject);
         }
 
         public ActionResult GetShopDrawings(int id)
@@ -116,7 +118,7 @@ namespace RDSUX.Controllers
             return PartialView(drawings);
         }
 
-        public async Task< ActionResult> ChekProjectName(string name)
+        public async Task<ActionResult> ChekProjectName(string name)
         {
             string baseURL = WebConfigurationManager.AppSettings["baseurl"];
             List<Project> lisProject = new List<Project>();
@@ -261,7 +263,7 @@ namespace RDSUX.Controllers
                         project.AssignDate = DateTime.Now;
                         project.CreateBy = "System";
                         project.CreateDate = DateTime.Now;
-                        project.JobNumber = Convert.ToInt32(JobNumber);
+                        project.JobNumber = JobNumber;
                         project.Notes = notes;
                         project.PurchaseOrder = string.Empty;
                         project.ProjectName = projectDetailsModel.ProjectName;
@@ -378,7 +380,7 @@ namespace RDSUX.Controllers
                         project.AssignDate = DateTime.Now;
                         project.CreateBy = "System";
                         project.CreateDate = DateTime.Now;
-                        project.JobNumber = Convert.ToInt32(JobNumber);
+                        project.JobNumber = JobNumber;
                         project.Notes = notes;
                         //  project.PurchaseOrder = PurchaseOrder;
                         project.ProjectName = projectDetailsModel.ProjectName;
@@ -1329,10 +1331,10 @@ namespace RDSUX.Controllers
                 if (response.IsSuccessStatusCode)
                 {
                     ViewBag.result = "Record Deleted Successfully!";
-                    return RedirectToAction("ProjectList", new { redirectResult = ViewBag.result });
+                    return RedirectToAction("LoadProjects", new { redirectResult = ViewBag.result });
                 }
             }
-            return RedirectToAction("ProjectList");
+            return RedirectToAction("LoadProjects");
         }
     }
 }

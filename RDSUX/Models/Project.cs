@@ -14,7 +14,7 @@ namespace RDSUX.Models
         public DateTime AssignDate { get; set; }
         public DateTime CreateDate { get; set; }
         public string CreateBy { get; set; }
-        public int JobNumber { get; set; }
+        public string JobNumber { get; set; }
         public int ProjetTypeId { get; set; }
         public int ScopeOfWorkId { get; set; }
         public int StatusId { get; set; }
