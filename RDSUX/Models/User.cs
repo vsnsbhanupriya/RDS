@@ -67,7 +67,7 @@ namespace RDSUX.Models
         public float Expereince { get; set; }
 
         public string PhotoName { get; set; }
-        public IEnumerable<UserType> UserTypes { get; set; }
+        public IEnumerable<SelectListItem> UserTypes { get; set; }
 
         public HttpPostedFileBase Photo { get; set; }
     }

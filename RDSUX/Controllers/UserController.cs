@@ -24,9 +24,9 @@ namespace RDSUX.Controllers
             return View(login);
         }
 
-        private async Task<List<UserType>> GetUserTypes()
+        private async Task<List<SelectListItem>> GetUserTypes()
         {
-            var userTypesList = new List<UserType>();
+            var userTypesList = new List<SelectListItem>();
             string baseURL = WebConfigurationManager.AppSettings["baseurl"];
             using (var client = new HttpClient())
             {
@@ -35,14 +35,21 @@ namespace RDSUX.Controllers
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
                 HttpResponseMessage response = await client.GetAsync("/api/Project/GetUserTypes");
-
+                var userTypes = new List<UserType>();
                 if (response.IsSuccessStatusCode)
                 {
                     var result = response.Content.ReadAsStringAsync().Result;
-                    userTypesList = JsonConvert.DeserializeObject<List<UserType>>(result);
+                    userTypes = JsonConvert.DeserializeObject<List<UserType>>(result);
                 }
 
-                return userTypesList.Where(e => e.Id != (int)enumUserType.Admin).ToList();
+                foreach (var usertype in userTypes)
+                {
+                    if (usertype.Id != (int)enumUserType.Admin)
+                    {
+                        userTypesList.Add(new SelectListItem { Text = usertype.Name, Value = usertype.Id.ToString() });
+                    }
+                }
+                return userTypesList;
             }
         }
 
