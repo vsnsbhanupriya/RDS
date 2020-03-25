@@ -18,6 +18,6 @@ namespace RDSUX.Models
         [Required]
         public string UserType { get; set; }
 
-        public IEnumerable<SelectListItem> UserTypes { get; set; }
+        
     }
 }

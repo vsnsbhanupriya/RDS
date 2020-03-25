@@ -16,14 +16,13 @@ namespace RDSUX.Models
 
         public string Notes { get; set; }
 
-        // public string PurchaseOrder { get; set; }
+       // public string PurchaseOrder { get; set; }
         public string AssignDate { get; set; }
 
         public string CreateDate { get; set; }
         public string CreateBy { get; set; }
 
         [Required]
-        [RegularExpression("([1-9][0-9]*)")]
         public string JobNumber { get; set; }
 
         public int ProjectTypeId { get; set; }

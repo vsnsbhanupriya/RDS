@@ -178,6 +178,29 @@ namespace RDSUX.Controllers
             return Ok(purchaseOrderId);
         }
 
+        [HttpPost]
+        public IHttpActionResult AddUser(UserModel model)
+        {
+            SortedDictionary<string, string> sd = new SortedDictionary<string, string>() { };
+            sd.Add("@userName", model.UserName);
+            sd.Add("@password", model.Password);
+            sd.Add("@name", model.Name);
+            sd.Add("@email", model.Email);
+            sd.Add("@address", model.Address);
+            sd.Add("@userType", model.UserType.ToString());
+            sd.Add("@dateofBirth", model.DateOfBirth);
+            sd.Add("@companyName", model.CompanyName);
+            sd.Add("@dateofJoin", model.JoiningDate);
+            sd.Add("@experience", model.Experience.ToString());
+            sd.Add("@photo", model.Photo);
+            sd.Add("@role", model.Role);
+
+            RDSService.RDSService rdsService = new RDSService.RDSService();
+            DataSet retvalue = rdsService.SelectList("USP_InsertUser", "userId", sd);
+            var id = retvalue.Tables[0].Rows[0][0].ToString();
+            return Ok(id);
+        }
+
         [HttpGet]
         public IHttpActionResult GetContractDWGS(string projectId)
         {
@@ -195,6 +218,42 @@ namespace RDSUX.Controllers
                 }
             }
             return Ok(contractDwgs);
+        }
+
+        [HttpGet]
+        public IHttpActionResult GetUsers()
+        {
+            RDSService.RDSService rdsService = new RDSService.RDSService();
+            DataSet ds = rdsService.SelectList("USP_GetUsers");
+
+            List<User> lstUsers = new List<User>();
+            if (ds != null && ds.Tables.Count > 0)
+            {
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    var user = new User();
+                    user.UserId = Convert.ToInt32(dr["UserId"].ToString());
+                    user.UserType = Convert.ToInt32(dr["userType"].ToString());
+                    user.DateofBirth = dr["DateofBirth"].ToString() != string.Empty ? Convert.ToDateTime(dr["DateofBirth"].ToString()) : DateTime.MinValue;
+                    user.DateofJoin = dr["JoiningDate"].ToString() != string.Empty ? Convert.ToDateTime(dr["JoiningDate"].ToString()) : DateTime.MinValue;
+                    user.Expereince = dr["TotalExperience"].ToString() != string.Empty ? float.Parse(dr["TotalExperience"].ToString()) : 0;
+                    user.Role = dr["Role"].ToString() != string.Empty ? dr["Role"].ToString() : string.Empty;
+                    user.UserName = dr["UserName"].ToString();
+                    user.Name = dr["Name"].ToString();
+                    user.Email = dr["Email"].ToString();
+                    user.Password = dr["Password"].ToString();
+                    user.Address = dr["address"].ToString();
+                    user.CompanyName = dr["CompanName"].ToString() != string.Empty ? dr["CompanName"].ToString() : string.Empty;
+                    user.PhotoName = dr["Photo"].ToString() != string.Empty ? dr["Photo"].ToString() : string.Empty;
+
+                    lstUsers.Add(user);
+                }
+            }
+            else
+            {
+                return NotFound();
+            }
+            return Ok(lstUsers);
         }
 
         [HttpGet]

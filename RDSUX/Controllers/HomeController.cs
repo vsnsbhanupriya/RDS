@@ -75,11 +75,6 @@ namespace RDSUX.Controllers
 
         public async Task<ActionResult> ProjectList()
         {
-            return View();
-        }
-
-        public ActionResult LoadProjects()
-        {
             string baseURL = WebConfigurationManager.AppSettings["baseurl"];
             List<Project> lisProject = new List<Project>();
             using (var client = new HttpClient())
@@ -88,15 +83,18 @@ namespace RDSUX.Controllers
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-                HttpResponseMessage response = client.GetAsync("/api/Project/GetProjectList").Result;
+                HttpResponseMessage response = await client.GetAsync("/api/Project/GetProjectList");
 
                 if (response.IsSuccessStatusCode)
                 {
                     var result = response.Content.ReadAsStringAsync().Result;
                     lisProject = JsonConvert.DeserializeObject<List<Project>>(result);
+
+                    if (result != null)
+                        ViewBag.ProjectList = lisProject;
                 }
             }
-            return PartialView(lisProject);
+            return View(lisProject);
         }
 
         public ActionResult GetShopDrawings(int id)
@@ -1331,10 +1329,10 @@ namespace RDSUX.Controllers
                 if (response.IsSuccessStatusCode)
                 {
                     ViewBag.result = "Record Deleted Successfully!";
-                    return RedirectToAction("LoadProjects", new { redirectResult = ViewBag.result });
+                    return RedirectToAction("ProjectList", new { redirectResult = ViewBag.result });
                 }
             }
-            return RedirectToAction("LoadProjects");
+            return RedirectToAction("ProjectList");
         }
     }
 }
